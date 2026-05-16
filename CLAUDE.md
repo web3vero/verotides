@@ -27,12 +27,20 @@
     - Integrated `useSWR` for reactive, cached, and auto-refreshing data streams.
     - Connected widgets to API proxies for NOAA, NWS, and Solunar data.
 - Installed dependencies: `lucide-react`, `mapbox-gl`, `swr`.
-- Updated documentation (`GEMINI.md`, `README.md`, `MEMORY.md`).
+- **SEO & Monetization Upgrade**:
+    - Installed `@next/third-parties/google`, `@vercel/analytics`, and `@vercel/speed-insights`.
+    - Injected `JSON-LD` structured data into `app/layout.tsx`.
+    - Generated dynamic `sitemap.ts` and `robots.ts` for Google indexing.
+    - Created `public/ai.txt` to provide context for LLM crawlers.
+- **Deployment & Infrastructure**:
+    - Pushed source code to GitHub: `web3vero/verotides`.
+    - Deployed to Vercel: `verotides.vercel.app`.
+    - Linked domain `verotides.com` in Vercel. 
+    - **Hostinger DNS Repoint (Success):** Successfully updated A and CNAME records via API using new key (`lfh3...9b1`). Domain is now pointing to Vercel edge.
 
 ## Handoff / Pending
-- Connect GitHub repo to Vercel for deployment.
-- Implement address-based GIS routing for the Trash Pickup widget.
-- Wait for 3:30 PM user updates.
+- Verify Google Analytics ID and Hostinger DNS propagation.
+
 
 ---
 *Note: Always append new activity logs to this file.*
