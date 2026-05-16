@@ -47,11 +47,12 @@ const TideWidget = () => {
             </div>
             
             {/* Hover Tooltip */}
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
-              Peak water level predicted. Station 8722125 historical confidence: 98.4%
+            <div className="absolute -top-28 left-0 right-0 mx-1 bg-black border border-primary/40 text-primary text-[10px] font-mono p-3 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
+              <p className="font-black text-primary mb-1">High Tide — Sebastian Inlet</p>
+              <p className="text-white/70">Best time for surfers and beach access. Fishing improves 1–2 hrs before peak as bait fish concentrate near structure. Expect stronger current through Sebastian Inlet. Boaters: deeper draft vessels can transit safely.</p>
             </div>
           </div>
-          
+
           <div className="relative p-5 border-2 border-primary/20 bg-black shadow-[inset_0_0_20px_rgba(0,255,65,0.05)] rounded-lg flex flex-col items-center text-center group/data cursor-help">
             <div className="text-[10px] text-primary/60 font-black uppercase mb-2 tracking-[0.2em]">Next_Low</div>
             <div className="text-3xl md:text-4xl font-black text-yellow-400 glow-text leading-none mb-2 tracking-tighter">
@@ -62,13 +63,14 @@ const TideWidget = () => {
             </div>
 
             {/* Hover Tooltip */}
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
-              Minimum vertical clearance for vessels. Monitoring coastal erosion factors.
+            <div className="absolute -top-28 left-0 right-0 mx-1 bg-black border border-primary/40 text-primary text-[10px] font-mono p-3 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
+              <p className="font-black text-primary mb-1">Low Tide — Sebastian Inlet</p>
+              <p className="text-white/70">Exposed sandbars and flats — prime for wading and snook/redfish on the flats. Inlet current reversal creates prime ambush points. Watch for shallow draft warnings near the bar. Best for clamming and shell hunting on the beach.</p>
             </div>
           </div>
-          
-          <div className="col-span-2 text-xs opacity-40 italic text-center font-mono mt-2 uppercase tracking-[0.3em] font-bold group-hover:opacity-100 transition-opacity">
-            NODE_8722125 // SEBASTIAN_INLET_FL
+
+          <div className="col-span-2 text-[10px] opacity-40 italic text-center font-mono mt-1 uppercase tracking-[0.2em] font-bold">
+            NOAA Station 8722125 · Sebastian Inlet, FL
           </div>
         </div>
       )}

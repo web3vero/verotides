@@ -34,18 +34,22 @@ const BiteTimesWidget = () => {
             <div className="text-2xl md:text-3xl font-black text-white glow-text tracking-tighter leading-none">{major}</div>
             
             {/* Hover Tooltip */}
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-56 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
-              Optimal feeding window based on lunar transit. Maximize coastal deployment.
+            <div className="absolute -top-32 left-0 right-0 mx-1 bg-black border border-primary/40 text-[10px] font-mono p-3 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
+              <p className="font-black text-primary mb-1">Major Solunar Window</p>
+              <p className="text-white/70 mb-1">Peak feeding activity triggered by lunar overhead/underfoot transit. Fish metabolism and movement increases significantly.</p>
+              <p className="text-yellow-400 font-black text-[9px]">Target species in Vero Beach:</p>
+              <p className="text-white/60 text-[9px]">Snook · Redfish (Red Drum) · Tarpon · Spanish Mackerel · Flounder · Pompano · Sheepshead</p>
             </div>
           </div>
-          
+
           <div className="p-3 border-2 border-primary/10 bg-black/60 rounded-lg flex justify-between items-center group/minor relative cursor-help">
             <div className="text-[10px] text-primary/40 font-black uppercase tracking-widest">Minor_Activity</div>
             <div className="text-lg font-black text-white/90">{minor}</div>
 
             {/* Hover Tooltip */}
-            <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/minor:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
-              Secondary activity spike. Baseline engagement expected.
+            <div className="absolute -top-20 left-0 right-0 mx-1 bg-black border border-primary/40 text-[10px] font-mono p-3 rounded opacity-0 group-hover/minor:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
+              <p className="font-black text-primary mb-1">Minor Solunar Window</p>
+              <p className="text-white/70">Triggered by moonrise or moonset. Less intense than major period but still worth fishing. Activity typically lasts 30–45 min. Layer with tide changes for best results.</p>
             </div>
           </div>
           
