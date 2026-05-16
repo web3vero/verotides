@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 
-const CAM_URL = 'https://www.surfguru.com/widgets/beachcam?widget=140&autostart=true';
-const BASE = 'https://www.surfguru.com';
+// ipcamlive player — embedded by Reef Ocean Resort (3450 Ocean Dr, Vero Beach)
+// VisualSentry now embeds this directly; proxy kept as fallback reference only
+const CAM_URL =
+  'https://g1.ipcamlive.com/player/player.php?alias=66744cf161841' +
+  '&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1' +
+  '&disabledownloadbutton=1&disablenavigation=1&disableuserpause=1';
+const BASE = 'https://g1.ipcamlive.com';
 
 export async function GET() {
   try {
