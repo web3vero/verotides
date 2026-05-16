@@ -4,6 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieSentry from '@/components/verotide/CookieSentry';
+import CounterIntel from '@/components/verotide/CounterIntel';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <CookieSentry />
+        <CounterIntel />
         {/* Placeholder GA Measurement ID. Update in production .env */}
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX'} />
         <Analytics />
