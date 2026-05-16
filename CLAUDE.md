@@ -36,6 +36,8 @@
         - Built `CookieSentry.tsx` to enforce session persistence and high-value user tracking.
         - Integrated `cookies-next` for 400-day tactical consent storage and visitor fingerprinting.
         - Enabled Vercel Speed Insights and Core Web Vitals for performance-based ad-tiering prep.
+    - **Counter-Intelligence:** 
+        - Built `CounterIntel.tsx` to intercept right-click events and display a humorous terminal warning ("WE KNOW WHAT YOU ARE TRYING TO DO ;)").
 - **Deployment & Infrastructure**:
     - Pushed source code to GitHub: `web3vero/verotides`.
     - Deployed to Vercel: `verotides.vercel.app`.
