@@ -24,9 +24,14 @@ const VeroDashboard = () => {
           <div className="text-xs opacity-70">INDIAN RIVER COUNTY, FLORIDA [32960]</div>
         </div>
         <div className="text-right font-mono">
-          <div className="text-2xl">{currentTime.toLocaleTimeString()}</div>
+          <div className="text-2xl text-primary font-black shadow-primary/20">{currentTime.toLocaleTimeString()}</div>
           <div className="text-xs opacity-50">{currentTime.toLocaleDateString()}</div>
         </div>
+      </div>
+
+      {/* Visual Intelligence Layer - Promoted and Resized */}
+      <div className="md:col-span-2 lg:col-span-2">
+        <VisualSentry />
       </div>
 
       {/* Tide Widget */}
@@ -43,20 +48,20 @@ const VeroDashboard = () => {
         </div>
         <div className="flex flex-col gap-3 mt-1">
           <div className="flex items-center gap-4">
-            <div className="h-10 w-10 border border-border/40 flex items-center justify-center text-xl bg-black">🗑️</div>
+            <div className="h-10 w-10 border border-border/40 flex items-center justify-center text-xl bg-black shadow-[inset_0_0_5px_rgba(0,255,65,0.2)]">🗑️</div>
             <div>
               <div className="text-xs opacity-50 uppercase">HOUSEHOLD_PICKUP:</div>
-              <div className="font-bold uppercase">MON / THU</div>
+              <div className="font-bold uppercase text-yellow-400">MON / THU</div>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="h-10 w-10 border border-border/40 flex items-center justify-center text-xl bg-black">♻️</div>
+            <div className="h-10 w-10 border border-border/40 flex items-center justify-center text-xl bg-black shadow-[inset_0_0_5px_rgba(0,255,65,0.2)]">♻️</div>
             <div>
               <div className="text-xs opacity-50 uppercase">RECYCLING_CYCLE:</div>
-              <div className="font-bold uppercase">WED [WEEKLY]</div>
+              <div className="font-bold uppercase text-yellow-400">WED [WEEKLY]</div>
             </div>
           </div>
-          <button className="text-[10px] border border-border/40 p-1 hover:bg-white/5 transition-colors uppercase">
+          <button className="text-[10px] border border-primary/40 p-2 hover:bg-primary/10 transition-colors uppercase font-bold text-primary">
             ENTER_ADDRESS_FOR_GIS_QUERY
           </button>
         </div>
@@ -73,15 +78,15 @@ const VeroDashboard = () => {
         <div className="flex flex-col gap-2 mt-1">
           <div className="flex justify-between items-center p-2 bg-black border border-border/20">
             <span className="text-xs uppercase">BARBER_BRIDGE (SR_60)</span>
-            <span className="text-[10px] text-primary uppercase font-bold">CLEAR / OPEN</span>
+            <span className="text-[10px] text-primary uppercase font-bold bg-primary/10 px-1">CLEAR / OPEN</span>
           </div>
           <div className="flex justify-between items-center p-2 bg-black border border-border/20">
             <span className="text-xs uppercase">17TH_ST_BRIDGE (SR_656)</span>
-            <span className="text-[10px] text-primary uppercase font-bold">CLEAR / OPEN</span>
+            <span className="text-[10px] text-primary uppercase font-bold bg-primary/10 px-1">CLEAR / OPEN</span>
           </div>
           <div className="flex justify-between items-center p-2 bg-black border border-border/20">
             <span className="text-xs uppercase">WABASSO_BRIDGE (CR_510)</span>
-            <span className="text-[10px] text-primary uppercase font-bold">CLEAR / OPEN</span>
+            <span className="text-[10px] text-primary uppercase font-bold bg-primary/10 px-1">CLEAR / OPEN</span>
           </div>
         </div>
       </div>
@@ -95,7 +100,7 @@ const VeroDashboard = () => {
         <div className="flex-1 flex flex-col items-center justify-center gap-2 py-4">
           <div className="text-2xl opacity-80">✅</div>
           <div className="text-sm font-bold text-primary uppercase">NO_ACTIVE_CYCLONES</div>
-          <div className="text-[10px] opacity-40 uppercase">Vero Beach Area: Level_0_Threat</div>
+          <div className="text-[10px] opacity-40 uppercase text-center">Vero Beach Area: Level_0_Threat</div>
         </div>
         <div className="text-[10px] border border-red-900/30 p-1 text-center opacity-50 uppercase">
           SEASON: JUN_01 - NOV_30
@@ -103,13 +108,8 @@ const VeroDashboard = () => {
       </div>
 
       {/* Vessel Tracking Layer */}
-      <div className="md:col-span-2">
+      <div className="md:col-span-full lg:col-span-1">
         <VesselSentry />
-      </div>
-
-      {/* Visual Intelligence Layer */}
-      <div className="md:col-span-1">
-        <VisualSentry />
       </div>
     </div>
   );
