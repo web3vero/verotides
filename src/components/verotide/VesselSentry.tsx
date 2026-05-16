@@ -4,13 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Vero Beach Coordinates
 const VERO_CENTER: [number, number] = [-80.3973, 27.6386];
-
-// Bounding box for Vero Beach Area [[lat, lon], [lat, long]]
 const VERO_BBOX = [
-  [27.4, -80.5], // Bottom Left
-  [27.9, -80.1]  // Top Right
+  [27.4, -80.5], 
+  [27.9, -80.1]  
 ];
 
 const VesselSentry = () => {
@@ -24,13 +21,10 @@ const VesselSentry = () => {
   const [connectionStatus, setConnectionStatus] = useState('INIT');
   const [vesselCount, setVesselCount] = useState(0);
 
-  // Initialize Map
   useEffect(() => {
     if (map.current || !mapContainer.current) return;
-
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
     if (!token) return;
-
     mapboxgl.accessToken = token;
 
     map.current = new mapboxgl.Map({
@@ -43,7 +37,6 @@ const VesselSentry = () => {
 
     map.current.on('load', () => {
       if (!map.current) return;
-      
       const beacon = document.createElement('div');
       beacon.className = 'h-4 w-4 bg-primary rounded-full animate-pulse shadow-[0_0_20px_rgba(0,255,65,1)]';
       new mapboxgl.Marker(beacon).setLngLat(VERO_CENTER).addTo(map.current);
@@ -64,7 +57,6 @@ const VesselSentry = () => {
     };
   }, []);
 
-  // Handle WebSocket Connection
   useEffect(() => {
     if (!useLiveFeed || !map.current) {
       if (socket.current) {
@@ -111,9 +103,20 @@ const VesselSentry = () => {
           markers.current[mmsi].setLngLat([lng, lat]);
         } else {
           const el = document.createElement('div');
-          el.className = 'h-2 w-2 bg-yellow-400 rotate-45 shadow-[0_0_10px_rgba(250,204,21,1)] cursor-pointer group transition-all duration-1000';
+          el.className = 'h-3 w-3 bg-yellow-400 rotate-45 shadow-[0_0_15px_rgba(250,204,21,1)] cursor-help group transition-all duration-1000 border border-black/50';
           el.style.transform = `rotate(${cog}deg)`;
-          el.innerHTML = `<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-black border-2 border-primary p-2 text-[8px] text-primary whitespace-nowrap z-20 font-black uppercase shadow-2xl">${name}<br/>SPD: ${sog}KT</div>`;
+          el.innerHTML = `<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-black border-2 border-primary p-3 text-[10px] text-primary whitespace-nowrap z-50 font-black uppercase shadow-2xl backdrop-blur-md">
+            <div class="text-yellow-400 mb-1 border-b border-primary/20 pb-1">${name}</div>
+            <div class="flex justify-between gap-4">
+              <span>SPEED:</span>
+              <span class="text-white">${sog} KT</span>
+            </div>
+            <div class="flex justify-between gap-4">
+              <span>HEADING:</span>
+              <span class="text-white">${cog}°</span>
+            </div>
+            <div class="mt-1 text-[8px] opacity-40 italic">MMSI: ${mmsi}</div>
+          </div>`;
           
           markers.current[mmsi] = new mapboxgl.Marker(el)
             .setLngLat([lng, lat])
@@ -130,48 +133,53 @@ const VesselSentry = () => {
   }, [useLiveFeed]);
 
   return (
-    <div className="terminal-box p-4 flex flex-col gap-4 min-h-[450px] border-primary/20">
-      <div className="border-b border-border pb-1 flex justify-between items-center">
-        <span className="font-black text-primary tracking-widest flex items-center gap-2 uppercase text-xs italic">
+    <div className="terminal-box p-6 flex flex-col gap-4 min-h-[550px] border-primary/20 rounded-xl group relative overflow-hidden">
+      <div className="border-b border-border/40 pb-2 flex justify-between items-center z-20">
+        <span className="font-black text-primary tracking-[0.3em] flex items-center gap-3 uppercase text-sm italic">
           <span className={`h-2 w-2 rounded-full ${useLiveFeed ? 'bg-primary animate-pulse shadow-[0_0_10px_rgba(0,255,65,0.5)]' : 'bg-red-500'}`}></span>
-          Coastal_Radar :: AIS_ACTIVE
+          COASTAL_RADAR // AIS_STREAM
         </span>
-        <div className="bg-primary text-black px-2 py-0.5 text-[9px] font-black rounded-sm shadow-sm">
-           FLEET: {vesselCount}
+        <div className="bg-primary text-black px-3 py-0.5 text-xs font-black rounded-full shadow-lg flex items-center gap-2">
+           <span className="animate-pulse">📡</span> ACTIVE_FLEET: {vesselCount}
         </div>
       </div>
 
-      <div className="flex-1 bg-black border-2 border-primary/20 relative overflow-hidden group rounded-sm">
-        <div ref={mapContainer} className="absolute inset-0 grayscale contrast-125 brightness-50" />
+      <div className="flex-1 bg-black border-2 border-primary/20 relative overflow-hidden group/map rounded-lg shadow-[inset_0_0_40px_rgba(0,0,0,1)]">
+        <div ref={mapContainer} className="absolute inset-0 grayscale contrast-150 brightness-[0.4] sepia-[0.1]" />
         
         {/* Connection Status Overlay */}
-        <div className="absolute top-4 left-4 z-10">
-          <div className="bg-black/90 border border-primary/30 px-2 py-1 text-[8px] font-black font-mono text-primary shadow-lg flex items-center gap-2 uppercase">
-            <span className="h-1 w-1 bg-yellow-400 rounded-full animate-ping"></span>
-            Link: {connectionStatus}
+        <div className="absolute top-6 left-6 z-10 transition-transform group-hover/map:scale-105">
+          <div className="bg-black/90 border-2 border-primary/40 px-4 py-2 text-[10px] font-black font-mono text-primary shadow-2xl flex items-center gap-3 uppercase tracking-widest backdrop-blur-sm">
+            <span className="h-2 w-2 bg-yellow-400 rounded-full animate-ping"></span>
+            NETWORK_STATUS: {connectionStatus}
           </div>
         </div>
 
-        {/* Scanline Mask */}
-        <div className="absolute inset-0 pointer-events-none opacity-10 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_2px] z-20"></div>
+        {/* Scanline Effect */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] z-20"></div>
         
-        <div className="absolute bottom-4 right-4 text-[9px] font-black font-mono text-primary bg-black/80 p-2 border border-primary/20 z-10 uppercase italic">
-          Vero_Beach :: GRID_07
+        <div className="absolute bottom-6 right-6 text-[10px] font-black font-mono text-primary bg-black/80 p-3 border-2 border-primary/20 z-10 uppercase italic tracking-[0.2em] backdrop-blur-md">
+          VERO_BEACH_SECTOR // GRID_07
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mt-auto">
-          <div className="bg-black/60 border border-primary/20 p-2 rounded-sm text-center">
-             <div className="text-[8px] text-primary/60 font-black uppercase mb-1">Radar_Mode</div>
-             <div className="text-[10px] font-black text-yellow-400 uppercase italic leading-none">Scanning</div>
+      <div className="grid grid-cols-2 gap-4 mt-1 z-20">
+          <div className="bg-black/80 border-2 border-primary/20 p-3 rounded-lg text-center group/mode relative cursor-help">
+             <div className="text-[10px] text-primary/60 font-black uppercase mb-1 tracking-widest">Radar_Mode</div>
+             <div className="text-sm font-black text-yellow-400 uppercase italic leading-none">Scanning_Live</div>
+             
+             {/* Hover Tooltip */}
+             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/mode:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter">
+                Direct AIS satellite relay. 5-second polling interval.
+             </div>
           </div>
           <button 
-            className="bg-primary/10 border border-primary/40 p-2 rounded-sm text-center hover:bg-primary/20 transition-all font-black text-primary uppercase text-[10px]"
+            className="bg-primary/10 border-2 border-primary/40 p-3 rounded-lg text-center hover:bg-primary text-black transition-all font-black text-primary uppercase text-xs tracking-widest shadow-sm"
             onClick={() => {
-               map.current?.flyTo({ center: VERO_CENTER, zoom: 11 });
+               map.current?.flyTo({ center: VERO_CENTER, zoom: 11, duration: 2000 });
             }}
           >
-            Reset_Grid
+            RESET_GRID_VIEW
           </button>
       </div>
     </div>

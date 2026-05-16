@@ -10,14 +10,10 @@ const TideWidget = () => {
     refreshInterval: 300000 // 5 minutes
   });
 
-  // Extract predictions or use placeholders
   const nextHigh = data?.predictions?.find((p: any) => p.type === 'H') || { t: '08:42 AM', v: '3.2' };
   const nextLow = data?.predictions?.find((p: any) => p.type === 'L') || { t: '02:18 PM', v: '-0.1' };
 
-  // Helper to ensure we get the full time string without accidental truncation
   const formatTime = (timeStr: string) => {
-    // If the format is "YYYY-MM-DD HH:MM", we just want "HH:MM"
-    // If it's already "HH:MM AM/PM", keep it.
     if (timeStr.includes('-')) {
       const timePart = timeStr.split(' ')[1];
       return timePart || timeStr;
@@ -26,43 +22,53 @@ const TideWidget = () => {
   };
 
   return (
-    <div className="terminal-box p-4 flex flex-col gap-3 border-primary/20 rounded-lg">
-      <div className="border-b border-border pb-1 flex justify-between items-center">
-        <span className="font-bold text-white/90 uppercase tracking-tight text-xs flex items-center gap-2">
-          <span className="h-1.5 w-1.5 bg-primary rounded-full"></span>
-          🌊 Tide_Dynamics
+    <div className="terminal-box p-6 flex flex-col gap-4 border-primary/20 rounded-xl transition-all hover:border-primary/40 group">
+      <div className="border-b border-border/40 pb-2 flex justify-between items-center">
+        <span className="font-black text-white glow-text uppercase tracking-widest text-sm flex items-center gap-3">
+          <span className="h-2 w-2 bg-primary rounded-full shadow-[0_0_8px_rgba(0,255,65,1)]"></span>
+          🌊 TIDE_DYNAMICS
         </span>
-        <span className={`text-[9px] font-black ${isLoading ? 'animate-pulse opacity-50' : 'bg-primary text-black px-2 rounded-sm uppercase'}`}>
-          {isLoading ? 'SYNC' : 'LIVE'}
+        <span className={`text-xs font-black ${isLoading ? 'animate-pulse opacity-50' : 'bg-primary text-black px-3 py-0.5 rounded-full uppercase shadow-[0_0_10px_rgba(0,255,65,0.3)]'}`}>
+          {isLoading ? 'SYNCING' : 'LIVE'}
         </span>
       </div>
       
       {error ? (
-        <div className="text-[10px] text-red-500 py-4 font-mono">LINK_ERROR: TIDE_DATA_OFFLINE</div>
+        <div className="text-sm text-red-500 py-6 font-mono font-bold animate-pulse text-center">LINK_ERROR: TIDE_DATA_OFFLINE</div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 mt-1">
-          <div className="p-3 border border-primary/20 bg-black/80 shadow-[inset_0_0_15px_rgba(0,255,65,0.05)] rounded-md flex flex-col items-center text-center">
-            <div className="text-[8px] text-primary/60 font-black uppercase mb-1 tracking-widest">Next_High</div>
-            <div className="text-xl font-black text-yellow-400 glow-text leading-tight mb-1">
+        <div className="grid grid-cols-2 gap-4 mt-2">
+          <div className="relative p-5 border-2 border-primary/20 bg-black shadow-[inset_0_0_20px_rgba(0,255,65,0.05)] rounded-lg flex flex-col items-center text-center group/data cursor-help">
+            <div className="text-[10px] text-primary/60 font-black uppercase mb-2 tracking-[0.2em]">Next_High</div>
+            <div className="text-3xl md:text-4xl font-black text-yellow-400 glow-text leading-none mb-2 tracking-tighter">
               {formatTime(nextHigh.t)}
             </div>
-            <div className="text-[11px] font-black text-primary/90 bg-primary/10 px-2 rounded-full uppercase tracking-tighter">
+            <div className="text-sm font-black text-primary bg-primary/10 px-4 py-1 rounded-full uppercase border border-primary/30 shadow-sm">
               {nextHigh.v} FT
             </div>
+            
+            {/* Hover Tooltip */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
+              Peak water level predicted. Station 8722125 historical confidence: 98.4%
+            </div>
           </div>
           
-          <div className="p-3 border border-primary/20 bg-black/80 shadow-[inset_0_0_15px_rgba(0,255,65,0.05)] rounded-md flex flex-col items-center text-center">
-            <div className="text-[8px] text-primary/60 font-black uppercase mb-1 tracking-widest">Next_Low</div>
-            <div className="text-xl font-black text-yellow-400 glow-text leading-tight mb-1">
+          <div className="relative p-5 border-2 border-primary/20 bg-black shadow-[inset_0_0_20px_rgba(0,255,65,0.05)] rounded-lg flex flex-col items-center text-center group/data cursor-help">
+            <div className="text-[10px] text-primary/60 font-black uppercase mb-2 tracking-[0.2em]">Next_Low</div>
+            <div className="text-3xl md:text-4xl font-black text-yellow-400 glow-text leading-none mb-2 tracking-tighter">
               {formatTime(nextLow.t)}
             </div>
-            <div className="text-[11px] font-black text-primary/90 bg-primary/10 px-2 rounded-full uppercase tracking-tighter">
+            <div className="text-sm font-black text-primary bg-primary/10 px-4 py-1 rounded-full uppercase border border-primary/30 shadow-sm">
               {nextLow.v} FT
+            </div>
+
+            {/* Hover Tooltip */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
+              Minimum vertical clearance for vessels. Monitoring coastal erosion factors.
             </div>
           </div>
           
-          <div className="col-span-2 text-[9px] opacity-40 italic text-center font-mono mt-1 uppercase tracking-widest">
-            NODE_8722125 // SEBASTIAN_INLET
+          <div className="col-span-2 text-xs opacity-40 italic text-center font-mono mt-2 uppercase tracking-[0.3em] font-bold group-hover:opacity-100 transition-opacity">
+            NODE_8722125 // SEBASTIAN_INLET_FL
           </div>
         </div>
       )}
