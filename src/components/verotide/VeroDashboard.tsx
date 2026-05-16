@@ -16,19 +16,19 @@ const VeroDashboard = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 p-4 md:p-8 pb-20 w-full max-w-full">
-      {/* Time & Location Header - Immersive Scale */}
-      <div className="col-span-full terminal-box p-8 flex flex-col xl:flex-row justify-between items-center gap-6 border-b-4 border-primary/40 rounded-2xl bg-black/40 backdrop-blur-md">
-        <div className="text-center xl:text-left">
-          <h2 className="text-3xl md:text-4xl font-black glow-text italic tracking-tighter uppercase mb-2">VERO_CENTRAL_COMMAND</h2>
-          <div className="text-xs md:text-sm opacity-60 uppercase font-mono tracking-[0.4em] font-bold">IRC_COASTAL_GRID // SECTOR_32963 // 32964_STRATEGY</div>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 p-3 md:p-8 pb-20 w-full max-w-full">
+      {/* Command Header */}
+      <div className="col-span-full terminal-box p-5 md:p-8 flex flex-col xl:flex-row justify-between items-center gap-4 md:gap-6 border-b-4 border-primary/40 rounded-2xl bg-black/40 backdrop-blur-md overflow-hidden">
+        <div className="text-center xl:text-left min-w-0 w-full xl:w-auto">
+          <h2 className="text-2xl md:text-4xl font-black glow-text italic tracking-tighter uppercase mb-1 truncate">VERO_CENTRAL_COMMAND</h2>
+          <div className="text-[10px] md:text-xs opacity-60 uppercase font-mono tracking-tight md:tracking-[0.25em] font-bold">IRC Coastal Grid · Sector 32963 · Indian River County</div>
         </div>
-        <div className="text-center xl:text-right font-mono">
-          <div className="text-5xl md:text-7xl text-yellow-400 font-black glow-text leading-none mb-2 tracking-tighter">
+        <div className="text-center xl:text-right font-mono flex-shrink-0">
+          <div className="text-4xl md:text-7xl text-yellow-400 font-black glow-text leading-none mb-1 tracking-tighter tabular-nums">
             {currentTime.toLocaleTimeString([], { hour12: true })}
           </div>
-          <div className="text-sm md:text-base opacity-70 font-black uppercase tracking-[0.5em] text-primary">
-            {currentTime.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+          <div className="text-xs md:text-sm opacity-70 font-black uppercase tracking-wide md:tracking-[0.3em] text-primary">
+            {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
           </div>
         </div>
       </div>
@@ -66,9 +66,19 @@ const VeroDashboard = () => {
               Single-stream recycling protocols active. Node: Beachside.
             </div>
           </div>
-          <button className="w-full mt-2 bg-primary/10 border-2 border-primary/40 py-4 text-xs hover:bg-primary text-black transition-all uppercase font-black text-primary tracking-[0.2em] rounded-lg shadow-xl">
-            ADDRESS_GIS_QUERY_INJECT ↗
-          </button>
+          <a
+            href="https://www.hunter-and-co.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full mt-2 flex items-center justify-between bg-primary/10 border-2 border-primary/40 px-5 py-4 rounded-lg hover:bg-primary transition-all group/eddie"
+          >
+            <div className="flex flex-col items-start">
+              <span className="text-[10px] text-primary group-hover/eddie:text-black font-black uppercase tracking-[0.2em]">LOCAL_CONTACT</span>
+              <span className="text-sm font-black text-white group-hover/eddie:text-black uppercase italic leading-none mt-1">Eddie Hunter</span>
+              <span className="text-[10px] text-primary/60 group-hover/eddie:text-black/70 font-mono uppercase tracking-tight">Hunter &amp; Co. // Vero Beach</span>
+            </div>
+            <span className="text-primary group-hover/eddie:text-black font-black text-lg">↗</span>
+          </a>
         </div>
       </div>
 
@@ -78,22 +88,24 @@ const VeroDashboard = () => {
           <span className="font-black text-white glow-text uppercase tracking-widest text-sm flex items-center gap-3 italic">
              🌉 BRIDGE_GRID
           </span>
-          <span className="text-[10px] opacity-60 uppercase font-mono font-black">TELEMETRY_SYNC</span>
+          <a href="https://fl511.com/list/bridge" target="_blank" rel="noopener noreferrer" className="text-[10px] opacity-60 hover:opacity-100 uppercase font-mono font-black transition-opacity">FL511_LIVE ↗</a>
         </div>
         <div className="flex flex-col gap-3 mt-2">
           {[
-            { name: 'BARBER (SR_60)', status: 'OPEN_CLEAR', desc: 'Main artery to mainland. Zero lift delay.' },
-            { name: '17TH_ST (SR_656)', status: 'OPEN_CLEAR', desc: 'Southern node bridge. Optimal transit.' },
-            { name: 'WABASSO (CR_510)', status: 'OPEN_CLEAR', desc: 'Northern tactical crossing. Clear.' }
+            { name: 'BARBER (SR_60)', status: 'OPEN_CLEAR', color: 'yellow', desc: 'Fixed bridge. Main artery to mainland. No restrictions.' },
+            { name: '17TH_ST (SR_656)', status: 'RESTRICTED', color: 'red', desc: 'Under major rehab 2023–2028. One lane alternating 24/7. Expect delays.' },
+            { name: 'WABASSO (CR_510)', status: 'OPEN_CLEAR', color: 'yellow', desc: 'Northern crossing. Clear. Preferred alternate during 17th St delays.' }
           ].map(bridge => (
             <div key={bridge.name} className="relative flex justify-between items-center p-4 bg-black/60 border-2 border-primary/10 rounded-lg group/bridge cursor-help hover:border-primary/30 transition-colors">
               <span className="text-xs uppercase font-black text-primary/80 tracking-widest">{bridge.name}</span>
-              <span className="text-xs text-yellow-400 uppercase font-black bg-yellow-400/10 px-3 py-1 border border-yellow-400/20 rounded-md shadow-[0_0_10px_rgba(250,204,21,0.3)]">
+              <span className={`text-xs uppercase font-black px-3 py-1 border rounded-md ${
+                bridge.color === 'red'
+                  ? 'text-red-400 bg-red-500/10 border-red-500/30 shadow-[0_0_10px_rgba(239,68,68,0.3)]'
+                  : 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
+              }`}>
                 {bridge.status}
               </span>
-
-              {/* Hover Tooltip */}
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-64 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/bridge:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-72 bg-primary text-black text-[10px] font-black p-2 rounded opacity-0 group-hover/bridge:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl uppercase tracking-tighter text-center">
                 {bridge.desc}
               </div>
             </div>

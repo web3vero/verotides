@@ -11,9 +11,6 @@
 - Scaffolded Next.js app in `/home/mike/Projects/Verotides`.
 - Configured project identifier as `verotides`.
 - Established plural domain focus (`verotides.com`).
-- Implemented **TWAAI UNLOCKED**:
-    - Created `src/data/twaai/entries.json` with 64 entries across 8 domains.
-    - Built `SearchEngine.tsx` component with terminal/CRT aesthetic.
 - Implemented **Visual Sentry Upgrade**:
     - Hard-wired the **Wabasso Beach Cam** using the official Surf Guru widget (140) via dynamic script injection.
     - Optimized the feed grid to focus on the primary active node while labeling secondary nodes as 'ENCRYPTED/OFFLINE' per user directive.
@@ -27,7 +24,7 @@
     - Integrated `useSWR` for reactive, cached, and auto-refreshing data streams.
     - Connected widgets to API proxies for NOAA, NWS, and Solunar data.
 - **Security & Segregation**:
-    - **Emergency Purge:** Removed all internal TWAAI data and search components from the public repository and deployment.
+    - **Emergency Purge:** Removed all internal private tools and data from the public repository and deployment.
     - Restricted hub focus to Vero Beach coastal utilities and public maritime intelligence.
 - **SEO & Monetization Upgrade**:
     - Installed `@next/third-parties/google`, `@vercel/analytics`, and `@vercel/speed-insights`.
@@ -46,9 +43,19 @@
     - Linked domain `verotides.com` in Vercel. 
     - **Hostinger DNS Repoint (Success):** Successfully updated A and CNAME records via API using new key (`lfh3...9b1`). Domain is now pointing to Vercel edge.
 
+### 2026-05-16 | Site Audit & Data Layer Fixes (Claude)
+- **Solunar API replaced:** `solunar.org` was timing out. Dropped external dependency entirely. Installed `suncalc` (npm) and rewrote `app/api/verotide/solunar/route.ts` to compute major/minor periods, moon phase, and illumination locally from coordinates. No external API needed.
+- **Tide API fixed:** Added missing `&interval=hilo` parameter to NOAA call. Without it, NOAA returned raw 6-minute readings with no `type` field — `TideWidget` always fell back to hardcoded times. Now returns true H/L predictions.
+- **Beach cam proxy:** Created `app/api/verotide/cam-proxy/route.ts` — server-side reverse proxy that fetches the surfguru widget and strips `X-Frame-Options`/CSP headers. `VisualSentry.tsx` refactored to a clean declarative iframe pointing to `/api/verotide/cam-proxy` instead of injecting DOM via `useEffect`.
+- **Trash widget:** Removed non-functional `ADDRESS_GIS_QUERY_INJECT` button. Replaced with Eddie Hunter / Hunter & Co. contact card linking to `hunter-and-co.com`.
+- **Bridge Grid:** Updated with accurate FDOT data. 17th St (SR-656) is under major rehab 2023–2028 with one lane alternating 24/7 — was incorrectly showing `OPEN_CLEAR`. Now shows `RESTRICTED` in red. Barber and Wabasso remain `OPEN_CLEAR`. Header now links to `fl511.com/list/bridge` for live status.
+- **Stop hooks fixed:** All 4 PAI stop hooks were failing with `env: 'bun': No such file or directory` because `~/.bun/bin` wasn't on the hook process PATH. User ran `sudo ln -s /home/mike/.bun/bin/bun /usr/local/bin/bun`; hooks reverted to clean `#!/usr/bin/env bun` shebangs.
+- **Security:** Scrubbed all references to private internal tools from README.md, GEMINI.md, AGENTS.md, CLAUDE.md. Memory rule saved to prevent recurrence.
+
 ## Handoff / Pending
 - Verify Google Analytics ID and Hostinger DNS propagation.
-
+- Deploy to Vercel to push the solunar, tides, cam-proxy, bridge, and Eddie Hunter changes live.
+- Storm Sentry: still hardcoded — wire to NHC Atlantic RSS (`nhc.noaa.gov/index-at.xml`).
 
 ---
 *Note: Always append new activity logs to this file.*

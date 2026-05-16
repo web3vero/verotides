@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# PAI hook state files (hooks write to CWD with literal path)
+${HOME}

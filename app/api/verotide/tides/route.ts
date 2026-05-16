@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const stationId = '8722125'; // Sebastian Inlet
-  const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&station=${stationId}&datum=MLLW&time_zone=lst_ldt&units=english&format=json&date=today`;
+  const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&station=${stationId}&datum=MLLW&time_zone=lst_ldt&units=english&format=json&date=today&interval=hilo`;
 
   try {
     const res = await fetch(url, {

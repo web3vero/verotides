@@ -87,9 +87,15 @@ body::before {
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 40s linear infinite;
+  animation: marquee 90s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+@media (max-width: 767px) {
+  .animate-marquee {
+    animation-duration: 120s;
+  }
 }
