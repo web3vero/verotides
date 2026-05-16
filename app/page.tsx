@@ -2,12 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import VeroDashboard from '@/components/verotide/VeroDashboard';
-import SearchEngine from '@/components/twaai/SearchEngine';
 import IntelCrawler from '@/components/verotide/IntelCrawler';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'hub' | 'search'>('hub');
-
   return (
     <main className="min-h-screen p-0 md:p-0 flex flex-col">
       {/* Global Header */}
@@ -21,20 +18,12 @@ export default function Home() {
           </div>
         </div>
         
-        <nav className="flex gap-2 font-mono">
-          <button 
-            onClick={() => setActiveTab('hub')}
-            className={`px-4 py-2 border-2 transition-all text-xs font-black uppercase ${activeTab === 'hub' ? 'bg-primary text-black border-primary shadow-[0_0_15px_rgba(0,255,65,0.4)]' : 'border-primary/20 hover:bg-primary/10 text-primary/60'}`}
-          >
-            [ Vero_Hub ]
-          </button>
-          <button 
-            onClick={() => setActiveTab('search')}
-            className={`px-4 py-2 border-2 transition-all text-xs font-black uppercase ${activeTab === 'search' ? 'bg-primary text-black border-primary shadow-[0_0_15px_rgba(0,255,65,0.4)]' : 'border-primary/20 hover:bg-primary/10 text-primary/60'}`}
-          >
-            [ TWAAI_Engine ]
-          </button>
-        </nav>
+        <div className="flex gap-2 font-mono items-center">
+          <div className="px-4 py-2 border-2 border-primary bg-primary text-black font-black uppercase text-xs shadow-[0_0_15px_rgba(0,255,65,0.4)]">
+            [ VERO_UTILITY_HUB ]
+          </div>
+          <div className="h-2 w-2 rounded-full bg-primary animate-pulse ml-2"></div>
+        </div>
       </header>
 
       {/* Intelligence Crawler Integration */}
@@ -44,15 +33,9 @@ export default function Home() {
 
       {/* Main Content Area */}
       <section className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
-        {activeTab === 'hub' ? (
-          <div className="animate-in fade-in duration-500">
-            <VeroDashboard />
-          </div>
-        ) : (
-          <div className="animate-in slide-in-from-bottom-4 duration-500">
-            <SearchEngine />
-          </div>
-        ) }
+        <div className="animate-in fade-in duration-700">
+          <VeroDashboard />
+        </div>
       </section>
 
       {/* Footer System Status */}
