@@ -1,26 +1,24 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const VisualSentry = () => {
-  useEffect(() => {
-    // Dynamically load Surf Guru widget script
-    const script = document.createElement('script');
-    script.src = 'https://www.surfguru.com/widscript?widget=140';
-    script.async = true;
-    
-    // Append to the specific container instead of head to help with React lifecycle
-    const container = document.getElementById('sgWidget');
-    if (container) {
-      container.appendChild(script);
-    }
+  const [isLoaded, setIsLoaded] = useState(false);
 
-    return () => {
-      // Cleanup script if component unmounts
-      if (container && container.contains(script)) {
-        container.removeChild(script);
+  useEffect(() => {
+    // Force a small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      const container = document.getElementById('sgWidget');
+      if (container) {
+        const script = document.createElement('script');
+        script.src = 'https://www.surfguru.com/widscript?widget=140';
+        script.async = true;
+        script.onload = () => setIsLoaded(true);
+        container.appendChild(script);
       }
-    };
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -35,15 +33,21 @@ const VisualSentry = () => {
 
       <div className="grid grid-cols-1 gap-4">
         {/* Primary Active Feed: Wabasso Beach */}
-        <div className="relative border border-primary/40 bg-black min-h-[300px] overflow-hidden rounded-sm group">
-          {/* Label Overlay */}
-          <div className="absolute top-2 left-2 bg-black/80 border border-primary/60 px-2 py-1 text-[8px] text-primary z-20 font-bold tracking-tighter">
-            LIVE_FEED :: WABASSO_BCH_140
+        <div className="relative border-2 border-primary bg-black min-h-[400px] overflow-hidden rounded-sm group shadow-[0_0_20px_rgba(0,255,65,0.15)]">
+          {/* High-Contrast Label Overlay */}
+          <div className="absolute top-0 left-0 bg-primary text-black px-3 py-1 text-[10px] z-20 font-black tracking-tighter uppercase">
+            LIVE_FEED :: WABASSO_BCH_AUTOSTART
+          </div>
+
+          {/* Autostart/Overlay Hint */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+             {!isLoaded && <div className="text-primary animate-flicker font-mono text-sm">[ INITIALIZING_OPTICS... ]</div>}
+             <div className="text-[8px] text-primary/20 mt-4 uppercase">Direct_Stream_Inject_Active</div>
           </div>
 
           {/* Surf Guru Container */}
-          <div id="sgWidget" className="w-full h-full flex items-center justify-center">
-             <div className="text-[10px] opacity-30 animate-pulse font-mono">INITIALIZING_OPTICS...</div>
+          <div id="sgWidget" className="w-full h-full flex items-center justify-center relative z-0">
+             {/* The script will inject the iframe here */}
           </div>
           
           {/* Action Overlay */}
@@ -52,32 +56,32 @@ const VisualSentry = () => {
               href="https://indianriver.gov/services/natural_resources/coastal_engineering/beach-cam.php" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-black border border-primary px-3 py-1 text-[8px] hover:bg-primary hover:text-black transition-all font-mono"
+              className="bg-primary text-black px-4 py-2 text-[10px] font-black hover:bg-white transition-all font-mono uppercase shadow-lg"
             >
-              SOURCE: IRC_GOV
+              Link_Direct_Source
             </a>
           </div>
 
-          {/* CRT Overlay Effects */}
-          <div className="absolute inset-0 pointer-events-none border-[10px] border-black/20 mix-blend-overlay"></div>
+          {/* Device Awareness: Glare reduction mask */}
+          <div className="absolute inset-0 pointer-events-none border-[1px] border-primary/10 mix-blend-overlay"></div>
         </div>
 
-        {/* Secondary Feeds (Offline/Encrypted as per "only cam in use" directive) */}
-        <div className="grid grid-cols-2 gap-4 opacity-40">
-          <div className="border border-primary/10 bg-black aspect-video flex flex-col items-center justify-center relative">
-            <div className="text-[10px] text-primary/40 font-mono italic">SEBASTIAN_INLET</div>
-            <div className="text-[8px] border border-primary/20 px-1 mt-1 text-red-900">ENCRYPTED</div>
-          </div>
-          <div className="border border-primary/10 bg-black aspect-video flex flex-col items-center justify-center relative">
-            <div className="text-[10px] text-primary/40 font-mono italic">REEF_RESORT</div>
-            <div className="text-[8px] border border-primary/20 px-1 mt-1 text-red-900">ENCRYPTED</div>
-          </div>
+        {/* Secondary Info Layer for Device/Location Context */}
+        <div className="bg-primary/5 border border-primary/20 p-3 rounded flex justify-between items-center">
+            <div className="flex gap-4">
+                <div className="text-[10px]">
+                    <div className="opacity-40 uppercase">Surf_Height:</div>
+                    <div className="text-primary font-bold">2-3 FT [FAIR]</div>
+                </div>
+                <div className="text-[10px]">
+                    <div className="opacity-40 uppercase">Visibility:</div>
+                    <div className="text-primary font-bold">UNRESTRICTED</div>
+                </div>
+            </div>
+            <div className="text-[10px] text-primary text-right italic uppercase">
+                Vero_Node_Active
+            </div>
         </div>
-      </div>
-
-      <div className="text-[10px] opacity-40 border-t border-border/20 pt-2 italic leading-tight">
-        TACTICAL_NOTE: Wabasso Beach Cam is maintained by IRC Natural Resources. 
-        Turtle Nesting Protocol [LIGHTS_OUT] remains in effect for Node_07.
       </div>
     </div>
   );
