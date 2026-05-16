@@ -10,43 +10,43 @@ const BeachSentryWidget = () => {
     refreshInterval: 600000 // 10 minutes
   });
 
-  // Extract relevant weather data from NWS response
   const temp = data?.properties?.periods?.[0]?.temperature || '79';
   const wind = data?.properties?.periods?.[0]?.windSpeed || '10 mph';
   const desc = data?.properties?.periods?.[0]?.shortForecast || 'SUNNY';
 
   return (
-    <div className="terminal-box p-4 flex flex-col gap-3">
+    <div className="terminal-box p-4 flex flex-col gap-3 border-yellow-400/20">
       <div className="border-b border-border pb-1 flex justify-between items-center">
-        <span className="font-bold italic">🏖️ BEACH_SENTRY</span>
-        <span className={`text-[10px] ${isLoading ? 'animate-pulse opacity-50' : 'opacity-50 italic'}`}>
+        <span className="font-bold italic text-white/90">🏖️ Beach_Sentry</span>
+        <span className={`text-[10px] ${isLoading ? 'animate-pulse opacity-50' : 'opacity-50 italic font-mono'}`}>
           {isLoading ? 'OBSERVING...' : 'LIVE_FEED'}
         </span>
       </div>
       {error ? (
         <div className="text-[10px] text-red-500 py-4 font-mono">LINK_ERROR: ATMOSPHERIC_SENSOR_OFFLINE</div>
       ) : (
-        <div className="grid grid-cols-2 gap-2 text-sm mt-1">
-          <div className="p-2 border border-border/20 bg-black/40">
-            <div className="text-[10px] opacity-40 uppercase">SURFACE_TEMP:</div>
-            <div className="font-bold">{temp}°F</div>
+        <div className="grid grid-cols-2 gap-3 text-sm mt-1">
+          <div className="p-2 border border-primary/20 bg-black/60 shadow-[inset_0_0_10px_rgba(0,255,65,0.05)] rounded-sm">
+            <div className="text-[9px] text-primary/60 font-black uppercase mb-1">Surface_Temp</div>
+            <div className="text-xl font-black text-yellow-400 glow-text">{temp}°F</div>
           </div>
-          <div className="p-2 border border-border/20 bg-black/40">
-            <div className="text-[10px] opacity-40 uppercase">WIND_VELOCITY:</div>
-            <div className="font-bold uppercase">{wind}</div>
+          <div className="p-2 border border-primary/20 bg-black/60 shadow-[inset_0_0_10px_rgba(0,255,65,0.05)] rounded-sm">
+            <div className="text-[9px] text-primary/60 font-black uppercase mb-1">Wind_Velocity</div>
+            <div className="text-lg font-black text-yellow-400">{wind}</div>
           </div>
-          <div className="p-2 border border-border/20 bg-black/40">
-            <div className="text-[10px] opacity-40 uppercase">ATMOSPHERE:</div>
-            <div className="font-bold text-primary uppercase">{desc}</div>
+          <div className="p-2 border border-primary/20 bg-black/60 rounded-sm">
+            <div className="text-[9px] text-primary/40 font-black uppercase mb-1">Atmosphere</div>
+            <div className="text-[10px] font-bold text-primary uppercase leading-tight">{desc}</div>
           </div>
-          <div className="p-2 border border-border/20 bg-black/40">
-            <div className="text-[10px] opacity-40 uppercase">RED_TIDE:</div>
-            <div className="font-bold text-primary uppercase">NONE</div>
+          <div className="p-2 border border-primary/20 bg-black/60 rounded-sm">
+            <div className="text-[9px] text-primary/40 font-black uppercase mb-1">Red_Tide</div>
+            <div className="text-[10px] font-bold text-primary uppercase">CLEARED</div>
           </div>
         </div>
       )}
-      <div className="text-[10px] bg-secondary/20 p-1 border-l-2 border-primary mt-2">
-        🐢 TURTLE_NESTING: <span className="font-bold uppercase">ACTIVE</span> [LIGHTS_OUT_9PM-7AM]
+      <div className="text-[10px] bg-yellow-400/10 p-2 border-l-4 border-yellow-400 mt-2 font-mono flex justify-between items-center">
+        <span className="text-white/80 font-bold uppercase tracking-tight">🐢 Turtle_Nesting:</span>
+        <span className="text-yellow-400 font-black uppercase animate-pulse">Active_Season</span>
       </div>
     </div>
   );
