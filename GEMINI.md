@@ -14,11 +14,12 @@
 - [x] Tide API proxy — live and fixed (`&interval=hilo` added)
 - [x] Weather API proxy — live (NWS returning real data)
 - [x] Solunar — replaced dead solunar.org with local `suncalc` computation, no external dependency
-- [x] VisualSentry beach cam — server-side cam proxy at `/api/verotide/cam-proxy` strips X-Frame-Options
+- [x] VisualSentry beach cam — direct ipcamlive.com embed (Reef Ocean Resort, 3450 Ocean Dr). Cam URL: `https://g1.ipcamlive.com/player/player.php?alias=66744cf161841`. Surfguru was 404.
 - [x] Bridge Grid — updated with real FDOT data; 17th St flagged RESTRICTED (rehab 2023–2028); links to fl511.com
-- [x] Trash widget GIS button — removed; replaced with Eddie Hunter / Hunter & Co. contact card
+- [x] Trash — full-width bottom section with real IRC schedule (Mon/Thu garbage, Wed recycling, Thu yard waste, bulk by request). TODAY badge shows on matching days. Phone (772) 567-8000 + ircswd.com link.
+- [x] Ad squares — 3 dedicated SPONSORED cards in grid. Contact: ads@verotides.com. Ready to sell.
+- [x] Eddie Hunter card — removed, placeholder space reserved for future use
 - [ ] Storm Sentry — still hardcoded LEVEL_0, wire to NHC Atlantic RSS feed
-- [ ] Deploy current changes to Vercel
 
 ## Engineering Standards
 - Prioritize local Ollama models for processing.
