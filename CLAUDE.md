@@ -26,7 +26,9 @@
     - Decoupled widgets into standalone components (`TideWidget`, `BiteTimesWidget`, `BeachSentryWidget`).
     - Integrated `useSWR` for reactive, cached, and auto-refreshing data streams.
     - Connected widgets to API proxies for NOAA, NWS, and Solunar data.
-- Installed dependencies: `lucide-react`, `mapbox-gl`, `swr`.
+- **Security & Segregation**:
+    - **Emergency Purge:** Removed all internal TWAAI data and search components from the public repository and deployment.
+    - Restricted hub focus to Vero Beach coastal utilities and public maritime intelligence.
 - **SEO & Monetization Upgrade**:
     - Installed `@next/third-parties/google`, `@vercel/analytics`, and `@vercel/speed-insights`.
     - Injected `JSON-LD` structured data into `app/layout.tsx`.
