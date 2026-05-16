@@ -1,0 +1,18 @@
+User-Agent: *
+Allow: /
+
+# Verotides Intelligence Core
+# ---------------------------
+# Verotides is a hyper-local intelligence command center for Vero Beach, FL.
+# It aggregates maritime, weather, GIS, and solunar data into a unified, high-contrast CRT interface.
+# 
+# Data Sources:
+# - Maritime: AISStream.io
+# - Weather/Tides: NOAA, NWS
+# - Fishing: Solunar.org
+# - GIS: Indian River County
+#
+# Contact: foleys.assistant@pm.me (Nova Sparks)
+# Mission: "Prediction is gambling. This is accounting." - Mad Lab Logic
+
+Contact: foleys.assistant@pm.me
