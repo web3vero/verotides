@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import VesselsClient from './VesselsClient';
 
 export const metadata: Metadata = {
   title: 'Vero Beach Live Vessel Tracking | AIS Ship Map — Indian River Lagoon',
@@ -36,8 +36,6 @@ const schema = {
   "provider": { "@type": "Organization", "name": "AISStream.io", "url": "https://aisstream.io" }
 };
 
-const VesselSentry = dynamic(() => import('@/components/verotide/VesselSentry'), { ssr: false });
-
 export default function VesselsPage() {
   return (
     <main className="min-h-screen bg-black p-4 md:p-8">
@@ -48,7 +46,7 @@ export default function VesselsPage() {
       <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-8">
         Live AIS · Indian River Lagoon · Vero Beach Inlet · Real-time maritime positions
       </p>
-      <VesselSentry />
+      <VesselsClient />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import TidesClient from './TidesClient';
 
 export const metadata: Metadata = {
   title: 'Vero Beach Tide Chart | Live NOAA Tide Predictions 32963',
@@ -40,8 +40,6 @@ const schema = {
   "provider": { "@type": "Organization", "name": "NOAA", "url": "https://tidesandcurrents.noaa.gov" }
 };
 
-const TideWidget = dynamic(() => import('@/components/verotide/TideWidget'), { ssr: false });
-
 export default function TidesPage() {
   return (
     <main className="min-h-screen bg-black p-4 md:p-8">
@@ -52,7 +50,7 @@ export default function TidesPage() {
       <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-8">
         Live NOAA predictions · Indian River County · Sector 32963
       </p>
-      <TideWidget />
+      <TidesClient />
     </main>
   );
 }

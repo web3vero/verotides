@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import WeatherClient from './WeatherClient';
 
 export const metadata: Metadata = {
   title: 'Vero Beach Beach Conditions | Live Wind, Waves & Ocean Report',
@@ -43,8 +43,6 @@ const schema = {
   ]
 };
 
-const BeachSentryWidget = dynamic(() => import('@/components/verotide/BeachSentryWidget'), { ssr: false });
-
 export default function WeatherPage() {
   return (
     <main className="min-h-screen bg-black p-4 md:p-8">
@@ -55,7 +53,7 @@ export default function WeatherPage() {
       <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-8">
         Live NOAA · NWS · Wind · Waves · UV · Water temp · 32963 · Updated every 10 min
       </p>
-      <BeachSentryWidget />
+      <WeatherClient />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
+import FishingClient from './FishingClient';
 
 export const metadata: Metadata = {
   title: 'Vero Beach Fishing Times | Solunar Chart & Best Bite Times Today',
@@ -31,8 +31,6 @@ const schema = {
   }
 };
 
-const BiteTimesWidget = dynamic(() => import('@/components/verotide/BiteTimesWidget'), { ssr: false });
-
 export default function FishingPage() {
   return (
     <main className="min-h-screen bg-black p-4 md:p-8">
@@ -43,7 +41,7 @@ export default function FishingPage() {
       <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-8">
         Major &amp; minor bite times · Moon phase · Indian River Lagoon · Updated daily
       </p>
-      <BiteTimesWidget />
+      <FishingClient />
     </main>
   );
 }
