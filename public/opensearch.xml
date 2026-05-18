@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Verotides</ShortName>
+  <Description>Vero Beach coastal intelligence — tides, weather, vessels, fishing</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/svg+xml">https://verotides.com/globe.svg</Image>
+  <Url type="text/html" template="https://verotides.com/?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://verotides.com/opensearch.xml"/>
+  <Tags>Vero Beach tides weather fishing vessels Florida coastal</Tags>
+  <Contact>ads@verotides.com</Contact>
+</OpenSearchDescription>

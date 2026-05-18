@@ -4,6 +4,15 @@
 - **Primary Domain:** verotides.com
 - **Identity:** Mike Foley's "Mad Lab" command center.
 - **Stack:** Next.js 14, Tailwind CSS, Vercel.
+- **Canonical path:** `/home/mike/Projects/Verotides/` (the only Verotides directory — `verotides.com/` was an empty ghost and has been removed)
+
+## Infrastructure
+| Key | Location | Notes |
+|-----|----------|-------|
+| All secrets | `.env.local` | Mapbox, AIS, Hostinger, GitHub, Vercel IDs |
+| Vercel token | `.env.local` | CLI token — refresh with `npx vercel login` when expired |
+| GitHub remote | `web3vero/verotides` | OAuth token embedded in git remote URL |
+| Vercel project | `prj_TVXmzfOO5qlBMM8fAwICwRyVfJNN` | team `team_F51CXOMyV8fATYfDhkGLW2gE` |
 
 ## Activity Log
 
