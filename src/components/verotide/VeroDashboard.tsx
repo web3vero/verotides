@@ -6,35 +6,66 @@ import VisualSentry from './VisualSentry';
 import TideWidget from './TideWidget';
 import BiteTimesWidget from './BiteTimesWidget';
 import BeachSentryWidget from './BeachSentryWidget';
+import StormSentry from './StormSentry';
 
-const AdSquare = ({ slot }: { slot: number }) => (
-  <div className="terminal-box p-6 flex flex-col gap-4 border-yellow-400/20 rounded-xl relative overflow-hidden bg-black min-h-[200px]">
-    <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[8px] font-black uppercase px-3 py-1 tracking-widest">
-      SPONSORED
-    </div>
-    <div className="border-b border-yellow-400/20 pb-2 flex items-center gap-3">
-      <span className="h-1.5 w-1.5 rounded-full bg-yellow-400/60 animate-pulse"></span>
-      <span className="font-black text-yellow-400/80 uppercase tracking-widest text-[10px]">PARTNER_NODE_{slot.toString().padStart(2, '0')}</span>
-    </div>
-    <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center py-4">
-      <div className="h-14 w-14 border-2 border-yellow-400/25 rounded-full flex items-center justify-center bg-yellow-400/5">
-        <span className="text-yellow-400/50 text-2xl">📢</span>
+const AD_SLOTS = [
+  {
+    id: '01',
+    category: 'STORM_SEASON_PARTNER',
+    icon: '⚡',
+    headline: 'Storm Season Sponsor',
+    body: 'Target Vero Beach homeowners\npreparing for hurricane season',
+    cta: 'Claim This Slot →',
+  },
+  {
+    id: '02',
+    category: 'MARINE_&_FISHING',
+    icon: '🎣',
+    headline: 'Marine & Fishing Partner',
+    body: 'Reach anglers, boaters &\ncoastal visitors daily',
+    cta: 'Claim This Slot →',
+  },
+  {
+    id: '03',
+    category: 'COASTAL_LIFESTYLE',
+    icon: '🏖️',
+    headline: 'Coastal Lifestyle Partner',
+    body: 'Connect with Vero Beach locals\n& high-intent coastal traffic',
+    cta: 'Claim This Slot →',
+  },
+];
+
+const AdSquare = ({ slot }: { slot: number }) => {
+  const ad = AD_SLOTS[slot - 1];
+  return (
+    <div className="terminal-box p-6 flex flex-col gap-4 border-yellow-400/20 rounded-xl relative overflow-hidden bg-black min-h-[200px]">
+      <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[8px] font-black uppercase px-3 py-1 tracking-widest">
+        SPONSORED
       </div>
-      <div>
-        <div className="text-sm font-black text-white/80 uppercase tracking-widest mb-1">Your Ad Here</div>
-        <div className="text-[10px] text-white/30 font-mono uppercase leading-relaxed">
-          Reach Vero Beach locals &amp;<br />coastal visitors daily
+      <div className="border-b border-yellow-400/20 pb-2 flex items-center gap-3">
+        <span className="h-1.5 w-1.5 rounded-full bg-yellow-400/60 animate-pulse"></span>
+        <span className="font-black text-yellow-400/80 uppercase tracking-widest text-[10px]">{ad.category}</span>
+      </div>
+      <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center py-4">
+        <div className="h-14 w-14 border-2 border-yellow-400/25 rounded-full flex items-center justify-center bg-yellow-400/5">
+          <span className="text-2xl">{ad.icon}</span>
+        </div>
+        <div>
+          <div className="text-sm font-black text-white/80 uppercase tracking-widest mb-1">{ad.headline}</div>
+          <div className="text-[10px] text-white/30 font-mono uppercase leading-relaxed">
+            {ad.body.split('\n').map((l, i) => <React.Fragment key={i}>{l}{i === 0 && <br />}</React.Fragment>)}
+          </div>
         </div>
       </div>
+      <a
+        href="mailto:ads@verotides.com"
+        className="w-full text-center border-2 border-yellow-400/40 py-2.5 text-[10px] text-yellow-400 font-black uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all rounded-lg"
+      >
+        {ad.cta}
+      </a>
     </div>
-    <a
-      href="mailto:ads@verotides.com"
-      className="w-full text-center border-2 border-yellow-400/40 py-2.5 text-[10px] text-yellow-400 font-black uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all rounded-lg"
-    >
-      Inquire About This Space ↗
-    </a>
-  </div>
-);
+  );
+};
 
 const Tooltip = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
   <div className={`absolute z-50 pointer-events-none opacity-0 group-hover/tip:opacity-100 transition-opacity shadow-2xl ${className}`}>
@@ -128,28 +159,8 @@ const VeroDashboard = () => {
         </div>
       </div>
 
-      {/* Storm Sentry */}
-      <div className="terminal-box p-6 md:p-8 flex flex-col gap-4 bg-red-950/10 border-red-500/40 rounded-2xl group relative overflow-hidden">
-        <div className="border-b border-red-500/20 pb-2 flex justify-between items-center">
-          <span className="font-black text-red-500 uppercase tracking-[0.2em] text-sm flex items-center gap-3 italic">
-            <span className="animate-spin" style={{ animationDuration: '8s' }}>🌀</span> STORM_SENTRY
-          </span>
-          <a href="https://www.nhc.noaa.gov/" target="_blank" rel="noopener noreferrer" className="text-[10px] opacity-70 hover:opacity-100 uppercase font-mono font-black text-red-400 transition-opacity">NHC ↗</a>
-        </div>
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 py-4 group/tip relative cursor-help">
-          <div className="text-4xl md:text-5xl font-black text-primary uppercase animate-pulse glow-text tracking-tighter">LEVEL_0</div>
-          <div className="text-xs text-primary/80 uppercase font-mono text-center font-black tracking-widest leading-relaxed">
-            No Tropical Activity<br />Detected
-          </div>
-          <Tooltip className="bottom-0 left-2 right-2 bg-black border border-red-500/40 text-[10px] font-mono p-3 rounded leading-relaxed">
-            <p className="text-red-400 font-black mb-1">Atlantic Basin Monitor</p>
-            <p className="text-white/60">Vero Beach sits in a historically active hurricane corridor. Season runs June 1–Nov 30. Level 0 = no named storms in Atlantic basin. Check NHC for real-time updates and 5-day cone forecasts.</p>
-          </Tooltip>
-        </div>
-        <div className="text-[10px] bg-red-500/20 border border-red-500/40 p-2.5 text-center text-red-400 uppercase font-black tracking-widest rounded-lg">
-          Hurricane Season Active — Jun 1–Nov 30
-        </div>
-      </div>
+      {/* Storm Sentry — live NHC feed */}
+      <StormSentry />
 
       {/* Row 4: Vessel (2 col) + Ad */}
       <div className="md:col-span-2 xl:col-span-2">

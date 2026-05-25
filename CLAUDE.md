@@ -61,10 +61,36 @@
 - **Stop hooks fixed:** All 4 PAI stop hooks were failing with `env: 'bun': No such file or directory` because `~/.bun/bin` wasn't on the hook process PATH. User ran `sudo ln -s /home/mike/.bun/bin/bun /usr/local/bin/bun`; hooks reverted to clean `#!/usr/bin/env bun` shebangs.
 - **Security:** Scrubbed all references to private internal tools from README.md, GEMINI.md, AGENTS.md, CLAUDE.md. Memory rule saved to prevent recurrence.
 
+### 2026-05-25 | Storm Sentry Live + Site Audit + Monetization (Nova)
+
+**Audit findings (full ISA at `/Verotides/ISA.md`):**
+- `bun install` run — 404 packages installed (node_modules was missing)
+- `.env.local` still missing locally — Vercel env vars are set in prod; local dev needs manual recreation
+- GA ID placeholder `G-XXXXXXXXXX` still active — **Mike needs to supply real GA ID + add to Vercel env vars**
+
+**Storm Sentry — NHC RSS wired:**
+- New API route: `app/api/verotide/nhc/route.ts` — fetches NHC Atlantic RSS, parses storm names/types, returns LEVEL 0–3
+- LEVEL_0: No activity | LEVEL_1: Tropical activity | LEVEL_2: Hurricane in basin | LEVEL_3: Florida/Treasure Coast threat
+- New component: `src/components/verotide/StormSentry.tsx` — useSWR with 1-hour refresh, color-coded by level, shows storm names when active
+- Hurricane season banner is now date-gated (Jun 1–Nov 30); shows "Off-Season" otherwise
+- `VeroDashboard.tsx` updated: imports and renders `<StormSentry />` replacing hardcoded JSX
+
+**BeachSentryWidget — dynamic data:**
+- Turtle nesting status is now date-driven: Active Mar–Oct, Off-Season otherwise
+- Red Tide status: removed hardcoded "CLEARED"; replaced with live FWC link (`myfwc.com/research/redtide/monitoring/`) — labeled `CHECK_FWC ↗`
+
+**Monetization — ad slot targeting:**
+- 3 ad squares now have distinct category targets:
+  - STORM_SEASON_PARTNER (⚡ — hurricane prep, insurance, generators)
+  - MARINE_&_FISHING (🎣 — charters, bait shops, marinas)
+  - COASTAL_LIFESTYLE (🏖️ — restaurants, real estate, retail)
+- Each slot has a "Claim This Slot →" CTA to `ads@verotides.com`
+
 ## Handoff / Pending
-- Verify Google Analytics ID and Hostinger DNS propagation.
-- Deploy to Vercel to push the solunar, tides, cam-proxy, bridge, and Eddie Hunter changes live.
-- Storm Sentry: still hardcoded — wire to NHC Atlantic RSS (`nhc.noaa.gov/index-at.xml`).
+- **GA ID: Mike needs to supply `NEXT_PUBLIC_GA_ID`** — add to `.env.local` and Vercel project env vars. 9 days of analytics lost since launch.
+- Recreate `.env.local` locally: `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN`, `NEXT_PUBLIC_AIS_KEY`, `NEXT_PUBLIC_GA_ID`
+- Bridge Grid Barber/Wabasso: still hardcoded `OPEN_CLEAR` — FL511 API research needed
+- `app/api/verotide/cam-proxy/route.ts` is dead code — can delete or keep as future utility
 
 ---
 *Note: Always append new activity logs to this file.*
