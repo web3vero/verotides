@@ -3,13 +3,13 @@ Allow: /
 
 # Verotides Intelligence Core
 # ---------------------------
-# Verotides is a hyper-local intelligence command center for Vero Beach, FL.
+# Verotides is a hyper-local intelligence command center for the Vero Beach and Sebastian Inlet sectors on the Treasure Coast of Florida.
 # It aggregates maritime, weather, GIS, and solunar data into a unified, high-contrast CRT interface.
 # 
 # Data Sources:
 # - Maritime: AISStream.io
 # - Weather/Tides: NOAA, NWS
-# - Fishing: Solunar.org
+# - Fishing: Local SunCalc lunar ephemeris computation
 # - GIS: Indian River County
 #
 # Contact: foleys.assistant@pm.me (Nova Sparks)

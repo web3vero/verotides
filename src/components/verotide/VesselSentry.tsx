@@ -4,21 +4,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const VERO_CENTER: [number, number] = [-80.3973, 27.6386];
 const VERO_BBOX = [
   [27.4, -80.5], 
   [27.9, -80.1]  
 ];
 
-const VesselSentry = () => {
+interface VesselSentryProps {
+  center?: [number, number];
+  title?: string;
+}
+
+const VesselSentry = ({ center = [-80.3973, 27.6386], title = 'VERO_BEACH_SECTOR // GRID_07' }: VesselSentryProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const socket = useRef<WebSocket | null>(null);
   const markers = useRef<{ [mmsi: number]: mapboxgl.Marker }>({});
   const ghostMarkers = useRef<mapboxgl.Marker[]>([]);
+  const beaconMarker = useRef<mapboxgl.Marker | null>(null);
   
-  const [useLiveFeed, setUseLiveFeed] = useState(true);
-  const [connectionStatus, setConnectionStatus] = useState('INIT');
+  const [useLiveFeed] = useState(true);
+  const [connectionStatus, setConnectionStatus] = useState('CONNECTING');
   const [vesselCount, setVesselCount] = useState(0);
 
   useEffect(() => {
@@ -30,7 +35,7 @@ const VesselSentry = () => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: VERO_CENTER,
+      center: center,
       zoom: 11,
       attributionControl: false
     });
@@ -39,7 +44,7 @@ const VesselSentry = () => {
       if (!map.current) return;
       const beacon = document.createElement('div');
       beacon.className = 'h-4 w-4 bg-primary rounded-full animate-pulse shadow-[0_0_20px_rgba(0,255,65,1)]';
-      new mapboxgl.Marker(beacon).setLngLat(VERO_CENTER).addTo(map.current);
+      beaconMarker.current = new mapboxgl.Marker(beacon).setLngLat(center).addTo(map.current);
 
       for (let i = 0; i < 4; i++) {
         const el = document.createElement('div');
@@ -55,7 +60,17 @@ const VesselSentry = () => {
       map.current?.remove();
       map.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (map.current) {
+      map.current.flyTo({ center, zoom: 11, duration: 2000 });
+      if (beaconMarker.current) {
+        beaconMarker.current.setLngLat(center);
+      }
+    }
+  }, [center]);
 
   useEffect(() => {
     if (!useLiveFeed || !map.current) {
@@ -68,11 +83,15 @@ const VesselSentry = () => {
 
     const apiKey = process.env.NEXT_PUBLIC_AIS_KEY;
     if (!apiKey) {
-      setConnectionStatus('KEY_ERR');
-      return;
+      const timer1 = setTimeout(() => {
+        setConnectionStatus('KEY_ERR');
+      }, 0);
+      return () => clearTimeout(timer1);
     }
 
-    setConnectionStatus('SYNCING');
+    const timer2 = setTimeout(() => {
+      setConnectionStatus('SYNCING');
+    }, 0);
     socket.current = new WebSocket("wss://stream.aisstream.io/v0/stream");
 
     socket.current.onopen = () => {
@@ -128,6 +147,7 @@ const VesselSentry = () => {
     };
 
     return () => {
+      if (timer2) clearTimeout(timer2);
       socket.current?.close();
     };
   }, [useLiveFeed]);
@@ -159,7 +179,7 @@ const VesselSentry = () => {
         <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] z-20"></div>
         
         <div className="absolute bottom-6 right-6 text-[10px] font-black font-mono text-primary bg-black/80 p-3 border-2 border-primary/20 z-10 uppercase italic tracking-[0.2em] backdrop-blur-md">
-          VERO_BEACH_SECTOR // GRID_07
+          {title}
         </div>
       </div>
 
@@ -176,7 +196,7 @@ const VesselSentry = () => {
           <button 
             className="bg-primary/10 border-2 border-primary/40 p-3 rounded-lg text-center hover:bg-primary text-black transition-all font-black text-primary uppercase text-xs tracking-widest shadow-sm"
             onClick={() => {
-               map.current?.flyTo({ center: VERO_CENTER, zoom: 11, duration: 2000 });
+               map.current?.flyTo({ center, zoom: 11, duration: 2000 });
             }}
           >
             RESET_GRID_VIEW

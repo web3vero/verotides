@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export interface NhcStormStatus {
   level: 0 | 1 | 2 | 3;
   stormCount: number;
-  storms: Array<{ name: string; type: string }>;
+  storms: Array<{ name: string; type: string; link?: string }>;
   lastUpdated: string;
   statusCode: 'NO_ACTIVITY' | 'TROPICAL_ACTIVITY' | 'HURRICANE_WATCH' | 'MAJOR_THREAT' | 'FEED_ERR';
 }
@@ -18,9 +18,11 @@ function parseNhcRss(xml: string): NhcStormStatus {
     const raw = m[1];
     const titleMatch = raw.match(/<title>(?:<!\[CDATA\[)?\s*([\s\S]*?)\s*(?:\]\]>)?<\/title>/);
     const descMatch = raw.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
+    const linkMatch = raw.match(/<link>(?:<!\[CDATA\[)?\s*([\s\S]*?)\s*(?:\]\]>)?<\/link>/);
     return {
       title: titleMatch?.[1]?.trim() ?? '',
       desc: descMatch?.[1]?.trim() ?? '',
+      link: linkMatch?.[1]?.trim() ?? '',
     };
   });
 
@@ -31,7 +33,7 @@ function parseNhcRss(xml: string): NhcStormStatus {
   const ADVISORY_RE = /Advisory|Intermediate|Discussion|Forecast/i;
   const STORM_TYPE_RE = /^(Hurricane|Tropical Storm|Tropical Depression|Post-Tropical Cyclone)\s+(\w+)/i;
 
-  const stormMap = new Map<string, StormType>();
+  const stormMap = new Map<string, { type: StormType; link?: string }>();
 
   for (const item of items) {
     if (!ADVISORY_RE.test(item.title)) continue;
@@ -41,8 +43,8 @@ function parseNhcRss(xml: string): NhcStormStatus {
     const rawType = m[1] as StormType;
     const name = m[2];
     const existing = stormMap.get(name);
-    if (!existing || (SEVERITY[rawType] ?? 0) > (SEVERITY[existing] ?? 0)) {
-      stormMap.set(name, rawType);
+    if (!existing || (SEVERITY[rawType] ?? 0) > (SEVERITY[existing.type] ?? 0)) {
+      stormMap.set(name, { type: rawType, link: item.link || undefined });
     }
   }
 
@@ -50,7 +52,7 @@ function parseNhcRss(xml: string): NhcStormStatus {
     return { level: 0, stormCount: 0, storms: [], lastUpdated: new Date().toISOString(), statusCode: 'NO_ACTIVITY' };
   }
 
-  const storms = [...stormMap.entries()].map(([name, type]) => ({ name, type }));
+  const storms = [...stormMap.entries()].map(([name, { type, link }]) => ({ name, type, link }));
   const hasHurricane = storms.some(s => s.type === 'Hurricane');
   const allDesc = items.map(i => i.desc).join(' ').toLowerCase();
   const floridaThreat = /florida|treasure coast|gulf of|vero|sebastian|fort pierce/i.test(allDesc);

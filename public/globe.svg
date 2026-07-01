@@ -1,1 +1,151 @@
-<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Glow Filters -->
+    <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter id="glow-yellow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Gradients -->
+    <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ff66" />
+      <stop offset="100%" stop-color="#003b0c" />
+    </linearGradient>
+    <linearGradient id="grad-yellow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffd700" />
+      <stop offset="100%" stop-color="#ff3c00" />
+    </linearGradient>
+    <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#00ff66" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Styles for animations inside the SVG -->
+    <style>
+      .animated-rotate-clockwise {
+        transform-origin: 256px 256px;
+        animation: rotateCW 20s linear infinite;
+      }
+      .animated-rotate-counter {
+        transform-origin: 256px 256px;
+        animation: rotateCCW 25s linear infinite;
+      }
+      .animated-pulse {
+        animation: pulseOpacity 3s ease-in-out infinite;
+      }
+      .animated-wave-1 {
+        animation: waveShift1 6s ease-in-out infinite;
+      }
+      .animated-wave-2 {
+        animation: waveShift2 8s ease-in-out infinite;
+      }
+      .animated-target {
+        transform-origin: 256px 256px;
+        animation: targetBlink 2s steps(2, start) infinite;
+      }
+
+      @keyframes rotateCW {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes rotateCCW {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      @keyframes pulseOpacity {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.75; }
+      }
+      @keyframes waveShift1 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(-15px, 5px); }
+      }
+      @keyframes waveShift2 {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(15px, -5px); }
+      }
+      @keyframes targetBlink {
+        0%, 100% { opacity: 1; stroke-width: 2.5; }
+        50% { opacity: 0.3; stroke-width: 1.5; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background Dark Plate -->
+  <circle cx="256" cy="256" r="240" fill="#000000" stroke="#00ff66" stroke-width="2" stroke-opacity="0.15" />
+
+  <!-- Outer Tech Dial (Rotates Clockwise) -->
+  <g class="animated-rotate-clockwise">
+    <!-- Ticks & Tech Ring -->
+    <circle cx="256" cy="256" r="225" stroke="url(#grad-green)" stroke-width="2.5" stroke-dasharray="12 8 4 8" stroke-opacity="0.6" filter="url(#glow-green)" />
+    <!-- Degree markers -->
+    <path d="M256 16v12M256 484v12M16 256h12M484 256h12" stroke="#00ff66" stroke-width="3" stroke-linecap="round" />
+    <path d="M86.3 86.3l8.5 8.5M425.7 425.7l8.5 8.5M86.3 425.7l8.5-8.5M425.7 86.3l8.5-8.5" stroke="#00ff66" stroke-width="2" stroke-opacity="0.7" />
+  </g>
+
+  <!-- Inner Tech Compass Ring (Rotates Counter-Clockwise) -->
+  <g class="animated-rotate-counter">
+    <circle cx="256" cy="256" r="200" stroke="url(#grad-yellow)" stroke-width="1.5" stroke-dasharray="40 20 5 10" stroke-opacity="0.5" filter="url(#glow-yellow)" />
+    <circle cx="256" cy="256" r="190" stroke="#00ff66" stroke-dasharray="2 15" stroke-width="3" stroke-opacity="0.3" />
+  </g>
+
+  <!-- Globe Grid Lines (Static / Pulse) -->
+  <g class="animated-pulse" stroke="#00ff66" stroke-width="1.5" stroke-opacity="0.3">
+    <!-- Longitudinal Ellipses -->
+    <ellipse cx="256" cy="256" rx="60" ry="180" fill="none" />
+    <ellipse cx="256" cy="256" rx="120" ry="180" fill="none" />
+    <ellipse cx="256" cy="256" rx="170" ry="180" fill="none" />
+    <line x1="256" y1="76" x2="256" y2="436" />
+    
+    <!-- Latitudinal Lines -->
+    <line x1="86" y1="136" x2="426" y2="136" />
+    <line x1="76" y1="196" x2="436" y2="196" />
+    <line x1="74" y1="256" x2="438" y2="256" stroke-width="2" stroke-opacity="0.5" />
+    <line x1="76" y1="316" x2="436" y2="316" />
+    <line x1="86" y1="376" x2="426" y2="376" />
+  </g>
+
+  <!-- Tidal Wave Currents (Motion Waves) -->
+  <g filter="url(#glow-green)">
+    <!-- Wave 1 (Green/Blue Shift) -->
+    <path class="animated-wave-1" d="M 76 220 Q 130 150, 190 220 T 300 220 T 410 220" fill="none" stroke="url(#grad-cyan)" stroke-width="4.5" stroke-linecap="round" />
+    <!-- Wave 2 (Amber/Gold Shift) -->
+    <path class="animated-wave-2" d="M 76 290 Q 140 350, 200 290 T 320 290 T 430 290" fill="none" stroke="url(#grad-yellow)" stroke-width="3" stroke-opacity="0.8" stroke-linecap="round" />
+  </g>
+
+  <!-- Radar Sweep Overlay (Digital sweeping vector) -->
+  <g class="animated-rotate-clockwise">
+    <path d="M256 256 L256 60 A196 196 0 0 1 394 120 Z" fill="url(#grad-cyan)" opacity="0.15" />
+  </g>
+
+  <!-- Crosshair Reticle (Blinks) -->
+  <g class="animated-target" stroke="#ffd700" fill="none">
+    <!-- Center Target Cross -->
+    <circle cx="256" cy="256" r="30" stroke-width="2" stroke-dasharray="8 6" />
+    <circle cx="256" cy="256" r="6" fill="#ffd700" />
+    <line x1="256" y1="216" x2="256" y2="236" stroke-width="2" />
+    <line x1="256" y1="276" x2="256" y2="296" stroke-width="2" />
+    <line x1="216" y1="256" x2="236" y2="256" stroke-width="2" />
+    <line x1="276" y1="256" x2="296" y2="256" stroke-width="2" />
+    
+    <!-- Target Box Indicators -->
+    <path d="M 216 216 L 216 206 L 226 206" stroke-width="2.5" />
+    <path d="M 296 216 L 296 206 L 286 206" stroke-width="2.5" />
+    <path d="M 216 296 L 216 306 L 226 306" stroke-width="2.5" />
+    <path d="M 296 296 L 296 306 L 286 306" stroke-width="2.5" />
+  </g>
+
+  <!-- Telemetry Text Overlays -->
+  <text x="256" y="470" font-family="monospace" font-size="11" font-weight="900" fill="#00ff66" fill-opacity="0.8" text-anchor="middle" letter-spacing="4">SEC_32963</text>
+  <text x="256" y="52" font-family="monospace" font-size="13" font-weight="900" fill="#ffd700" fill-opacity="0.9" text-anchor="middle" letter-spacing="6">VEROTIDES</text>
+</svg>

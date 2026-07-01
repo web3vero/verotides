@@ -5,14 +5,23 @@ import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-const BiteTimesWidget = () => {
-  const { data, error, isLoading } = useSWR('/api/verotide/solunar', fetcher, {
+interface BiteTimesWidgetProps {
+  lat?: number;
+  lon?: number;
+  initialData?: any;
+}
+
+const BiteTimesWidget = ({ lat = 27.6386, lon = -80.3973, initialData }: BiteTimesWidgetProps) => {
+  const { data, error, isLoading } = useSWR(`/api/verotide/solunar?lat=${lat}&lon=${lon}`, fetcher, {
+    fallbackData: initialData,
     refreshInterval: 3600000 // 1 hour
   });
 
   const major = data?.major?.length > 0 ? `${data.major[0].start} - ${data.major[0].end}` : '06:30 AM - 08:30 AM';
   const minor = data?.minor?.length > 0 ? `${data.minor[0].start} - ${data.minor[0].end}` : '12:00 PM - 01:30 PM';
   const phase = data?.moon?.phase || 'WAXING_GIBBOUS (74%)';
+
+  const isSebastian = lat > 27.75; // Sebastian Inlet is at ~27.86
 
   return (
     <div className="terminal-box p-6 flex flex-col gap-4 border-primary/20 rounded-xl transition-all hover:border-primary/40 group">
@@ -37,8 +46,14 @@ const BiteTimesWidget = () => {
             <div className="absolute -top-32 left-0 right-0 mx-1 bg-black border border-primary/40 text-[10px] font-mono p-3 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
               <p className="font-black text-primary mb-1">Major Solunar Window</p>
               <p className="text-white/70 mb-1">Peak feeding activity triggered by lunar overhead/underfoot transit. Fish metabolism and movement increases significantly.</p>
-              <p className="text-yellow-400 font-black text-[9px]">Target species in Vero Beach:</p>
-              <p className="text-white/60 text-[9px]">Snook · Redfish (Red Drum) · Tarpon · Spanish Mackerel · Flounder · Pompano · Sheepshead</p>
+              <p className="text-yellow-400 font-black text-[9px]">
+                {isSebastian ? 'Target species in Sebastian Inlet:' : 'Target species in Vero Beach:'}
+              </p>
+              <p className="text-white/60 text-[9px]">
+                {isSebastian
+                  ? 'Redfish (Red Drum) · Snook · Flounder · Spanish Mackerel · Bluefish · Pompano · Sheepshead · Sharks'
+                  : 'Snook · Redfish (Red Drum) · Tarpon · Spanish Mackerel · Flounder · Pompano · Sheepshead'}
+              </p>
             </div>
           </div>
 

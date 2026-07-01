@@ -1,14 +1,56 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import VesselSentry from './VesselSentry';
-import VisualSentry from './VisualSentry';
+import dynamic from 'next/dynamic';
+
+import LazyVesselSentry from './LazyVesselSentry';
+
+const VisualSentry = dynamic(() => import('./VisualSentry'), {
+  ssr: false,
+  loading: () => (
+    <div className="aspect-video w-full border border-primary/20 bg-black flex items-center justify-center font-mono text-primary text-[10px] animate-pulse">
+      LOADING VISUAL FEED...
+    </div>
+  ),
+});
+
 import TideWidget from './TideWidget';
 import BiteTimesWidget from './BiteTimesWidget';
 import BeachSentryWidget from './BeachSentryWidget';
 import StormSentry from './StormSentry';
+interface BridgeEntry {
+  name: string
+  status: 'OPEN_CLEAR' | 'RESTRICTED' | 'CLOSED'
+  color: 'green' | 'yellow' | 'red'
+  desc: string
+  source: 'fixed-span' | 'construction' | 'override'
+  lastVerified: string
+  sourceUrl: string
+}
 
-const AD_SLOTS = [
+type AdSlot =
+  | {
+      id: string;
+      category: string;
+      icon: string;
+      headline: string;
+      body: string;
+      cta: string;
+      live?: false;
+    }
+  | {
+      id: string;
+      category: string;
+      icon: string;
+      name: string;
+      tagline: string;
+      description: string;
+      cta: string;
+      href: string;
+      live: true;
+    };
+
+const AD_SLOTS: AdSlot[] = [
   {
     id: '01',
     category: 'STORM_SEASON_PARTNER',
@@ -20,10 +62,13 @@ const AD_SLOTS = [
   {
     id: '02',
     category: 'MARINE_&_FISHING',
-    icon: '🎣',
-    headline: 'Marine & Fishing Partner',
-    body: 'Reach anglers, boaters &\ncoastal visitors daily',
-    cta: 'Claim This Slot →',
+    icon: '🦞',
+    name: "Hunter's Seafood",
+    tagline: 'Fresh Catch · Vero Beach',
+    description: 'Local seafood done right.\nFresh, local, and always worth it.',
+    cta: 'Follow on Instagram →',
+    href: 'https://www.instagram.com/huntersseafood',
+    live: true,
   },
   {
     id: '03',
@@ -37,6 +82,41 @@ const AD_SLOTS = [
 
 const AdSquare = ({ slot }: { slot: number }) => {
   const ad = AD_SLOTS[slot - 1];
+
+  if (ad.live) {
+    return (
+      <div className="terminal-box p-6 flex flex-col gap-4 border-green-400/30 rounded-xl relative overflow-hidden bg-black min-h-[200px]">
+        <div className="absolute top-0 right-0 bg-green-400 text-black text-[8px] font-black uppercase px-3 py-1 tracking-widest">
+          LOCAL AD
+        </div>
+        <div className="border-b border-green-400/20 pb-2 flex items-center gap-3">
+          <span className="h-1.5 w-1.5 rounded-full bg-green-400/80 animate-pulse"></span>
+          <span className="font-black text-green-400/80 uppercase tracking-widest text-[10px]">{ad.category}</span>
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center py-2">
+          <div className="h-14 w-14 border-2 border-green-400/30 rounded-full flex items-center justify-center bg-green-400/5">
+            <span className="text-2xl">{ad.icon}</span>
+          </div>
+          <div>
+            <div className="text-sm font-black text-white uppercase tracking-widest mb-0.5">{ad.name}</div>
+            <div className="text-[10px] text-green-400/70 font-mono uppercase tracking-widest mb-2">{ad.tagline}</div>
+            <div className="text-[10px] text-white/30 font-mono uppercase leading-relaxed">
+              {ad.description.split('\n').map((l, i) => <React.Fragment key={i}>{l}{i === 0 && <br />}</React.Fragment>)}
+            </div>
+          </div>
+        </div>
+        <a
+          href={ad.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full text-center border-2 border-green-400/50 py-2.5 text-[10px] text-green-400 font-black uppercase tracking-widest hover:bg-green-400 hover:text-black transition-all rounded-lg"
+        >
+          {ad.cta}
+        </a>
+      </div>
+    );
+  }
+
   return (
     <div className="terminal-box p-6 flex flex-col gap-4 border-yellow-400/20 rounded-xl relative overflow-hidden bg-black min-h-[200px]">
       <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[8px] font-black uppercase px-3 py-1 tracking-widest">
@@ -73,18 +153,86 @@ const Tooltip = ({ children, className = '' }: { children: React.ReactNode; clas
   </div>
 );
 
+const NODES = {
+  VERO_BEACH_SOUTH: {
+    station: '8722125',
+    stationName: 'Vero Beach (Intracoastal), FL',
+    grid: 'MLB/68,33',
+    center: [-80.3973, 27.6386] as [number, number],
+    radarTitle: 'VERO_BEACH_SECTOR // GRID_07',
+  },
+  SEBASTIAN_INLET: {
+    station: '8722004',
+    stationName: 'Sebastian Inlet, FL',
+    grid: 'MLB/65,42',
+    center: [-80.4472, 27.8603] as [number, number],
+    radarTitle: 'SEBASTIAN_INLET_SECTOR // GRID_08',
+  }
+};
+
+const FALLBACK_BRIDGES: BridgeEntry[] = [
+  {
+    name: 'BARBER (SR_60)',
+    status: 'OPEN_CLEAR',
+    color: 'yellow',
+    desc: 'Fixed bridge — main artery to mainland via SR-60. 4 lanes, no restrictions. Connects to US-1 and I-95 corridor.',
+    source: 'fixed-span',
+    lastVerified: new Date().toISOString().split('T')[0],
+    sourceUrl: 'https://verotides.com',
+  },
+  {
+    name: '17TH_ST (SR_656)',
+    status: 'RESTRICTED',
+    color: 'red',
+    desc: 'MAJOR REHAB 2023–2028 (Alma Lee Loy Bridge). One lane alternating 24/7 with flagging. Expect 5–15 min delays peak hours. Use Barber or Wabasso as alternates.',
+    source: 'construction',
+    lastVerified: new Date().toISOString().split('T')[0],
+    sourceUrl: 'https://www.d4fdot.com/tcfdot/TC-Indian_Closures.asp',
+  },
+  {
+    name: 'WABASSO (CR_510)',
+    status: 'OPEN_CLEAR',
+    color: 'yellow',
+    desc: 'Fixed bridge — northern barrier island crossing via CR-510. 2 lanes, no restrictions. Best alternate while 17th St is under construction.',
+    source: 'fixed-span',
+    lastVerified: new Date().toISOString().split('T')[0],
+    sourceUrl: 'https://verotides.com',
+  },
+  {
+    name: 'SEBASTIAN (SR_A1A)',
+    status: 'RESTRICTED',
+    color: 'red',
+    desc: 'LONG-TERM BRIDGE REPLACEMENT started June 1, 2026. Motorists should anticipate weekday lane closures with flaggers and travel delays. South parking lot closed.',
+    source: 'construction',
+    lastVerified: new Date().toISOString().split('T')[0],
+    sourceUrl: 'https://verotides.com',
+  },
+]
+
 const VeroDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [activeNode, setActiveNode] = useState<'VERO_BEACH_SOUTH' | 'SEBASTIAN_INLET'>('VERO_BEACH_SOUTH');
+  const [bridges, setBridges] = useState<BridgeEntry[]>(FALLBACK_BRIDGES);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    fetch('/api/bridges')
+      .then(r => r.json() as Promise<BridgeEntry[]>)
+      .then(data => { if (Array.isArray(data) && data.length > 0) setBridges(data) })
+      .catch(() => { /* keep fallback */ })
+  }, []);
+
+
   const today = currentTime.toLocaleDateString('en-US', { weekday: 'long' });
   const isGarbageDay = ['Monday', 'Thursday'].includes(today);
   const isRecyclingDay = today === 'Wednesday';
   const isYardWasteDay = today === 'Thursday';
+
+  const nodeConfig = NODES[activeNode];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-8 p-3 md:p-8 pb-8 w-full max-w-full">
@@ -105,13 +253,43 @@ const VeroDashboard = () => {
         </div>
       </div>
 
+      {/* Node Switcher Toggle */}
+      <div className="col-span-full flex flex-col sm:flex-row justify-between items-center gap-4 p-4 md:px-6 bg-black/55 border-2 border-primary/20 rounded-xl relative overflow-hidden">
+        <div className="flex items-center gap-3">
+          <span className="h-2 w-2 rounded-full bg-primary animate-ping"></span>
+          <span className="font-mono text-xs uppercase font-black tracking-widest text-primary/80">GRID_NODE_SELECT:</span>
+        </div>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button
+            onClick={() => setActiveNode('VERO_BEACH_SOUTH')}
+            className={`flex-1 sm:flex-initial text-center border-2 px-5 py-2 text-xs font-black uppercase tracking-widest transition-all duration-300 rounded-lg ${
+              activeNode === 'VERO_BEACH_SOUTH'
+                ? 'bg-primary text-black border-primary shadow-[0_0_15px_rgba(0,255,65,0.4)]'
+                : 'bg-black text-primary/70 border-primary/20 hover:border-primary/50 hover:text-primary'
+            }`}
+          >
+            VERO_BEACH_SOUTH
+          </button>
+          <button
+            onClick={() => setActiveNode('SEBASTIAN_INLET')}
+            className={`flex-1 sm:flex-initial text-center border-2 px-5 py-2 text-xs font-black uppercase tracking-widest transition-all duration-300 rounded-lg ${
+              activeNode === 'SEBASTIAN_INLET'
+                ? 'bg-primary text-black border-primary shadow-[0_0_15px_rgba(0,255,65,0.4)]'
+                : 'bg-black text-primary/70 border-primary/20 hover:border-primary/50 hover:text-primary'
+            }`}
+          >
+            SEBASTIAN_INLET
+          </button>
+        </div>
+      </div>
+
       {/* Row 2: Primary Data */}
-      <TideWidget />
-      <BiteTimesWidget />
-      <VisualSentry />
+      <TideWidget station={nodeConfig.station} stationName={nodeConfig.stationName} />
+      <BiteTimesWidget lat={nodeConfig.center[1]} lon={nodeConfig.center[0]} />
+      <VisualSentry nodeKey={activeNode} />
 
       {/* Row 3: Utility Data */}
-      <BeachSentryWidget />
+      <BeachSentryWidget grid={nodeConfig.grid} />
 
       {/* Bridge Telemetry */}
       <div className="terminal-box p-6 flex flex-col gap-4 border-primary/20 rounded-xl group relative overflow-hidden">
@@ -119,29 +297,10 @@ const VeroDashboard = () => {
           <span className="font-black text-white glow-text uppercase tracking-widest text-sm flex items-center gap-3 italic">
             🌉 BRIDGE_GRID
           </span>
-          <a href="https://fl511.com/list/bridge" target="_blank" rel="noopener noreferrer" className="text-[10px] opacity-60 hover:opacity-100 uppercase font-mono font-black transition-opacity">FL511_LIVE ↗</a>
+          <a href="https://www.d4fdot.com/tcfdot/TC-Indian_Closures.asp" target="_blank" rel="noopener noreferrer" className="text-[10px] opacity-60 hover:opacity-100 uppercase font-mono font-black transition-opacity">FDOT_D4 ↗</a>
         </div>
         <div className="flex flex-col gap-3 mt-2">
-          {[
-            {
-              name: 'BARBER (SR_60)',
-              status: 'OPEN_CLEAR',
-              color: 'yellow',
-              desc: 'Fixed bridge — main artery connecting barrier island to mainland. 4 lanes. No lift delays. Fastest crossing. Connects to US-1 and I-95 corridor.'
-            },
-            {
-              name: '17TH_ST (SR_656)',
-              status: 'RESTRICTED',
-              color: 'red',
-              desc: 'MAJOR REHAB 2023–2028. One lane alternating 24/7 with flagging. Expect 5–15 min delays during peak hours. Use Barber or Wabasso as alternates.'
-            },
-            {
-              name: 'WABASSO (CR_510)',
-              status: 'OPEN_CLEAR',
-              color: 'yellow',
-              desc: 'Northern barrier island crossing. 2 lanes, no restrictions. Best alternate route while 17th St is under construction. Connects to US-1 at Wabasso.'
-            }
-          ].map(bridge => (
+          {bridges.map(bridge => (
             <div key={bridge.name} className="relative flex justify-between items-center p-4 bg-black/60 border-2 border-primary/10 rounded-lg group/tip cursor-help hover:border-primary/30 transition-colors">
               <span className="text-xs uppercase font-black text-primary/80 tracking-widest">{bridge.name}</span>
               <span className={`text-xs uppercase font-black px-3 py-1 border rounded-md ${
@@ -164,7 +323,7 @@ const VeroDashboard = () => {
 
       {/* Row 4: Vessel (2 col) + Ad */}
       <div className="md:col-span-2 xl:col-span-2">
-        <VesselSentry />
+        <LazyVesselSentry center={nodeConfig.center} title={nodeConfig.radarTitle} />
       </div>
       <AdSquare slot={1} />
 

@@ -1,8 +1,16 @@
 'use client';
-import dynamic from 'next/dynamic';
+import TideWidget from '@/components/verotide/TideWidget';
 
-const TideWidget = dynamic(() => import('@/components/verotide/TideWidget'), { ssr: false });
+interface TidesClientProps {
+  veroData?: any;
+  sebastianData?: any;
+}
 
-export default function TidesClient() {
-  return <TideWidget />;
+export default function TidesClient({ veroData, sebastianData }: TidesClientProps) {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+      <TideWidget station="8722125" stationName="Vero Beach (Intracoastal), FL" initialData={veroData} />
+      <TideWidget station="8722004" stationName="Sebastian Inlet, FL" initialData={sebastianData} />
+    </div>
+  );
 }

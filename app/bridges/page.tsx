@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Vero Beach Bridge Status | Barber, 17th St & Wabasso Bridges',
-  description: 'Live Vero Beach bridge status: Barber Bridge (SR-60), 17th Street Bridge (SR-656, major rehab 2023–2028 — one lane alternating), and Wabasso Bridge (CR-510). Real-time traffic and construction alerts for Indian River County.',
+  title: '🌉 Vero Beach Bridge Status | Barber, 17th St & Wabasso 🌉',
+  description: '【BRIDGE ALERT】 Live status for Vero Beach barrier island bridge crossings. Barber, Wabasso, and 17th St (SR-656 under major rehab 2023-2028). Check real-time alerts! »»',
   keywords: 'Vero Beach bridges, Barber Bridge status, 17th Street Bridge Vero Beach, Wabasso Bridge CR-510, Indian River bridge traffic, Vero Beach barrier island crossing, SR-60 Vero Beach, FL-511 Indian River',
   alternates: { canonical: 'https://verotides.com/bridges' },
   openGraph: {
-    title: 'Vero Beach Bridge Status — Barber, 17th St & Wabasso | Verotides',
-    description: 'Live status for all Vero Beach barrier island bridge crossings. 17th St under major FDOT rehab through 2028.',
+    title: '🌉 Vero Beach Bridge Status — Barber, 17th St & Wabasso | Verotides 🌉',
+    description: 'Live status for all Vero Beach barrier island bridge crossings. 17th St under major FDOT rehab through 2028. 【ALERT】',
     url: 'https://verotides.com/bridges',
   },
 };
@@ -48,6 +48,23 @@ const schema = {
       "description": "Live status for Barber Bridge (SR-60), 17th Street Bridge (SR-656), and Wabasso Bridge (CR-510) in Vero Beach, FL.",
       "url": "https://verotides.com/bridges",
       "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://verotides.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Bridge Status",
+            "item": "https://verotides.com/bridges"
+          }
+        ]
+      },
       "about": { "@type": "Thing", "name": "Bridge traffic and construction status, Indian River County, Florida" }
     },
     {

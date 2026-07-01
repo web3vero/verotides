@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  const url = `https://api.weather.gov/gridpoints/MLB/50,78/forecast`;
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const grid = searchParams.get('grid') || 'MLB/68,33';
+  const url = `https://api.weather.gov/gridpoints/${grid}/forecast`;
 
   try {
     const res = await fetch(url, {

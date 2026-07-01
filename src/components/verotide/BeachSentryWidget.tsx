@@ -10,8 +10,12 @@ const isTurtleNestingSeason = () => {
   return m >= 3 && m <= 10;
 };
 
-const BeachSentryWidget = () => {
-  const { data, error, isLoading } = useSWR('/api/verotide/weather', fetcher, {
+interface BeachSentryProps {
+  grid?: string;
+}
+
+const BeachSentryWidget = ({ grid = 'MLB/68,33' }: BeachSentryProps) => {
+  const { data, error, isLoading } = useSWR(`/api/verotide/weather?grid=${grid}`, fetcher, {
     refreshInterval: 600000 // 10 minutes
   });
 

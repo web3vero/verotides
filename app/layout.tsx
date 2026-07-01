@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import Script from 'next/script';
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieSentry from '@/components/verotide/CookieSentry';
 import CounterIntel from '@/components/verotide/CounterIntel';
+import AdSenseLoader from '@/components/verotide/AdSenseLoader';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Verotides | Coastal Intelligence & Utilities — Vero Beach, FL",
-  description: "Live tides, AIS vessel tracking, solunar fishing charts, beach conditions, and bridge status for Vero Beach, FL (32963). Powered by NOAA, NWS, and AISStream.",
+  title: "🌊 Verotides | Live Vero Beach Tides, AIS Tracking & Weather 🎣",
+  description: "Get real-time tides, live AIS vessel tracking, solunar fishing bite times, beach cams, and bridge alerts for Vero Beach, FL. Check the tide now! 【LIVE 🌊 🎣】",
   keywords: "Vero Beach, tides, AIS tracking, solunar, fishing, maritime intelligence, weather, Florida, Indian River Lagoon, 32963, bridge status, beach conditions",
   authors: [{ name: "Verotides", url: "https://verotides.com" }],
   creator: "Verotides",
@@ -37,8 +39,31 @@ export const metadata: Metadata = {
       "application/opensearchdescription+xml": "https://verotides.com/opensearch.xml",
     },
   },
+  openGraph: {
+    title: "🌊 Verotides | Live Vero Beach Tides, AIS Tracking & Weather 🎣",
+    description: "Get real-time tides, live AIS vessel tracking, solunar fishing bite times, beach cams, and bridge alerts for Vero Beach, FL. Check the tide now! 【LIVE 🌊 🎣】",
+    url: "https://verotides.com",
+    siteName: "Verotides",
+    images: [
+      {
+        url: "https://verotides.com/og_image.png",
+        width: 1200,
+        height: 630,
+        alt: "Verotides Coastal Intelligence Hub Terminal",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "🌊 Verotides | Live Vero Beach Tides & Coastal Utilities 🎣",
+    description: "Real-time tides, live AIS vessel tracking, solunar charts, beach cams, and bridge alerts for Vero Beach, FL. 【LIVE】",
+    images: ["https://verotides.com/og_image.png"],
+  },
   other: {
     "fediverse:creator": "@verotides@mastodon.social",
+    "google-adsense-account": "ca-pub-9867142833785109",
   },
 };
 
@@ -183,12 +208,13 @@ export default function RootLayout({
         <meta name="ICBM" content="27.6386, -80.3973" />
         {/* Referrer policy — privacy-safe while preserving analytics */}
         <meta name="referrer" content="strict-origin-when-cross-origin" />
+        <AdSenseLoader />
       </head>
       <body className="min-h-full flex flex-col bg-black overflow-x-hidden">
         {children}
         <CookieSentry />
         <CounterIntel />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX'} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || 'G-X2F05YL2PV'} />
         <Analytics />
         <SpeedInsights />
       </body>

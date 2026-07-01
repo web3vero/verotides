@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import VesselsClient from './VesselsClient';
 
 export const metadata: Metadata = {
-  title: 'Vero Beach Live Vessel Tracking | AIS Ship Map — Indian River Lagoon',
-  description: 'Live AIS vessel tracking map for Vero Beach, FL and the Indian River Lagoon. Real-time ship positions, cargo vessels, pleasure crafts, and commercial traffic near Vero Beach Inlet.',
+  title: '🚢 Vero Beach Live Vessel Tracking | AIS Ship Map 🚢',
+  description: '【LIVE SHIPS】 Track marine traffic near Vero Beach, FL & the Indian River Lagoon. Real-time AIS ship map, vessel positions, speed vectors, and port arrivals! »»',
   keywords: 'Vero Beach vessel tracking, AIS Vero Beach, ship tracking Indian River, live marine traffic Vero Beach, Vero Beach Inlet vessels, Florida maritime tracking, AIS map Indian River Lagoon',
   alternates: { canonical: 'https://verotides.com/vessels' },
   openGraph: {
-    title: 'Vero Beach Live AIS Vessel Tracking — Verotides',
-    description: 'Real-time AIS ship tracking for Vero Beach, FL and the Indian River Lagoon.',
+    title: '🚢 Vero Beach Live Vessel Tracking | AIS Ship Map | Verotides 🚢',
+    description: 'Real-time AIS ship tracking for Vero Beach, FL and the Indian River Lagoon. Live positions. 【LIVE】',
     url: 'https://verotides.com/vessels',
   },
 };
@@ -20,6 +20,23 @@ const schema = {
   "description": "Real-time AIS vessel positions for Vero Beach, FL — Indian River Lagoon, Vero Beach Inlet, and nearby Atlantic waters.",
   "url": "https://verotides.com/vessels",
   "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://verotides.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Vessel Tracking",
+        "item": "https://verotides.com/vessels"
+      }
+    ]
+  },
   "about": {
     "@type": "Thing",
     "name": "AIS maritime vessel tracking",

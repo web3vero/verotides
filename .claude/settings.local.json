@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST http://localhost:31337/notify -H 'Content-Type: application/json' -d '{\"message\": \"Running the Scaffold workflow in the ISA skill\"}')",
+      "Bash(mkdir -p ~/.claude/PAI/MEMORY/WORK/20260601-pai-flawless-operation)",
+      "Bash(mkdir -p /home/mike/.claude/skills/ExecutiveFunction)",
+      "Read(//home/mike/.claude/skills/**)",
+      "Bash(rm ~/.claude/PAI/USER/.template-mode)",
+      "Read(//home/mike/.claude/PAI/USER/**)"
+    ]
+  }
+}

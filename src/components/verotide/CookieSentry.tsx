@@ -9,7 +9,10 @@ const CookieSentry = () => {
   useEffect(() => {
     const consent = getCookie('VERO_TACTICAL_CONSENT');
     if (!consent) {
-      setIsVisible(true);
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 

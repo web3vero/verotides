@@ -6,7 +6,7 @@ import useSWR from 'swr';
 interface NhcStormStatus {
   level: 0 | 1 | 2 | 3;
   stormCount: number;
-  storms: Array<{ name: string; type: string }>;
+  storms: Array<{ name: string; type: string; link?: string }>;
   lastUpdated: string;
   statusCode: 'NO_ACTIVITY' | 'TROPICAL_ACTIVITY' | 'HURRICANE_WATCH' | 'MAJOR_THREAT' | 'FEED_ERR';
 }
@@ -62,7 +62,18 @@ const StormSentry = () => {
             {data.storms.map(s => (
               <div key={s.name} className="flex justify-between items-center px-3 py-1.5 bg-black/60 border border-red-500/30 rounded text-[10px] font-mono font-black uppercase">
                 <span className="text-white/70">{s.type}</span>
-                <span className="text-red-400">{s.name}</span>
+                {s.link ? (
+                  <a
+                    href={s.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-400 hover:text-red-300 hover:underline transition-colors"
+                  >
+                    {s.name} ↗
+                  </a>
+                ) : (
+                  <span className="text-red-400">{s.name}</span>
+                )}
               </div>
             ))}
           </div>

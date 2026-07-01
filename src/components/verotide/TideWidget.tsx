@@ -5,13 +5,26 @@ import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-const TideWidget = () => {
-  const { data, error, isLoading } = useSWR('/api/verotide/tides', fetcher, {
+interface TideWidgetProps {
+  station?: string;
+  stationName?: string;
+  initialData?: any;
+}
+
+const TideWidget = ({ station = '8722125', stationName = 'Vero Beach (Intracoastal), FL', initialData }: TideWidgetProps) => {
+  const { data, error, isLoading } = useSWR(`/api/verotide/tides?station=${station}`, fetcher, {
+    fallbackData: initialData,
     refreshInterval: 300000 // 5 minutes
   });
 
-  const nextHigh = data?.predictions?.find((p: any) => p.type === 'H') || { t: '08:42 AM', v: '3.2' };
-  const nextLow = data?.predictions?.find((p: any) => p.type === 'L') || { t: '02:18 PM', v: '-0.1' };
+  interface TidePrediction {
+    t: string;
+    v: string;
+    type: string;
+  }
+
+  const nextHigh = data?.predictions?.find((p: TidePrediction) => p.type === 'H') || { t: '08:42 AM', v: '3.2' };
+  const nextLow = data?.predictions?.find((p: TidePrediction) => p.type === 'L') || { t: '02:18 PM', v: '-0.1' };
 
   const formatTime = (timeStr: string) => {
     if (timeStr.includes('-')) {
@@ -20,6 +33,8 @@ const TideWidget = () => {
     }
     return timeStr;
   };
+
+  const isSebastian = station === '8722004';
 
   return (
     <div className="terminal-box p-6 flex flex-col gap-4 border-primary/20 rounded-xl transition-all hover:border-primary/40 group">
@@ -48,8 +63,14 @@ const TideWidget = () => {
             
             {/* Hover Tooltip */}
             <div className="absolute -top-28 left-0 right-0 mx-1 bg-black border border-primary/40 text-primary text-[10px] font-mono p-3 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
-              <p className="font-black text-primary mb-1">High Tide — Sebastian Inlet</p>
-              <p className="text-white/70">Best time for surfers and beach access. Fishing improves 1–2 hrs before peak as bait fish concentrate near structure. Expect stronger current through Sebastian Inlet. Boaters: deeper draft vessels can transit safely.</p>
+              <p className="font-black text-primary mb-1">
+                {isSebastian ? 'High Tide — Sebastian Inlet' : 'High Tide — Vero Beach (Intracoastal)'}
+              </p>
+              <p className="text-white/70">
+                {isSebastian
+                  ? 'Best time for surfers and beach access. Fishing improves 1–2 hrs before peak as bait fish concentrate near structure. Expect stronger current through Sebastian Inlet. Boaters: deeper draft vessels can transit safely.'
+                  : 'Prime time for navigating shallow Intracoastal channels. Water level rises around dock structures and mangroves, triggering fish to move closer to cover. Ideal for recreational boating.'}
+              </p>
             </div>
           </div>
 
@@ -64,13 +85,19 @@ const TideWidget = () => {
 
             {/* Hover Tooltip */}
             <div className="absolute -top-28 left-0 right-0 mx-1 bg-black border border-primary/40 text-primary text-[10px] font-mono p-3 rounded opacity-0 group-hover/data:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl leading-relaxed text-left">
-              <p className="font-black text-primary mb-1">Low Tide — Sebastian Inlet</p>
-              <p className="text-white/70">Exposed sandbars and flats — prime for wading and snook/redfish on the flats. Inlet current reversal creates prime ambush points. Watch for shallow draft warnings near the bar. Best for clamming and shell hunting on the beach.</p>
+              <p className="font-black text-primary mb-1">
+                {isSebastian ? 'Low Tide — Sebastian Inlet' : 'Low Tide — Vero Beach (Intracoastal)'}
+              </p>
+              <p className="text-white/70">
+                {isSebastian
+                  ? 'Exposed sandbars and flats — prime for wading and snook/redfish on the flats. Inlet current reversal creates prime ambush points. Watch for shallow draft warnings near the bar. Best for clamming and shell hunting on the beach.'
+                  : 'Exposed oysters, mud flats, and sandbars in the Indian River Lagoon. Good for target casting to deep channel edges. Wading is excellent on firm sandy bars.'}
+              </p>
             </div>
           </div>
 
           <div className="col-span-2 text-[10px] opacity-40 italic text-center font-mono mt-1 uppercase tracking-[0.2em] font-bold">
-            NOAA Station 8722125 · Sebastian Inlet, FL
+            NOAA Station {station} · {stationName}
           </div>
         </div>
       )}
