@@ -65,6 +65,9 @@ export const metadata: Metadata = {
     "fediverse:creator": "@verotides@mastodon.social",
     "google-adsense-account": "ca-pub-9867142833785109",
   },
+  verification: {
+    google: "U7WI0-wA8XD_y2xKKtm4Ito0SeIiRT9AUKZBOL7MotE",
+  },
 };
 
 export const viewport: Viewport = {
