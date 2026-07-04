@@ -281,5 +281,28 @@ Then pull locally: `vercel env pull .env.local`
 - **Sentry Integration:** Installed `@sentry/nextjs` via bun and configured `sentry.client.config.ts`, `sentry.server.config.ts`, and `sentry.edge.config.ts`. Wrapped `next.config.ts` with `withSentryConfig` to enable robust error telemetry.
 - **Global Error Handling:** Implemented `app/global-error.tsx` to serve as the root error boundary, capturing exceptions via `Sentry.captureException()` and rendering a stylized terminal failure state.
 
+### 2026-07-04 | SEO Fix — Crawlable Primary Nav (Orphaned Utility Pages) + Sentry Config Repair (Claude/Nova)
+- **Origin:** `seo-audit` skill (Antigravity Awesome Skills bundle) live-crawled verotides.com and flagged a Critical crawlability blocker: `/tides`, `/fishing`, `/weather`, `/vessels`, `/bridges`, `/spoil-islands` were referenced **only** in `SiteNavigationElement` JSON-LD (`app/layout.tsx:190-201`) and the `speculationrules` script (`:203-206`) — neither is a crawlable `<a href>`. Homepage linked only to `/guides`. The utility (money) pages were orphaned from the homepage. Full audit + fix saved at `SEO_AUDIT_2026-07-04.md`.
+- **Fix:** Added a server-rendered `<nav aria-label="Primary">` in `app/page.tsx` (after `</header>`, before `<DashboardShell />`) with `<Link>`s to all six utility pages. Keyword-rich anchor text ("Vero Beach Tides", "Fishing & Bite Times", …) also addresses the audit's on-page-keyword finding. `page.tsx` is a Server Component so the nav lands in initial HTML (crawlable). No new import — `Link` already imported.
+- **Pre-existing build blocker fixed (unrelated to SEO change):** `bun run build` compiled the nav fine but failed type-check on `next.config.ts:17` — `hideSourceMaps: true` was **removed** from `@sentry/nextjs` `SentryBuildOptions` (broke sometime after the 2026-06-30 Sentry integration). Removed the line; client source maps are hidden by default in the current SDK, so intent preserved. `disableLogger` left as-is (deprecation warning only, not a hard error).
+- **Build + Deploy:** `bun run build` green (Next.js 16.2.6 / Turbopack, `/` prerendered static). Deployed to Vercel production via `vercel --prod` (auth: web3vero), aliased to https://verotides.com (dpl_DVUS4zTkbFVmbgsewfsV7UCj2Szh, READY).
+- **Verified live:** `curl https://verotides.com` confirms all 6 crawlable `href="/…"` utility links present in server HTML — Googlebot's view.
+- **Recommended follow-up (not done):** extract the nav to `src/components/verotide/SiteNav.tsx` and render in `app/layout.tsx` `<body>` so *every* page carries sibling links (spreads link equity across the whole cluster, not just from the homepage). Also open from the audit: keyword-rich H1 (currently just "VEROTIDES.COM"), descriptive H2s, and restore mobile zoom (`user-scalable=no` in viewport).
+
+### 2026-07-04 | SEO Findings Cleanup + Site-Wide SiteNav Extraction (Claude/Nova)
+- **Remaining `seo-audit` findings knocked out:**
+  - **H1 keywords (High):** `app/page.tsx` H1 was brand-only ("VEROTIDES.COM"). Added a visible keyword subline inside the H1 ("Vero Beach Tides, Fishing & Coastal Conditions") and removed `truncate` so it renders. Also made the tagline `<p>` keyword-rich ("Live Tide Charts · Bite Times · Beach & Bridge Status — Vero Beach, FL").
+  - **Abstract H2 (Medium):** `src/components/verotide/VeroDashboard.tsx:243` `VERO_CENTRAL_COMMAND` → `VERO_BEACH_COASTAL_COMMAND` — keeps the terminal underscore/glow aesthetic, injects the primary local keyword. (The crawlable content-section H2 in `page.tsx` was already keyword-rich — left as-is.)
+  - **Mobile zoom (Quick win):** removed `maximumScale: 1` + `userScalable: false` from the `viewport` export in `app/layout.tsx` (was WCAG 1.4.4 violation + mobile-index negative). Zoom restored.
+- **Site-wide SiteNav extraction:** created `src/components/verotide/SiteNav.tsx` (server component, single `NAV_LINKS` source of truth) and render it in `app/layout.tsx` `<body>` before `{children}`. Removed the inline `<nav>` added to `app/page.tsx` earlier today (layout now owns it) to avoid duplication. **Every page** now carries crawlable sibling links — the six utility pages are a fully interlinked cluster, not just linked from the homepage.
+- **Build + Deploy:** `bun run build` green (Turbopack, 30 static pages). Deployed to Vercel prod (`verotides-7fipaf02y`, READY), aliased https://verotides.com.
+- **Verified live via curl:** (1) `/tides` — a previously-orphaned page — now serves all 6 utility `href`s (site-wide nav confirmed); (2) H1 subline present; (3) `VERO_BEACH_COASTAL_COMMAND` present; (4) no `user-scalable=no`/`maximum-scale=1` in delivered HTML.
+- **Still open from audit (optional):** aria-current active-state on SiteNav (needs a small client wrapper w/ `usePathname`); programmatic-SEO local landing pages (nearby inlets/parks) as a growth play.
+
+### 2026-07-04 | Programmatic SEO Strategy Generation (Antigravity)
+- **Origin:** Ran `aas-marketing-seo-growth` bundle for `verotides.com` as a follow up to the "Longer-Term Opportunities" from the SEO audit.
+- **Verification:** Verified that technical SEO blockers (orphaned utility pages, H1 structure, mobile zoom) were correctly resolved in `app/page.tsx`, `app/layout.tsx`, and `src/components/verotide/SiteNav.tsx`.
+- **Strategy Output:** Evaluated the Feasibility Index (90/100, Strong Fit) and generated a complete Programmatic SEO Strategy for local telemetry dashboards (`/locations/[slug]`). Saved as `programmatic_seo_strategy.md` in the agent's artifacts.
+
 ---
 *Note: Always append new activity logs to this file.*

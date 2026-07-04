@@ -7,6 +7,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieSentry from '@/components/verotide/CookieSentry';
 import CounterIntel from '@/components/verotide/CounterIntel';
 import AdSenseLoader from '@/components/verotide/AdSenseLoader';
+import SiteNav from '@/components/verotide/SiteNav';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -74,8 +75,7 @@ export const viewport: Viewport = {
   themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  // maximumScale/userScalable removed — blocking zoom violates WCAG 1.4.4 and is a mobile-index negative
   viewportFit: "cover",
 };
 
@@ -214,6 +214,7 @@ export default function RootLayout({
         <AdSenseLoader />
       </head>
       <body className="min-h-full flex flex-col bg-black overflow-x-hidden">
+        <SiteNav />
         {children}
         <CookieSentry />
         <CounterIntel />

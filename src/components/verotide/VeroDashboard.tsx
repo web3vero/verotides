@@ -240,7 +240,7 @@ const VeroDashboard = () => {
       {/* Command Header */}
       <div className="col-span-full terminal-box p-5 md:p-8 flex flex-col xl:flex-row justify-between items-center gap-4 md:gap-6 border-b-4 border-primary/40 rounded-2xl bg-black/40 backdrop-blur-md overflow-hidden">
         <div className="text-center xl:text-left min-w-0 w-full xl:w-auto">
-          <h2 className="text-2xl md:text-4xl font-black glow-text italic tracking-tighter uppercase mb-1 truncate">VERO_CENTRAL_COMMAND</h2>
+          <h2 className="text-2xl md:text-4xl font-black glow-text italic tracking-tighter uppercase mb-1 truncate">VERO_BEACH_COASTAL_COMMAND</h2>
           <div className="text-[10px] md:text-xs opacity-60 uppercase font-mono tracking-tight md:tracking-[0.25em] font-bold">IRC Coastal Grid · Sector 32963 · Indian River County</div>
         </div>
         <div className="text-center xl:text-right font-mono flex-shrink-0">

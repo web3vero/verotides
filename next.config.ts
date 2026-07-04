@@ -14,6 +14,6 @@ export default withSentryConfig(nextConfig, {
     enabled: true,
   },
   tunnelRoute: "/monitoring",
-  hideSourceMaps: true,
+  // hideSourceMaps removed — deprecated/removed in current @sentry/nextjs; client source maps are hidden by default now
   disableLogger: true,
 });

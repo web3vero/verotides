@@ -17,11 +17,14 @@ export default function Home() {
             className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0" 
           />
           <div className="min-w-0">
-            <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
+            <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none">
               VEROTIDES<span className="flicker">.COM</span>
+              <span className="block text-sm md:text-lg font-mono font-normal not-italic tracking-tight opacity-75 mt-2">
+                Vero Beach Tides, Fishing &amp; Coastal Conditions
+              </span>
             </h1>
-            <p className="text-[10px] md:text-xs opacity-60 font-mono tracking-tight md:tracking-[0.18em] mt-2 uppercase truncate">
-              Coastal Intelligence &amp; Utilities — Vero Beach, FL
+            <p className="text-[10px] md:text-xs opacity-60 font-mono tracking-tight md:tracking-[0.18em] mt-2 uppercase">
+              Live Tide Charts · Bite Times · Beach &amp; Bridge Status — Vero Beach, FL
             </p>
           </div>
         </div>
