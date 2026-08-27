@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from 'next/script';
 import { Geist, Geist_Mono } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';

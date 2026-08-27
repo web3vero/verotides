@@ -37,7 +37,7 @@ function parseFrontmatter(fileContent: string): Omit<Guide, 'htmlContent'> {
 
   const yamlBlock = match[1];
   const content = match[2];
-  const metadata: any = {
+  const metadata: Record<string, unknown> = {
     title: "",
     description: "",
     date: "",
@@ -72,7 +72,7 @@ function parseFrontmatter(fileContent: string): Omit<Guide, 'htmlContent'> {
   });
 
   return {
-    metadata: metadata as GuideMetadata,
+    metadata: metadata as unknown as GuideMetadata,
     content
   };
 }
@@ -86,8 +86,8 @@ export function markdownToHtml(markdown: string): string {
   const processedLines: string[] = [];
   let inList = false;
 
-  for (let line of lines) {
-    let l = line.trim();
+  for (const line of lines) {
+    const l = line.trim();
     if (!l) {
       if (inList) {
         processedLines.push('</ul>');

@@ -8,7 +8,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 interface BiteTimesWidgetProps {
   lat?: number;
   lon?: number;
-  initialData?: any;
+  initialData?: unknown;
 }
 
 const BiteTimesWidget = ({ lat = 27.6386, lon = -80.3973, initialData }: BiteTimesWidgetProps) => {

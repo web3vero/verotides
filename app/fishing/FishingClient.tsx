@@ -2,8 +2,8 @@
 import BiteTimesWidget from '@/components/verotide/BiteTimesWidget';
 
 interface FishingClientProps {
-  veroData?: any;
-  sebastianData?: any;
+  veroData?: unknown;
+  sebastianData?: unknown;
 }
 
 export default function FishingClient({ veroData, sebastianData }: FishingClientProps) {

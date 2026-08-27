@@ -2,8 +2,8 @@
 import TideWidget from '@/components/verotide/TideWidget';
 
 interface TidesClientProps {
-  veroData?: any;
-  sebastianData?: any;
+  veroData?: unknown;
+  sebastianData?: unknown;
 }
 
 export default function TidesClient({ veroData, sebastianData }: TidesClientProps) {

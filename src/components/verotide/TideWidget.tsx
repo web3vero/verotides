@@ -8,7 +8,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 interface TideWidgetProps {
   station?: string;
   stationName?: string;
-  initialData?: any;
+  initialData?: unknown;
 }
 
 const TideWidget = ({ station = '8722125', stationName = 'Vero Beach (Intracoastal), FL', initialData }: TideWidgetProps) => {

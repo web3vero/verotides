@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   try {
     const data = getSolunarData(now, lat, lon);
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to calculate solunar data' }, { status: 500 });
   }
 }

@@ -17,9 +17,10 @@ export default function AdSenseBlock({
 }: AdSenseBlockProps) {
   useEffect(() => {
     try {
-      // Initialize adsbygoogle array and push
       if (typeof window !== 'undefined') {
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        const w = window as unknown as { adsbygoogle: unknown[] };
+        w.adsbygoogle = w.adsbygoogle || [];
+        w.adsbygoogle.push({});
       }
     } catch (e) {
       console.error('AdSense initialization error:', e);

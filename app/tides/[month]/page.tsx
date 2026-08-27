@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTidePredictions, TidePrediction, formatNoaaDate } from '@/lib/verotide/data';
 import React from 'react';
+import Link from 'next/link';
 
 type PageParams = Promise<{ month: string }>;
 
@@ -84,7 +85,7 @@ function formatDateLabel(dateStr: string): string {
       month: 'short',
       day: 'numeric',
     });
-  } catch (e) {
+  } catch {
     return dateStr;
   }
 }
@@ -204,12 +205,12 @@ export default async function MonthlyTidesPage({ params }: { params: PageParams 
             Monthly Tide Chart predictions · Vero Beach &amp; Sebastian Inlet
           </p>
         </div>
-        <a 
-          href="/tides" 
+        <Link
+          href="/tides"
           className="px-4 py-2 border-2 border-primary/40 hover:border-primary text-primary hover:text-black hover:bg-primary transition-all font-mono text-xs uppercase font-bold rounded-lg"
         >
           &lt; Back to Live Tides
-        </a>
+        </Link>
       </div>
 
       <section className="terminal-box p-6 border border-primary/20 bg-black/60 rounded-xl mb-8 font-mono">
