@@ -10,8 +10,9 @@ const TideWidget = () => {
     refreshInterval: 300000 // 5 minutes
   });
 
-  const nextHigh = data?.predictions?.find((p: any) => p.type === 'H') || { t: '08:42 AM', v: '3.2' };
-  const nextLow = data?.predictions?.find((p: any) => p.type === 'L') || { t: '02:18 PM', v: '-0.1' };
+  type TidePrediction = { t: string; v: string; type: string };
+  const nextHigh = data?.predictions?.find((p: TidePrediction) => p.type === 'H') || { t: '08:42 AM', v: '3.2' };
+  const nextLow = data?.predictions?.find((p: TidePrediction) => p.type === 'L') || { t: '02:18 PM', v: '-0.1' };
 
   const formatTime = (timeStr: string) => {
     if (timeStr.includes('-')) {

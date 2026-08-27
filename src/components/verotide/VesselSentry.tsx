@@ -17,7 +17,7 @@ const VesselSentry = () => {
   const markers = useRef<{ [mmsi: number]: mapboxgl.Marker }>({});
   const ghostMarkers = useRef<mapboxgl.Marker[]>([]);
   
-  const [useLiveFeed, setUseLiveFeed] = useState(true);
+  const useLiveFeed = true;
   const [connectionStatus, setConnectionStatus] = useState('INIT');
   const [vesselCount, setVesselCount] = useState(0);
 
@@ -68,11 +68,11 @@ const VesselSentry = () => {
 
     const apiKey = process.env.NEXT_PUBLIC_AIS_KEY;
     if (!apiKey) {
-      setConnectionStatus('KEY_ERR');
+      queueMicrotask(() => setConnectionStatus('KEY_ERR'));
       return;
     }
 
-    setConnectionStatus('SYNCING');
+    queueMicrotask(() => setConnectionStatus('SYNCING'));
     socket.current = new WebSocket("wss://stream.aisstream.io/v0/stream");
 
     socket.current.onopen = () => {

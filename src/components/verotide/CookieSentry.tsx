@@ -1,17 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { setCookie, getCookie } from 'cookies-next';
 
 const CookieSentry = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const consent = getCookie('VERO_TACTICAL_CONSENT');
-    if (!consent) {
-      setIsVisible(true);
-    }
-  }, []);
+  const [isVisible, setIsVisible] = useState(
+    () => typeof window !== 'undefined' && !getCookie('VERO_TACTICAL_CONSENT')
+  );
 
   const handleAccept = () => {
     setCookie('VERO_TACTICAL_CONSENT', 'GRANTED_FULL', { maxAge: 60 * 60 * 24 * 400 });

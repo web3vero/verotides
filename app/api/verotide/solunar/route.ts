@@ -25,7 +25,6 @@ export async function GET(request: Request) {
 
   // Solunar major periods: 2-hour windows centered on moonrise and moon transit (overhead/underfoot)
   // Minor periods: 1-hour windows centered on moonset and opposite transit
-  const moonPos = SunCalc.getMoonPosition(now, lat, lon);
 
   // Estimate moon transit (overhead) — time when moon is highest in sky today
   // SunCalc doesn't give transit directly; approximate from rise/set midpoint
