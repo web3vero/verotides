@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getGuideBySlug, getAllGuides } from '@/lib/verotide/guides';
 import AdSenseBlock from '@/components/verotide/AdSenseBlock';
@@ -113,10 +114,12 @@ export default async function GuidePage({ params }: PageProps) {
       <header className="px-4 pt-5 pb-5 md:px-8 md:pt-8 md:pb-7 w-full flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-primary/30 gap-3 md:gap-6">
         <div className="flex items-center gap-4 min-w-0">
           <Link href="/" className="flex items-center gap-4 min-w-0 hover:opacity-95 transition-opacity">
-            <img 
-              src="/globe.svg" 
-              alt="Verotides Logo" 
-              className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0" 
+            <Image
+              src="/globe.svg"
+              alt="Verotides Logo"
+              width={80}
+              height={80}
+              className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0"
             />
             <div className="min-w-0">
               <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
@@ -155,10 +158,13 @@ export default async function GuidePage({ params }: PageProps) {
             {/* Featured Image */}
             {guide.metadata.image && (
               <div className="w-full relative border-2 border-primary/20 rounded-xl overflow-hidden mb-8 aspect-[21/9] bg-zinc-950 flex items-center justify-center">
-                <img 
-                  src={guide.metadata.image} 
+                <Image
+                  src={guide.metadata.image}
                   alt={guide.metadata.title}
-                  className="w-full h-full object-cover filter brightness-[0.85] contrast-[1.05] grayscale-[15%] transition-transform duration-500"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 66vw, 100vw"
+                  className="object-cover filter brightness-[0.85] contrast-[1.05] grayscale-[15%] transition-transform duration-500"
                 />
                 {/* CRT Screen scanline effect for images */}
                 <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.15)_50%)] bg-[length:100%_4px] opacity-35 mix-blend-overlay z-10" />
