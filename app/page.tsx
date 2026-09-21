@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import DashboardShell from '@/components/verotide/DashboardShell';
 import { getAllGuides } from '@/lib/verotide/guides';
 
@@ -11,10 +12,13 @@ export default function Home() {
       {/* Global Header */}
       <header className="px-4 pt-5 pb-5 md:px-8 md:pt-8 md:pb-7 w-full flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-primary/30 gap-3 md:gap-6">
         <div className="flex items-center gap-4 min-w-0">
-          <img 
-            src="/globe.svg" 
-            alt="Verotides Logo" 
-            className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0" 
+          <Image
+            src="/globe.svg"
+            alt="Verotides Logo"
+            width={80}
+            height={80}
+            priority
+            className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0"
           />
           <div className="min-w-0">
             <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none">

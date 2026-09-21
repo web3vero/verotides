@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "Verotides",
     images: [
       {
-        url: "https://verotides.com/og_image.png",
+        url: "https://verotides.com/og_image.jpg",
         width: 1200,
         height: 630,
         alt: "Verotides Coastal Intelligence Hub Terminal",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "🌊 Verotides | Live Vero Beach Tides & Coastal Utilities 🎣",
     description: "Real-time tides, live AIS vessel tracking, solunar charts, beach cams, and bridge alerts for Vero Beach, FL. 【LIVE】",
-    images: ["https://verotides.com/og_image.png"],
+    images: ["https://verotides.com/og_image.jpg"],
   },
   other: {
     "fediverse:creator": "@verotides@mastodon.social",

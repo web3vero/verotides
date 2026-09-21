@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAllGuides } from '@/lib/verotide/guides';
 
 export const metadata = {
@@ -16,10 +17,12 @@ export default function GuidesPage() {
       <header className="px-4 pt-5 pb-5 md:px-8 md:pt-8 md:pb-7 w-full flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-primary/30 gap-3 md:gap-6">
         <div className="flex items-center gap-4 min-w-0">
           <Link href="/" className="flex items-center gap-4 min-w-0 hover:opacity-95 transition-opacity">
-            <img 
-              src="/globe.svg" 
-              alt="Verotides Logo" 
-              className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0" 
+            <Image
+              src="/globe.svg"
+              alt="Verotides Logo"
+              width={80}
+              height={80}
+              className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0"
             />
             <div className="min-w-0">
               <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
@@ -84,10 +87,12 @@ export default function GuidesPage() {
               >
                 {guide.image && (
                   <div className="w-full h-44 relative overflow-hidden bg-zinc-950 border-b border-primary/10">
-                    <img 
-                      src={guide.image} 
-                      alt={guide.title} 
-                      className="w-full h-full object-cover filter brightness-[0.85] contrast-[1.05] grayscale-[10%] group-hover:scale-103 transition-transform duration-300"
+                    <Image
+                      src={guide.image}
+                      alt={guide.title}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover filter brightness-[0.85] contrast-[1.05] grayscale-[10%] group-hover:scale-103 transition-transform duration-300"
                     />
                     {/* CRT Scanline overlay */}
                     <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.15)_50%)] bg-[length:100%_4px] opacity-25 mix-blend-overlay z-10" />

@@ -99,19 +99,19 @@ Real-time coastal intelligence for Vero Beach:
 We have generated high-resolution assets and saved them directly in the workspace.
 
 ### 🖼️ Profile Picture (PFP)
-- **Local Workspace Path**: [twitter_pfp.png](file:///home/mike/Projects/Verotides/public/twitter_pfp.png)
+- **Local Workspace Path**: [twitter_pfp.jpg](file:///home/mike/Projects/Verotides/public/twitter_pfp.jpg)
 - **Style**: High-contrast neon-green radar dial inside a CRT bezel, with compass angles, tidal wave swells, central VT Base indicator, and coordinates.
 
-![Profile Picture](file:///home/mike/Projects/Verotides/public/twitter_pfp.png)
+![Profile Picture](file:///home/mike/Projects/Verotides/public/twitter_pfp.jpg)
 
 ### 🗺️ Header Banner
-- **Local Workspace Path**: [twitter_banner.png](file:///home/mike/Projects/Verotides/public/twitter_banner.png)
+- **Local Workspace Path**: [twitter_banner.jpg](file:///home/mike/Projects/Verotides/public/twitter_banner.jpg)
 - **Style**: Wide 1500x500 panoramic command panel displaying a glowing wireframe map of the Vero Beach coast, ocean tide curves, wave frequency sweeps, and a live status monitor.
 
-![Header Banner](file:///home/mike/Projects/Verotides/public/twitter_banner.png)
+![Header Banner](file:///home/mike/Projects/Verotides/public/twitter_banner.jpg)
 
 ### 🚀 Pinned Tweet Launch Graphic (16:9)
-- **Local Workspace Path**: [twitter_launch_post.png](file:///home/mike/Projects/Verotides/public/twitter_launch_post.png)
+- **Local Workspace Path**: [twitter_launch_post.jpg](file:///home/mike/Projects/Verotides/public/twitter_launch_post.jpg)
 - **Style**: 16:9 post graphic designed to look like a physical CRT terminal monitor booting up. Displays 'SYSTEM BOOT: ONLINE', 'Vero Beach South Node [27.6386 N, 80.3973 W]', local radar grids, and analog dial instrumentation.
 
-![Launch Graphic](file:///home/mike/Projects/Verotides/public/twitter_launch_post.png)
+![Launch Graphic](file:///home/mike/Projects/Verotides/public/twitter_launch_post.jpg)
