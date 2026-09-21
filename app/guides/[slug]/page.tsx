@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   const imageUrl = guide.metadata.image 
     ? `https://verotides.com${guide.metadata.image}`
-    : 'https://verotides.com/og_image.png';
+    : 'https://verotides.com/og_image.jpg';
 
   return {
     title: `🌊 ${guide.metadata.title} | Verotides Guides 🎣`,
@@ -79,7 +79,7 @@ export default async function GuidePage({ params }: PageProps) {
 
   const imageUrl = guide.metadata.image 
     ? `https://verotides.com${guide.metadata.image}`
-    : 'https://verotides.com/og_image.png';
+    : 'https://verotides.com/og_image.jpg';
 
   const schema = {
     "@context": "https://schema.org",
