@@ -1,16 +1,18 @@
 import { MetadataRoute } from 'next';
 import { getAllGuides } from '@/lib/verotide/guides';
 import { upcomingMonths } from '@/lib/verotide/months';
+import { indexableCams } from '@/lib/verotide/cams';
 
 const BASE = 'https://verotides.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // Google discards a lastmod that changes on every request, so use a fixed date and bump it only
+  // when the content of these pages really changes. Monthly tide pages omit it (data, not edits).
+  const CONTENT_UPDATED = new Date('2026-09-30');
 
   // Rolling 6-month tide calendar URLs, built with the shared NY-timezone helper (see months.ts).
   const monthlyTideUrls = upcomingMonths(6).map((m) => ({
     url: `${BASE}/tides/${m.slug}`,
-    lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
@@ -18,55 +20,67 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticUrls: MetadataRoute.Sitemap = [
     {
       url: BASE,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'hourly',
       priority: 1.0,
     },
     {
       url: `${BASE}/tides`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'hourly',
       priority: 0.9,
     },
     {
       url: `${BASE}/fishing`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'daily',
       priority: 0.85,
     },
     {
       url: `${BASE}/weather`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'hourly',
       priority: 0.85,
     },
     {
       url: `${BASE}/vessels`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'hourly',
       priority: 0.8,
     },
     {
       url: `${BASE}/bridges`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'weekly',
       priority: 0.7,
     },
     {
       url: `${BASE}/spoil-islands`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'weekly',
       priority: 0.75,
     },
     {
+      url: `${BASE}/cams`,
+      lastModified: CONTENT_UPDATED,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE}/about`,
+      lastModified: CONTENT_UPDATED,
+      changeFrequency: 'monthly',
+      priority: 0.4,
+    },
+    {
       url: `${BASE}/privacy`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
     {
       url: `${BASE}/guides`,
-      lastModified: now,
+      lastModified: CONTENT_UPDATED,
       changeFrequency: 'daily',
       priority: 0.8,
     },
@@ -74,10 +88,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const guideUrls = getAllGuides().map(guide => ({
     url: `${BASE}/guides/${guide.slug}`,
-    lastModified: now,
+    lastModified: CONTENT_UPDATED,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
-  return [...staticUrls, ...monthlyTideUrls, ...guideUrls];
+  // Watch pages for indexable cams only (link-out cams have no page of their own).
+  const camUrls = indexableCams().map((cam) => ({
+    url: `${BASE}/cams/${cam.slug}`,
+    lastModified: CONTENT_UPDATED,
+    changeFrequency: 'daily' as const,
+    priority: 0.75,
+  }));
+
+  return [...staticUrls, ...monthlyTideUrls, ...guideUrls, ...camUrls];
 }

@@ -102,8 +102,14 @@ export default function RootLayout({
         "@type": "Organization",
         "@id": "https://verotides.com/#organization",
         "name": "Verotides",
+        // Spelling variants people search for; helps Google tie them to this one entity.
+        "alternateName": ["Vero Tides", "VeroTides", "verotides.com"],
         "url": "https://verotides.com",
-        "logo": "https://verotides.com/globe.svg",
+        "logo": "https://verotides.com/twitter_pfp.png",
+        "description": "Independent Vero Beach, FL information site: tide predictions, fishing times, marine weather, vessel tracking and bridge status.",
+        "areaServed": { "@type": "City", "name": "Vero Beach" },
+        // Only list profiles that are confirmed live; add Mastodon/YouTube/etc. here once verified.
+        "sameAs": ["https://x.com/Vero_Tides"],
         "contactPoint": {
           "@type": "ContactPoint",
           "email": "ads@verotides.com",

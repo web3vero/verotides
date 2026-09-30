@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getAllGuides } from '@/lib/verotide/guides';
 import { upcomingMonths } from '@/lib/verotide/months';
+import { indexableCams } from '@/lib/verotide/cams';
 
 // force-static: this file is generated once at build time, NOT per request.
 // That is why the "as of" date below is the build date, and why we never call it "live".
@@ -21,6 +22,11 @@ export async function GET() {
     .map((m) => `- [Tide chart, ${m.label}](${SITE}/tides/${m.slug}) - Full-month high/low tide table for both stations.`)
     .join('\n');
 
+  // One line per indexable cam page, built from the same data file the pages use.
+  const cams = indexableCams()
+    .map((c) => `- [${c.name}](${SITE}/cams/${c.slug}) - Image from ${c.operator}, with Vero Beach tide and sun times. Verotides does not host the image.`)
+    .join('\n');
+
   const content = `# Verotides (verotides.com)
 
 > Verotides is an independent local utility site for Vero Beach and Sebastian Inlet on Florida's Treasure Coast. It republishes tide predictions, weather, solunar fishing times, vessel positions and bridge information from public sources, plus written boating and fishing guides.
@@ -35,10 +41,19 @@ ${months}
 ## Conditions and tools
 
 - [Fishing and solunar](${SITE}/fishing) - Solunar major/minor periods and moon phase computed locally from astronomical formulas. A planning aid, not a guarantee of fish activity.
-- [Weather and beach conditions](${SITE}/weather) - Wind, waves, water temperature and UV from NOAA and National Weather Service sources, with webcams.
+- [Weather and beach conditions](${SITE}/weather) - Wind, waves, water temperature and UV from NOAA and National Weather Service sources.
 - [Vessel tracking](${SITE}/vessels) - AIS vessel positions around the Indian River Lagoon and nearby Atlantic waters, via AISStream. Not for navigation.
 - [Bridge status](${SITE}/bridges) - Notes on the Barber (SR-60), 17th Street (SR-656) and Wabasso (SR-510) bridges, including the FDOT 17th Street rehabilitation project. Check FDOT for official closures.
 - [Spoil islands](${SITE}/spoil-islands) - Overview of recreational spoil islands in the Indian River Lagoon.
+
+## About
+
+- [About Verotides](${SITE}/about) - What the site is, where the data comes from, and a note that Verotides is an information site not affiliated with any restaurant or other business.
+
+## Cams
+
+- [Cams hub](${SITE}/cams) - Satellite, radar and offshore buoy images plus credited link-outs to local beach and inlet webcams. Third-party cameras are not embedded or recorded.
+${cams}
 
 ## Guides
 
@@ -48,6 +63,7 @@ ${guides}
 
 - Tides: NOAA CO-OPS (tidesandcurrents.noaa.gov), stations 8722125 and 8722004. NOAA data is not relicensed by Verotides.
 - Weather: NOAA and National Weather Service.
+- Cam images: NOAA NESDIS (GOES-19), National Weather Service (KMLB radar), NOAA NDBC (buoy 41009). Other cams belong to their operators and are linked, not hosted.
 - Vessels: AISStream.io.
 - Bridges: Florida Department of Transportation (FDOT).
 - Fishing regulations: Florida Fish and Wildlife Conservation Commission (myfwc.com) is authoritative.

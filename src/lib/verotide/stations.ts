@@ -14,7 +14,9 @@ export const STATIONS = {
 };
 
 export const WEATHER_GRIDS = {
-  veroBeach: { office: 'MLB', x: 50, y: 78 },  // Melbourne NWS office
+  // Verified 2026-09-30 via api.weather.gov/points/27.6386,-80.3973 -> MLB 68,33 (zone FLZ154, Vero Beach).
+  // The old 50,78 was a different part of Brevard County. (Currently unreferenced; kept correct for future use.)
+  veroBeach: { office: 'MLB', x: 68, y: 33 },  // Melbourne NWS office
 };
 
 export const FWC_REGIONS = {
