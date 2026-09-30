@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Verotides Coastal Intelligence Hub',
-  description: 'Privacy Policy and Cookie Disclosure for Verotides.com. Learn how we collect data, use cookies, and comply with GDPR/AdSense guidelines.',
-  keywords: 'Verotides privacy policy, cookies disclosure, GDPR consent, Google AdSense privacy, coastal utility privacy, Vero Beach',
-  alternates: { canonical: 'https://verotides.com/privacy' },
+  // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
+  title: { absolute: "Privacy Policy | Verotides" },
+  description: "How Verotides.com collects data, uses cookies and handles advertising consent.",
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {

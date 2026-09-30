@@ -1,8 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getGuideBySlug, getAllGuides } from '@/lib/verotide/guides';
 import AdSenseBlock from '@/components/verotide/AdSenseBlock';
+import { JsonLd, breadcrumbList, ORGANIZATION_ID } from '@/components/verotide/JsonLd';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -25,13 +27,14 @@ export async function generateMetadata({ params }: PageProps) {
     : 'https://verotides.com/og_image.png';
 
   return {
-    title: `🌊 ${guide.metadata.title} | Verotides Guides 🎣`,
-    description: `${guide.metadata.description} Read the full article on verotides.com. 【GUIDE】`,
+    // absolute: the brand is appended here so the layout template does not double it
+    title: { absolute: `${guide.metadata.title} | Verotides` },
+    description: guide.metadata.description,
     alternates: {
       canonical: `https://verotides.com/guides/${slug}`,
     },
     openGraph: {
-      title: `🌊 ${guide.metadata.title} | Verotides Guides 🎣`,
+      title: `${guide.metadata.title} | Verotides`,
       description: guide.metadata.description,
       url: `https://verotides.com/guides/${slug}`,
       type: "article",
@@ -48,7 +51,7 @@ export async function generateMetadata({ params }: PageProps) {
     },
     twitter: {
       card: "summary_large_image",
-      title: `🌊 ${guide.metadata.title} | Verotides Guides 🎣`,
+      title: `${guide.metadata.title} | Verotides`,
       description: guide.metadata.description,
       images: [imageUrl],
     }
@@ -80,48 +83,60 @@ export default async function GuidePage({ params }: PageProps) {
     ? `https://verotides.com${guide.metadata.image}`
     : 'https://verotides.com/og_image.png';
 
+  const pageUrl = `https://verotides.com/guides/${slug}`;
+
+  // One @graph: the article itself plus its breadcrumb trail.
+  // author/publisher point at the Organization declared once in app/layout.tsx (by @id),
+  // so every guide resolves to the same publisher entity.
+  // The guides carry a single frontmatter date, so dateModified equals datePublished until a
+  // guide gets a real "updated" field; bump it there when content changes.
   const schema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": guide.metadata.title,
-    "description": guide.metadata.description,
-    "image": imageUrl,
-    "datePublished": guide.metadata.date,
-    "author": {
-      "@type": "Organization",
-      "name": "Verotides Coastal Intelligence",
-      "url": "https://verotides.com"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Verotides",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://verotides.com/globe.svg"
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://verotides.com/guides/${slug}`
-    }
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${pageUrl}#article`,
+        "headline": guide.metadata.title,
+        "description": guide.metadata.description,
+        "image": imageUrl,
+        "datePublished": guide.metadata.date,
+        "dateModified": guide.metadata.date,
+        "inLanguage": "en-US",
+        "author": { "@id": ORGANIZATION_ID },
+        "publisher": { "@id": ORGANIZATION_ID },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": pageUrl },
+        ...(guide.metadata.tags.length > 0 ? { "keywords": guide.metadata.tags.join(', ') } : {}),
+      },
+      // Matches the visible breadcrumb row on the page (Home > Guides > this article).
+      breadcrumbList([
+        { name: "Home", path: "/" },
+        { name: "Guides", path: "/guides" },
+        { name: guide.metadata.title },
+      ]),
+    ],
   };
 
   return (
     <main className="min-h-screen flex flex-col bg-black overflow-x-hidden">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <JsonLd data={schema} />
       {/* Global Header */}
       <header className="px-4 pt-5 pb-5 md:px-8 md:pt-8 md:pb-7 w-full flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-primary/30 gap-3 md:gap-6">
         <div className="flex items-center gap-4 min-w-0">
           <Link href="/" className="flex items-center gap-4 min-w-0 hover:opacity-95 transition-opacity">
-            <img 
-              src="/globe.svg" 
-              alt="Verotides Logo" 
-              className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0" 
+            {/* SVG logo: next/image does not optimize SVGs, so `unoptimized` serves it as-is.
+                width/height reserve space (prevents layout shift); CSS classes keep the real size. */}
+            <Image
+              src="/globe.svg"
+              alt="Verotides logo"
+              width={80}
+              height={80}
+              unoptimized
+              className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0"
             />
             <div className="min-w-0">
-              <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
+              <div className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
                 VEROTIDES<span className="flicker">.COM</span>
-              </h1>
+              </div>
               <p className="text-[10px] md:text-xs opacity-60 font-mono tracking-tight md:tracking-[0.18em] mt-2 uppercase truncate">
                 Coastal Intelligence &amp; Utilities — Vero Beach, FL
               </p>
@@ -155,10 +170,16 @@ export default async function GuidePage({ params }: PageProps) {
             {/* Featured Image */}
             {guide.metadata.image && (
               <div className="w-full relative border-2 border-primary/20 rounded-xl overflow-hidden mb-8 aspect-[21/9] bg-zinc-950 flex items-center justify-center">
-                <img 
-                  src={guide.metadata.image} 
-                  alt={guide.metadata.title}
-                  className="w-full h-full object-cover filter brightness-[0.85] contrast-[1.05] grayscale-[15%] transition-transform duration-500"
+                {/* Hero image: `fill` stretches it to the relative, aspect-ratio container above;
+                    `sizes` tells the browser the rendered width (2/3 of a max-w-7xl grid on desktop)
+                    so it downloads a right-sized file; `priority` preloads it since it is the LCP element. */}
+                <Image
+                  src={guide.metadata.image}
+                  alt={`${guide.metadata.title} - cover image`}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 66vw, 100vw"
+                  className="object-cover filter brightness-[0.85] contrast-[1.05] grayscale-[15%] transition-transform duration-500"
                 />
                 {/* CRT Screen scanline effect for images */}
                 <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.15)_50%)] bg-[length:100%_4px] opacity-35 mix-blend-overlay z-10" />

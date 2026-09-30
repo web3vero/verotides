@@ -10,5 +10,8 @@ export async function GET() {
     info: 'Indian River County GIS Portal',
     url: url,
     note: 'Address-based routing requires specific ESRI FeatureLayer query.'
+  }, {
+    // Static placeholder payload: safe to cache for a day.
+    headers: { 'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=86400' },
   });
 }

@@ -9,7 +9,11 @@ export async function GET(request: Request) {
 
   try {
     const data = getSolunarData(now, lat, lon);
-    return NextResponse.json(data);
+    // Pure math (suncalc) but keyed on the current time, so keep the window short. 5 min is
+    // imperceptible for lunar/solar positions and collapses repeat hits onto the CDN.
+    return NextResponse.json(data, {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=900' },
+    });
   } catch {
     return NextResponse.json({ error: 'Failed to calculate solunar data' }, { status: 500 });
   }

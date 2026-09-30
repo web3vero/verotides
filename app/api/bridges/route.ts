@@ -16,12 +16,14 @@ const today = new Date().toISOString().split('T')[0]
 function get17thStStatus(): Pick<BridgeEntry, 'status' | 'color' | 'desc' | 'source' | 'sourceUrl'> {
   const now = new Date()
   const rehabStart = new Date('2023-01-01')
-  const rehabEnd = new Date('2028-12-31')
+  // Original FDOT estimate was 2028, but FDOT moved completion up to fall 2026 (Vero News, Oct 2025;
+  // ~98% complete Aug 2026). After this date the feed reports the span as clear. Re-verify against FDOT D4.
+  const rehabEnd = new Date('2026-12-31')
   if (now >= rehabStart && now <= rehabEnd) {
     return {
       status: 'RESTRICTED',
       color: 'red',
-      desc: 'MAJOR REHAB 2023–2028 (Alma Lee Loy Bridge). One lane alternating 24/7 with flagging. Expect 5–15 min delays peak hours. Use Barber or Wabasso as alternates.',
+      desc: 'East-end rehabilitation (started Sept 2023) was about 98% complete as of Aug 2026; single-lane closures may occur as needed. Check FDOT District 4 for current closures. Barber and Wabasso are alternates.',
       source: 'construction',
       sourceUrl: FDOT_D4_URL,
     }
@@ -52,10 +54,10 @@ function buildBridges(): BridgeEntry[] {
       lastVerified: today,
     },
     {
-      name: 'WABASSO (CR_510)',
+      name: 'WABASSO (SR_510)',
       status: 'OPEN_CLEAR',
       color: 'yellow',
-      desc: 'Fixed bridge — northern barrier island crossing via CR-510. 2 lanes, no restrictions. Best alternate while 17th St is under construction.',
+      desc: 'Fixed bridge — northern barrier island crossing via SR-510. 2 lanes, no restrictions. A good alternate while 17th St has lane restrictions.',
       source: 'fixed-span',
       lastVerified: today,
       sourceUrl: 'https://verotides.com',

@@ -1,14 +1,19 @@
 import type { Metadata } from 'next';
+import { breadcrumbList } from '@/components/verotide/JsonLd';
 
 export const metadata: Metadata = {
-  title: '🏕️ Indian River Spoil Islands Camping Guide | Vero Beach 🏕️',
-  description: '【CAMPING GUIDE】 Primitive recreation guide to the Indian River Lagoon spoil islands in Vero Beach & Sebastian, FL. Free camping maps, rules, and GPS coordinates! »»',
-  keywords: 'Indian River Lagoon camping, spoil islands Vero Beach, kayak camping Florida, spoil island coordinates, IR2 island, IR13 island, Intracoastal camping, free island camping Florida',
-  alternates: { canonical: 'https://verotides.com/spoil-islands' },
+  // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
+  title: { absolute: "Indian River Lagoon Spoil Island Camping & Map | Verotides" },
+  description: "Spoil island camping guide for Vero Beach and Sebastian: island list, GPS coordinates, access by boat or kayak, and camping rules.",
+  alternates: { canonical: '/spoil-islands' },
   openGraph: {
-    title: '🏕️ Indian River Spoil Islands Camping & Recreation Guide | Verotides 🏕️',
-    description: 'Free, primitive camping guide to the Indian River Lagoon spoil islands in Vero Beach and Sebastian, FL. Navigation tips, rules, and coordinates! 【FREE】',
-    url: 'https://verotides.com/spoil-islands',
+    title: "Indian River Lagoon Spoil Island Camping & Map | Verotides",
+    description: "Spoil island camping guide for Vero Beach and Sebastian: island list, GPS coordinates, access by boat or kayak, and camping rules.",
+    url: '/spoil-islands',
+    siteName: 'Verotides',
+    type: 'website',
+    // A child openGraph replaces the layout's whole openGraph object, so the image must be repeated here.
+    images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal conditions' }],
   },
 };
 
@@ -19,7 +24,7 @@ const ISLANDS = [
     coordinates: '27.7533° N, -80.4281° W',
     amenities: 'Picnic tables, fire ring, beach landing',
     difficulty: 'Easy (Kayak friendly)',
-    desc: 'Located just south of the Wabasso Causeway (CR-510) bridge on the east side of the Intracoastal Waterway. It features a wide sand spit for easy kayak/boat landings, picnic shelter, and fire rings.',
+    desc: 'Located just south of the Wabasso Causeway (SR-510) bridge on the east side of the Intracoastal Waterway. It features a wide sand spit for easy kayak/boat landings, picnic shelter, and fire rings.',
     strategy: 'Perfect for beginners and families. Launch from the Wabasso Causeway Park boat ramp for a short 10-minute paddle.'
   },
   {
@@ -88,23 +93,7 @@ const schema = {
       "description": "Primitive camping and recreation guide for the Intracoastal spoil islands of Vero Beach and Sebastian, FL.",
       "url": "https://verotides.com/spoil-islands",
       "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://verotides.com"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Spoil Islands",
-            "item": "https://verotides.com/spoil-islands"
-          }
-        ]
-      }
+      "breadcrumb": breadcrumbList([{ name: "Home", path: "/" }, { name: "Spoil Islands", path: "/spoil-islands" }])
     },
     {
       "@type": "ItemList",
@@ -136,7 +125,7 @@ export default function SpoilIslandsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       
       <h1 className="text-3xl md:text-5xl font-black glow-text tracking-tighter italic mb-4 uppercase">
-        Lagoon Spoil Islands
+        Indian River Lagoon Spoil Islands: Vero Beach Camping Map
       </h1>
       <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-8">
         Intracoastal Recreation Guide · Indian River County ·{' '}

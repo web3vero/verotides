@@ -81,7 +81,11 @@ export async function GET() {
     if (!res.ok) throw new Error(`NHC ${res.status}`);
 
     const xml = await res.text();
-    return NextResponse.json(parseNhcRss(xml));
+    // Storm status is safety-relevant, so keep the CDN window modest (5 min) rather than the
+    // 1h the upstream fetch uses; SWR lets users still get an instant (slightly stale) answer.
+    return NextResponse.json(parseNhcRss(xml), {
+      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=1800' },
+    });
   } catch {
     return NextResponse.json({
       level: 0,
@@ -89,6 +93,10 @@ export async function GET() {
       storms: [],
       lastUpdated: new Date().toISOString(),
       statusCode: 'FEED_ERR',
-    } satisfies NhcStormStatus);
+    } satisfies NhcStormStatus, {
+      // This fallback is HTTP 200, so without an explicit header a CDN could cache the error
+      // state. Keep it very short-lived so recovery is picked up quickly.
+      headers: { 'Cache-Control': 'public, s-maxage=30' },
+    });
   }
 }

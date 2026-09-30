@@ -2,16 +2,21 @@ import type { Metadata } from 'next';
 import FishingClient from './FishingClient';
 import { getSolunarData, getWeeklySolunarData } from '@/lib/verotide/data';
 import React from 'react';
+import { breadcrumbList } from '@/components/verotide/JsonLd';
 
 export const metadata: Metadata = {
-  title: '🎣 Vero Beach & Sebastian Inlet Fishing Times | Live Solunar Charts 🎣',
-  description: '【BITE WINDOWS】 Discover today\'s best fishing times for Vero Beach & Sebastian Inlet, FL! 🎣 Solunar major & minor feeding periods, moon phases, and local angler guides. Updated daily! »»',
-  keywords: 'Vero Beach fishing, Sebastian Inlet fishing, solunar chart Vero Beach, best fishing times Vero Beach, snook fishing Sebastian Inlet, bite times Indian River Lagoon, Vero Beach fishing report',
-  alternates: { canonical: 'https://verotides.com/fishing' },
+  // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
+  title: { absolute: "Vero Beach Fishing Times Today: Solunar Bite Chart | Verotides" },
+  description: "Best fishing times today for Vero Beach and Sebastian Inlet. Solunar major and minor periods, moon phase and local tide timing.",
+  alternates: { canonical: '/fishing' },
   openGraph: {
-    title: "🎣 Vero Beach & Sebastian Inlet Fishing Times — Today's Bite Times | Verotides 🎣",
-    description: 'Pre-rendered daily and weekly solunar charts, major/minor bite windows, and local fishing forecasts for Vero Beach and Sebastian Inlet, FL. 【LIVE 🌊 🎣】',
-    url: 'https://verotides.com/fishing',
+    title: "Vero Beach Fishing Times Today: Solunar Bite Chart | Verotides",
+    description: "Best fishing times today for Vero Beach and Sebastian Inlet. Solunar major and minor periods, moon phase and local tide timing.",
+    url: '/fishing',
+    siteName: 'Verotides',
+    type: 'website',
+    // A child openGraph replaces the layout's whole openGraph object, so the image must be repeated here.
+    images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal conditions' }],
   },
 };
 
@@ -42,23 +47,7 @@ export default async function FishingPage() {
         "description": "Daily solunar major and minor fishing periods, moon phase, and best bite times for Vero Beach, FL and Sebastian Inlet.",
         "url": "https://verotides.com/fishing",
         "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://verotides.com"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Fishing & Solunar",
-              "item": "https://verotides.com/fishing"
-            }
-          ]
-        }
+        "breadcrumb": breadcrumbList([{ name: "Home", path: "/" }, { name: "Fishing & Solunar", path: "/fishing" }])
       },
       {
         "@type": "FAQPage",

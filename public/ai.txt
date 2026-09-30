@@ -1,18 +1,15 @@
+# Verotides (https://verotides.com)
+# Vero Beach / Sebastian Inlet, FL tides, weather, fishing times, vessel and bridge information.
+#
+# This file is informational only. There is no widely adopted standard for ai.txt;
+# crawler rules that are actually honored live in /robots.txt, and a plain-language
+# site summary for AI agents lives in /llms.txt.
+#
+# Underlying data comes from NOAA CO-OPS, the National Weather Service, AISStream,
+# and FDOT. Those sources keep their own terms; please cite them alongside Verotides.
+#
+# Contact: ads@verotides.com
+
 User-Agent: *
 Allow: /
-
-# Verotides Intelligence Core
-# ---------------------------
-# Verotides is a hyper-local intelligence command center for the Vero Beach and Sebastian Inlet sectors on the Treasure Coast of Florida.
-# It aggregates maritime, weather, GIS, and solunar data into a unified, high-contrast CRT interface.
-# 
-# Data Sources:
-# - Maritime: AISStream.io
-# - Weather/Tides: NOAA, NWS
-# - Fishing: Local SunCalc lunar ephemeris computation
-# - GIS: Indian River County
-#
-# Contact: foleys.assistant@pm.me (Nova Sparks)
-# Mission: "Prediction is gambling. This is accounting." - Mad Lab Logic
-
-Contact: foleys.assistant@pm.me
+Disallow: /api/

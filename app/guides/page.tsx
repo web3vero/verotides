@@ -1,10 +1,20 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import Link from 'next/link';
 import { getAllGuides } from '@/lib/verotide/guides';
 
-export const metadata = {
-  title: "🌊 Verotides Coastal Guides | Vero Beach & Sebastian Inlet Info 🎣",
-  description: "Access our rich library of Vero Beach coastal guides. Detailed articles on Spoil Island camping, Sebastian Inlet snook fishing, drawbridge schedules, reef GPS coordinates, and boating safety. 【LOCAL GUIDES】",
+export const metadata: Metadata = {
+  title: { absolute: "Vero Beach Fishing, Boating & Lagoon Guides | Verotides" },
+  description: "Local guides for Vero Beach and Sebastian Inlet: snook fishing, artificial reefs, bridge schedules, spoil island camping and boating safety.",
+  alternates: { canonical: '/guides' },
+  openGraph: {
+    title: "Vero Beach Fishing, Boating & Lagoon Guides | Verotides",
+    description: "Local guides for Vero Beach and Sebastian Inlet: snook fishing, artificial reefs, bridge schedules, spoil island camping and boating safety.",
+    url: '/guides',
+    siteName: 'Verotides',
+    type: 'website',
+    images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal guides' }],
+  },
 };
 
 export default function GuidesPage() {
@@ -22,9 +32,9 @@ export default function GuidesPage() {
               className="h-16 w-16 md:h-20 md:w-20 drop-shadow-[0_0_15px_rgba(0,255,65,0.6)] flex-shrink-0" 
             />
             <div className="min-w-0">
-              <h1 className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
+              <div className="text-4xl md:text-6xl font-black glow-text tracking-tighter italic leading-none truncate">
                 VEROTIDES<span className="flicker">.COM</span>
-              </h1>
+              </div>
               <p className="text-[10px] md:text-xs opacity-60 font-mono tracking-tight md:tracking-[0.18em] mt-2 uppercase truncate">
                 Coastal Intelligence &amp; Utilities — Vero Beach, FL
               </p>
@@ -42,6 +52,11 @@ export default function GuidesPage() {
 
       {/* Main Container */}
       <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-8 md:px-8">
+        {/* Descriptive H1 (the brand block above is now a div so the page has exactly one H1) */}
+        <h1 className="text-2xl md:text-4xl font-black glow-text tracking-tighter italic mb-6 uppercase">
+          Vero Beach Coastal Guides
+        </h1>
+
         {/* Navigation Breadcrumb / Return Link */}
         <div className="mb-8">
           <Link 

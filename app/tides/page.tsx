@@ -1,17 +1,23 @@
 import type { Metadata } from 'next';
+import { upcomingMonths } from '@/lib/verotide/months';
 import TidesClient from './TidesClient';
 import { getTidePredictions, getWeeklyTidePredictions, TidePrediction } from '@/lib/verotide/data';
 import React from 'react';
+import { breadcrumbList, tideDataset, TIDE_STATIONS } from '@/components/verotide/JsonLd';
 
 export const metadata: Metadata = {
-  title: '🌊 Vero Beach & Sebastian Inlet Tide Charts | Live NOAA Predictions 🌊',
-  description: '【LIVE TIDES】 Check live high & low tide predictions for Vero Beach & Sebastian Inlet, FL! 🌊 🎣 Real-time water levels, heights, and daily tide charts. Updated 24/7. »»',
-  keywords: 'Vero Beach tides, Sebastian Inlet tides, tide chart Vero Beach, Sebastian Inlet high tide, Indian River tide times, Vero Beach fishing, Florida tide chart, high tide low tide Vero Beach',
-  alternates: { canonical: 'https://verotides.com/tides' },
+  // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
+  title: { absolute: "Vero Beach & Sebastian Inlet Tide Chart | Verotides" },
+  description: "Today's high and low tide times for Vero Beach and Sebastian Inlet, FL. NOAA predictions, 7-day outlook and monthly tide charts.",
+  alternates: { canonical: '/tides' },
   openGraph: {
-    title: '🌊 Vero Beach & Sebastian Inlet Tide Charts — Live NOAA Forecast | Verotides 🌊',
-    description: 'Pre-rendered NOAA tide charts and weekly high/low predictions for Vero Beach and Sebastian Inlet, FL. Updated live. 【LIVE 🌊 🎣】',
-    url: 'https://verotides.com/tides',
+    title: "Vero Beach & Sebastian Inlet Tide Chart | Verotides",
+    description: "Today's high and low tide times for Vero Beach and Sebastian Inlet, FL. NOAA predictions, 7-day outlook and monthly tide charts.",
+    url: '/tides',
+    siteName: 'Verotides',
+    type: 'website',
+    // A child openGraph replaces the layout's whole openGraph object, so the image must be repeated here.
+    images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal conditions' }],
   },
 };
 
@@ -95,50 +101,21 @@ export default async function TidesPage() {
         "description": "Pre-rendered live NOAA tide predictions for Vero Beach and Sebastian Inlet, FL — high and low tide times and heights.",
         "url": "https://verotides.com/tides",
         "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://verotides.com"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Tides",
-              "item": "https://verotides.com/tides"
-            }
-          ]
-        }
+        "breadcrumb": breadcrumbList([{ name: "Home", path: "/" }, { name: "Tides", path: "/tides" }])
       },
-      {
-        "@type": "Dataset",
-        "name": "Vero Beach NOAA Tide Gauge Predictions",
-        "description": "Daily high and low tide predictions for NOAA station 8722125 (Vero Beach, Intracoastal, FL).",
-        "url": "https://verotides.com/tides",
-        "provider": { "@type": "Organization", "name": "NOAA", "url": "https://tidesandcurrents.noaa.gov" },
-        "temporalCoverage": "7-day rolling forecast",
-        "spatialCoverage": {
-          "@type": "Place",
-          "name": "Vero Beach, Florida",
-          "geo": { "@type": "GeoCoordinates", "latitude": 27.6386, "longitude": -80.3973 }
-        }
-      },
-      {
-        "@type": "Dataset",
-        "name": "Sebastian Inlet NOAA Tide Gauge Predictions",
-        "description": "Daily high and low tide predictions for NOAA station 8722004 (Sebastian Inlet, FL).",
-        "url": "https://verotides.com/tides",
-        "provider": { "@type": "Organization", "name": "NOAA", "url": "https://tidesandcurrents.noaa.gov" },
-        "temporalCoverage": "7-day rolling forecast",
-        "spatialCoverage": {
-          "@type": "Place",
-          "name": "Sebastian Inlet, Florida",
-          "geo": { "@type": "GeoCoordinates", "latitude": 27.8603, "longitude": -80.4472 }
-        }
-      },
+      // Two Datasets, one per NOAA station, each with its own @id/url fragment.
+      // temporalCoverage is the real date span of the rows rendered on this page (ISO interval).
+      ...TIDE_STATIONS.map((station) => {
+        const dates = Object.keys(station.key === 'vero' ? groupedVero : groupedSebastian).sort();
+        return tideDataset({
+          station,
+          pageUrl: 'https://verotides.com/tides',
+          name: `${station.key === 'vero' ? 'Vero Beach' : 'Sebastian Inlet'} tide predictions, NOAA station ${station.id}`,
+          description: `Daily high and low tide times and heights (feet, MLLW) for NOAA station ${station.id}, ${station.label}, shown as a 7-day outlook. Source: NOAA CO-OPS predictions.`,
+          coverage: dates.length > 0 ? `${dates[0]}/${dates[dates.length - 1]}` : undefined,
+          dateModified: new Date().toISOString(),
+        });
+      }),
       {
         "@type": "FAQPage",
         "mainEntity": [
@@ -296,17 +273,7 @@ export default async function TidesPage() {
 
       {/* Monthly Directories links for crawlability */}
       {(() => {
-        const now = new Date();
-        const monthlyLinks = Array.from({ length: 6 }).map((_, idx) => {
-          const targetDate = new Date(now.getFullYear(), now.getMonth() + idx, 1);
-          const mName = targetDate.toLocaleDateString('en-US', { month: 'long', timeZone: 'America/New_York' });
-          const mSlug = mName.toLowerCase();
-          const year = targetDate.getFullYear();
-          return {
-            label: `${mName} ${year}`,
-            href: `/tides/${mSlug}-${year}`
-          };
-        });
+        const monthlyLinks = upcomingMonths(6).map((m) => ({ label: m.label, href: `/tides/${m.slug}` }));
 
         return (
           <section className="terminal-box p-6 rounded-xl border border-primary/20 bg-black/60 mt-10 font-mono">

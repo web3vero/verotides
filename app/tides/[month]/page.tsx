@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { getTidePredictions, TidePrediction, formatNoaaDate } from '@/lib/verotide/data';
 import React from 'react';
 import Link from 'next/link';
+import { JsonLd, breadcrumbList, tideDataset, TIDE_STATIONS, ORGANIZATION_ID } from '@/components/verotide/JsonLd';
 
 type PageParams = Promise<{ month: string }>;
 
@@ -17,6 +18,13 @@ interface ParsedMonth {
   year: number;
 }
 
+// Current calendar year as seen in Vero Beach (not the server's UTC clock).
+function currentYearET(): number {
+  return Number(
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric' }).format(new Date())
+  );
+}
+
 function parseMonthParam(param: string): ParsedMonth | null {
   const parts = param.toLowerCase().split('-');
   if (parts.length !== 2) return null;
@@ -27,7 +35,16 @@ function parseMonthParam(param: string): ParsedMonth | null {
   const monthIndex = MONTH_MAP[monthName];
   const year = parseInt(yearStr);
   
-  if (monthIndex === undefined || isNaN(year) || year < 2020 || year > 2040) {
+  // Only serve a sensible window (last year .. two years ahead); anything else is a 404.
+  // This stops crawlers from indexing endless empty/nonsense months like /tides/may-2039.
+  // The strict /^\d{4}$/ check also rejects junk like "2026abc" that parseInt would accept.
+  const nowYear = currentYearET();
+  if (
+    monthIndex === undefined ||
+    !/^\d{4}$/.test(yearStr) ||
+    year < nowYear - 1 ||
+    year > nowYear + 2
+  ) {
     return null;
   }
   
@@ -41,19 +58,34 @@ function parseMonthParam(param: string): ParsedMonth | null {
 export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
   const resolvedParams = await params;
   const parsed = parseMonthParam(resolvedParams.month);
-  
+
   if (!parsed) {
     return {
       title: 'Tide Chart Not Found',
+      robots: { index: false },
     };
   }
 
   const { monthName, year } = parsed;
+  // Always lowercase in the canonical, so /tides/December-2026 and /tides/december-2026 consolidate.
+  const path = `/tides/${resolvedParams.month.toLowerCase()}`;
+  // title.absolute skips the layout's "%s | Verotides" template so the brand is not doubled.
+  const title = `Vero Beach Tide Chart ${monthName} ${year} | Verotides`;
+  const description = `${monthName} ${year} high and low tide times and heights for Vero Beach and Sebastian Inlet, FL, from NOAA predictions.`;
+
   return {
-    title: `🌊 Vero Beach & Sebastian Inlet Tide Chart: ${monthName} ${year} 🌊`,
-    description: `【${monthName.toUpperCase()} ${year} TIDES】 Complete daily high and low tide calendars, times, and heights for Vero Beach & Sebastian Inlet, FL. NOAA predictions. Check now! »»`,
-    keywords: `Vero Beach tides ${monthName} ${year}, Sebastian Inlet tides ${monthName} ${year}, tide chart ${monthName} ${year}, Vero Beach high tide, Sebastian Inlet high tide`,
-    alternates: { canonical: `https://verotides.com/tides/${resolvedParams.month}` },
+    title: { absolute: title },
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title,
+      description,
+      url: path,
+      siteName: 'Verotides',
+      type: 'website',
+      // A child openGraph replaces the layout's whole openGraph object, so the image is repeated here.
+      images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal conditions' }],
+    },
   };
 }
 
@@ -111,6 +143,13 @@ export default async function MonthlyTidesPage({ params }: { params: PageParams 
     notFound();
   }
 
+  // Mixed-case URLs (December-2026) permanently redirect to the lowercase form (308),
+  // so there is only ever one indexable URL per month.
+  const slug = resolvedParams.month.toLowerCase();
+  if (resolvedParams.month !== slug) {
+    permanentRedirect(`/tides/${slug}`);
+  }
+
   const { monthName, monthIndex, year } = parsed;
 
   // Calculate start and end date for NOAA API
@@ -130,76 +169,50 @@ export default async function MonthlyTidesPage({ params }: { params: PageParams 
   const groupedVero = groupPredictionsByDate(veroData?.predictions || []);
   const groupedSebastian = groupPredictionsByDate(sebastianData?.predictions || []);
 
+  // ISO 8601 interval covering exactly this month, e.g. "2026-10-01/2026-10-31".
+  const mm = String(monthIndex + 1).padStart(2, '0');
+  const lastDay = String(end.getDate()).padStart(2, '0');
+  const coverage = `${year}-${mm}-01/${year}-${mm}-${lastDay}`;
+  const pageUrl = `https://verotides.com/tides/${slug}`;
+
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
         "name": `Vero Beach & Sebastian Inlet Tide Chart: ${monthName} ${year}`,
         "description": `NOAA tide chart predictions for Vero Beach and Sebastian Inlet, FL in ${monthName} ${year}.`,
-        "url": `https://verotides.com/tides/${resolvedParams.month}`,
-        "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
-        "breadcrumb": {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://verotides.com"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Tides",
-              "item": "https://verotides.com/tides"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": `${monthName} ${year}`,
-              "item": `https://verotides.com/tides/${resolvedParams.month}`
-            }
-          ]
-        }
+        "url": pageUrl,
+        "isPartOf": { "@type": "WebSite", "@id": "https://verotides.com/#website" },
+        "publisher": { "@id": ORGANIZATION_ID },
+        "breadcrumb": breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: "Tides", path: "/tides" },
+          { name: `${monthName} ${year}`, path: pageUrl },
+        ]),
       },
-      {
-        "@type": "Dataset",
-        "name": `Vero Beach NOAA Tide Gauge Predictions for ${monthName} ${year}`,
-        "description": `Complete monthly high and low tide predictions for NOAA station 8722125 (Vero Beach, Intracoastal, FL) during ${monthName} ${year}.`,
-        "url": `https://verotides.com/tides/${resolvedParams.month}`,
-        "provider": { "@type": "Organization", "name": "NOAA", "url": "https://tidesandcurrents.noaa.gov" },
-        "temporalCoverage": `${year}-${String(monthIndex + 1).padStart(2, '0')}`,
-        "spatialCoverage": {
-          "@type": "Place",
-          "name": "Vero Beach, Florida",
-          "geo": { "@type": "GeoCoordinates", "latitude": 27.6386, "longitude": -80.3973 }
-        }
-      },
-      {
-        "@type": "Dataset",
-        "name": `Sebastian Inlet NOAA Tide Gauge Predictions for ${monthName} ${year}`,
-        "description": `Complete monthly high and low tide predictions for NOAA station 8722004 (Sebastian Inlet, FL) during ${monthName} ${year}.`,
-        "url": `https://verotides.com/tides/${resolvedParams.month}`,
-        "provider": { "@type": "Organization", "name": "NOAA", "url": "https://tidesandcurrents.noaa.gov" },
-        "temporalCoverage": `${year}-${String(monthIndex + 1).padStart(2, '0')}`,
-        "spatialCoverage": {
-          "@type": "Place",
-          "name": "Sebastian Inlet, Florida",
-          "geo": { "@type": "GeoCoordinates", "latitude": 27.8603, "longitude": -80.4472 }
-        }
-      }
+      // One Dataset per station; distinct @id/url; NOAA cited as source, no license claimed.
+      ...TIDE_STATIONS.map((station) =>
+        tideDataset({
+          station,
+          pageUrl,
+          name: `${station.key === 'vero' ? 'Vero Beach' : 'Sebastian Inlet'} tide predictions for ${monthName} ${year}, NOAA station ${station.id}`,
+          description: `High and low tide times and heights (feet, MLLW) for NOAA station ${station.id}, ${station.label}, for ${monthName} ${year}. Source: NOAA CO-OPS predictions.`,
+          coverage,
+        })
+      ),
     ]
   };
 
   return (
     <main className="min-h-screen bg-black p-4 md:p-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <JsonLd data={schema} />
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
           <h1 className="text-3xl md:text-5xl font-black glow-text tracking-tighter italic uppercase mb-1">
-            {monthName} {year} Tides
+            Vero Beach &amp; Sebastian Inlet Tide Chart: {monthName} {year}
           </h1>
           <p className="text-xs font-mono text-white/40 uppercase tracking-widest">
             Monthly Tide Chart predictions · Vero Beach &amp; Sebastian Inlet

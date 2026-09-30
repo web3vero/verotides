@@ -1,6 +1,6 @@
-'use client';
-
-import React from 'react';
+// Server component: no hooks, no event handlers, no browser APIs. The marquee scroll is
+// pure CSS (`animate-marquee`), so this ships as static HTML with zero client JS and the
+// JSON data below is no longer bundled into the client JavaScript.
 import intelligence from '@/data/verotide/node_intelligence.json';
 
 const IntelCrawler = () => {

@@ -1,15 +1,20 @@
 import type { Metadata } from 'next';
 import VesselsClient from './VesselsClient';
+import { breadcrumbList } from '@/components/verotide/JsonLd';
 
 export const metadata: Metadata = {
-  title: '🚢 Vero Beach Live Vessel Tracking | AIS Ship Map 🚢',
-  description: '【LIVE SHIPS】 Track marine traffic near Vero Beach, FL & the Indian River Lagoon. Real-time AIS ship map, vessel positions, speed vectors, and port arrivals! »»',
-  keywords: 'Vero Beach vessel tracking, AIS Vero Beach, ship tracking Indian River, live marine traffic Vero Beach, Vero Beach Inlet vessels, Florida maritime tracking, AIS map Indian River Lagoon',
-  alternates: { canonical: 'https://verotides.com/vessels' },
+  // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
+  title: { absolute: "Vero Beach Vessel Tracker: Live AIS Boat Map | Verotides" },
+  description: "Live AIS map of boats and ships near Vero Beach, FL and the Indian River Lagoon. Vessel positions, speed and heading.",
+  alternates: { canonical: '/vessels' },
   openGraph: {
-    title: '🚢 Vero Beach Live Vessel Tracking | AIS Ship Map | Verotides 🚢',
-    description: 'Real-time AIS ship tracking for Vero Beach, FL and the Indian River Lagoon. Live positions. 【LIVE】',
-    url: 'https://verotides.com/vessels',
+    title: "Vero Beach Vessel Tracker: Live AIS Boat Map | Verotides",
+    description: "Live AIS map of boats and ships near Vero Beach, FL and the Indian River Lagoon. Vessel positions, speed and heading.",
+    url: '/vessels',
+    siteName: 'Verotides',
+    type: 'website',
+    // A child openGraph replaces the layout's whole openGraph object, so the image must be repeated here.
+    images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal conditions' }],
   },
 };
 
@@ -20,23 +25,7 @@ const schema = {
   "description": "Real-time AIS vessel positions for Vero Beach, FL — Indian River Lagoon, Vero Beach Inlet, and nearby Atlantic waters.",
   "url": "https://verotides.com/vessels",
   "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://verotides.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Vessel Tracking",
-        "item": "https://verotides.com/vessels"
-      }
-    ]
-  },
+  "breadcrumb": breadcrumbList([{ name: "Home", path: "/" }, { name: "Vessel Tracking", path: "/vessels" }]),
   "about": {
     "@type": "Thing",
     "name": "AIS maritime vessel tracking",

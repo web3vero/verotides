@@ -1,15 +1,20 @@
 import type { Metadata } from 'next';
 import WeatherClient from './WeatherClient';
+import { breadcrumbList } from '@/components/verotide/JsonLd';
 
 export const metadata: Metadata = {
-  title: '🏖️ Vero Beach Beach Conditions | Wind, Waves & Ocean Report 🏖️',
-  description: '【LIVE WEATHER】 Real-time wind speed, wave heights, water temperature, and UV index for Vero Beach, FL. NOAA & NWS reports updated every 10 minutes! »»',
-  keywords: 'Vero Beach beach conditions, Vero Beach weather, ocean conditions Vero Beach, surf report Vero Beach, wind Vero Beach FL, wave height Atlantic Florida, NWS Vero Beach, beach report 32963',
-  alternates: { canonical: 'https://verotides.com/weather' },
+  // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
+  title: { absolute: "Vero Beach Surf & Beach Conditions Today | Verotides" },
+  description: "Live Vero Beach beach conditions: wave height, wind, water temperature and UV index. NOAA and NWS data updated every 10 minutes.",
+  alternates: { canonical: '/weather' },
   openGraph: {
-    title: '🏖️ Vero Beach Live Beach Conditions — Wind, Waves & Ocean | Verotides 🏖️',
-    description: 'Real-time wind, waves, UV, and water temperature for Vero Beach, FL. NOAA & NWS reports updated every 10 minutes! 【LIVE】',
-    url: 'https://verotides.com/weather',
+    title: "Vero Beach Surf & Beach Conditions Today | Verotides",
+    description: "Live Vero Beach beach conditions: wave height, wind, water temperature and UV index. NOAA and NWS data updated every 10 minutes.",
+    url: '/weather',
+    siteName: 'Verotides',
+    type: 'website',
+    // A child openGraph replaces the layout's whole openGraph object, so the image must be repeated here.
+    images: [{ url: '/og_image.png', width: 1200, height: 630, alt: 'Verotides Vero Beach coastal conditions' }],
   },
 };
 
@@ -20,23 +25,7 @@ const schema = {
   "description": "Live wind, wave height, water temperature, UV index, and beach conditions for Vero Beach, FL from NOAA and NWS. Updated every 10 minutes.",
   "url": "https://verotides.com/weather",
   "isPartOf": { "@type": "WebSite", "url": "https://verotides.com" },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://verotides.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Beach Conditions",
-        "item": "https://verotides.com/weather"
-      }
-    ]
-  },
+  "breadcrumb": breadcrumbList([{ name: "Home", path: "/" }, { name: "Beach Conditions", path: "/weather" }]),
   "about": {
     "@type": "Thing",
     "name": "Beach and ocean conditions",
@@ -65,7 +54,7 @@ export default function WeatherPage() {
     <main className="min-h-screen bg-black p-4 md:p-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <h1 className="text-3xl md:text-5xl font-black glow-text tracking-tighter italic mb-6 uppercase">
-        Vero Beach Beach Conditions
+        Vero Beach Surf &amp; Beach Conditions Today
       </h1>
       <p className="text-xs font-mono text-white/40 uppercase tracking-widest mb-8">
         Live NOAA · NWS · Wind · Waves · UV · Water temp · 32963 · Updated every 10 min

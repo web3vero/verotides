@@ -4,7 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieSentry from '@/components/verotide/CookieSentry';
-import CounterIntel from '@/components/verotide/CounterIntel';
+import SiteFooter from '@/components/verotide/SiteFooter';
 import AdSenseLoader from '@/components/verotide/AdSenseLoader';
 import SiteNav from '@/components/verotide/SiteNav';
 import "./globals.css";
@@ -19,9 +19,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Shared plain-text title/description. The emoji and bracket glyphs that used to live here
+// pushed titles past ~65 chars (Google truncates them) and read as spam in the SERP.
+const SITE_TITLE = "Vero Beach Tides, Fishing & Bridge Status | Verotides";
+const SITE_DESCRIPTION =
+  "Live Vero Beach, FL tide predictions, solunar fishing times, marine weather, vessel tracking and bridge status for the Indian River Lagoon. Updated continuously.";
+
 export const metadata: Metadata = {
-  title: "🌊 Verotides | Live Vero Beach Tides, AIS Tracking & Weather 🎣",
-  description: "Get real-time tides, live AIS vessel tracking, solunar fishing bite times, beach cams, and bridge alerts for Vero Beach, FL. Check the tide now! 【LIVE 🌊 🎣】",
+  // metadataBase lets every page below use relative URLs (canonical: "./")
+  metadataBase: new URL("https://verotides.com"),
+  // Pages supply a short title; the template appends the brand. `default` is the homepage title.
+  title: { default: SITE_TITLE, template: "%s | Verotides" },
+  description: SITE_DESCRIPTION,
   keywords: "Vero Beach, tides, AIS tracking, solunar, fishing, maritime intelligence, weather, Florida, Indian River Lagoon, 32963, bridge status, beach conditions",
   authors: [{ name: "Verotides", url: "https://verotides.com" }],
   creator: "Verotides",
@@ -34,15 +43,14 @@ export const metadata: Metadata = {
   },
   formatDetection: { telephone: false },
   alternates: {
-    canonical: "https://verotides.com",
-    types: {
-      "application/opensearchdescription+xml": "https://verotides.com/opensearch.xml",
-    },
+    // "./" resolves against metadataBase + the current route, so each page self-canonicalizes.
+    // The old hardcoded "https://verotides.com" told Google every page (e.g. /guides) was the homepage.
+    canonical: "./",
   },
   openGraph: {
-    title: "🌊 Verotides | Live Vero Beach Tides, AIS Tracking & Weather 🎣",
-    description: "Get real-time tides, live AIS vessel tracking, solunar fishing bite times, beach cams, and bridge alerts for Vero Beach, FL. Check the tide now! 【LIVE 🌊 🎣】",
-    url: "https://verotides.com",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    // No hardcoded og:url here: it was inherited by every route and pointed them all at the homepage.
     siteName: "Verotides",
     images: [
       {
@@ -57,8 +65,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "🌊 Verotides | Live Vero Beach Tides & Coastal Utilities 🎣",
-    description: "Real-time tides, live AIS vessel tracking, solunar charts, beach cams, and bridge alerts for Vero Beach, FL. 【LIVE】",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["https://verotides.com/og_image.png"],
   },
   other: {
@@ -83,124 +91,50 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Verotides",
-      "url": "https://verotides.com",
-      "description": "Live maritime, weather, tide, and utility data for Vero Beach, FL.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://verotides.com/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      },
-      "publisher": {
+  // Sitewide structured data: only entities that are true for EVERY page.
+  // Removed: LocalBusiness (no premises, made-up address), Dataset (invalid temporalCoverage,
+  // license claim over NOAA/AIS data we don't own), WebPage/SiteNavigationElement (wrong per-route).
+  // SearchAction removed too: nothing handles /?q=, so the sitelinks search box could never work.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
         "@type": "Organization",
+        "@id": "https://verotides.com/#organization",
         "name": "Verotides",
         "url": "https://verotides.com",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://verotides.com/globe.svg",
-          "width": 512,
-          "height": 512
-        },
+        "logo": "https://verotides.com/globe.svg",
         "contactPoint": {
           "@type": "ContactPoint",
           "email": "ads@verotides.com",
           "contactType": "customer service"
         }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://verotides.com/#website",
+        "name": "Verotides",
+        "url": "https://verotides.com",
+        "description": "Live tide, fishing, weather, vessel and bridge data for Vero Beach, FL.",
+        "inLanguage": "en-US",
+        "publisher": { "@id": "https://verotides.com/#organization" }
       }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Verotides",
-      "description": "Hyper-local coastal intelligence dashboard for Vero Beach, FL. Live tides, AIS vessel tracking, solunar fishing charts, weather, and bridge status.",
-      "url": "https://verotides.com",
-      "areaServed": {
-        "@type": "City",
-        "name": "Vero Beach",
-        "sameAs": "https://www.wikidata.org/wiki/Q503891"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 27.6386,
-        "longitude": -80.3973
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Vero Beach",
-        "addressRegion": "FL",
-        "postalCode": "32963",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      "name": "Vero Beach Coastal Intelligence",
-      "description": "Aggregated real-time dataset for Vero Beach, FL: NOAA tide predictions, NWS weather conditions, AIS maritime vessel positions, solunar fishing tables, and FDOT bridge status.",
-      "url": "https://verotides.com",
-      "spatialCoverage": {
-        "@type": "Place",
-        "geo": {
-          "@type": "GeoShape",
-          "box": "27.4 -80.5 27.9 -80.1"
-        },
-        "name": "Vero Beach, Indian River County, Florida"
-      },
-      "temporalCoverage": "2026/..",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "creator": {
-        "@type": "Organization",
-        "name": "Verotides"
-      },
-      "distribution": [
-        { "@type": "DataDownload", "encodingFormat": "text/html", "contentUrl": "https://verotides.com" },
-        { "@type": "DataDownload", "encodingFormat": "application/xml", "contentUrl": "https://verotides.com/sitemap.xml" }
-      ]
-    }
-  ];
+    ]
+  };
 
   return (
     <html
-      lang="en"
+      lang="en-US"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        {/* Core structured data — WebSite + LocalBusiness + Dataset */}
+        {/* Core structured data — Organization + WebSite */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* Speakable schema — signals AI Overviews (SGE) and voice assistants which content to read */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "name": "Verotides — Vero Beach Coastal Intelligence",
-          "speakable": {
-            "@type": "SpeakableSpecification",
-            "cssSelector": ["h1", "h2", "[data-speakable]"]
-          },
-          "url": "https://verotides.com"
-        }) }} />
-        {/* SiteNavigationElement — tells Google about all sections */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SiteNavigationElement",
-          "name": ["Tides", "Fishing & Solunar", "Beach Conditions", "Vessel Tracking", "Bridge Status"],
-          "url": [
-            "https://verotides.com/tides",
-            "https://verotides.com/fishing",
-            "https://verotides.com/weather",
-            "https://verotides.com/vessels",
-            "https://verotides.com/bridges"
-          ]
-        }) }} />
         {/* Speculation Rules API — Chrome 109+: prerender on hover for instant page loads */}
         <script type="speculationrules" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "prerender": [{ "source": "list", "urls": ["/tides", "/fishing", "/weather", "/vessels", "/bridges"] }],
           "prefetch": [{ "source": "document", "eagerness": "moderate" }]
         }) }} />
         {/* Geo meta tags — used by local search engines and geo-targeted indexers */}
@@ -215,8 +149,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-black overflow-x-hidden">
         <SiteNav />
         {children}
+        {/* Server-rendered footer: gives every page a crawlable link to /guides and /privacy */}
+        <SiteFooter />
         <CookieSentry />
-        <CounterIntel />
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || 'G-X2F05YL2PV'} />
         <Analytics />
         <SpeedInsights />

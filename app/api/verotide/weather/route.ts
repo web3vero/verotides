@@ -13,7 +13,12 @@ export async function GET(request: Request) {
       next: { revalidate: 3600 } // Cache for 1 hour
     });
     const data = await res.json();
-    return NextResponse.json(data);
+    // NWS forecasts update roughly hourly and the upstream fetch above is cached for 1h, so a
+    // 15-min CDN window (plus 1h SWR) is cheap and still fresh. Also shields api.weather.gov
+    // from one request per visitor.
+    return NextResponse.json(data, {
+      headers: { 'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=3600' },
+    });
   } catch {
     return NextResponse.json({ error: 'Failed to fetch weather data' }, { status: 500 });
   }

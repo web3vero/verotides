@@ -9,6 +9,9 @@ const NAV_LINKS = [
   { href: '/vessels', label: 'Vessel Tracker' },
   { href: '/bridges', label: 'Bridge Status' },
   { href: '/spoil-islands', label: 'Spoil Islands' },
+  // Guides hub (all articles) and Privacy: previously not linked from the global nav.
+  { href: '/guides', label: 'Guides' },
+  { href: '/privacy', label: 'Privacy' },
 ];
 
 export default function SiteNav() {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import dynamic from 'next/dynamic';
 
 import LazyVesselSentry from './LazyVesselSentry';
@@ -184,16 +184,16 @@ const FALLBACK_BRIDGES: BridgeEntry[] = [
     name: '17TH_ST (SR_656)',
     status: 'RESTRICTED',
     color: 'red',
-    desc: 'MAJOR REHAB 2023–2028 (Alma Lee Loy Bridge). One lane alternating 24/7 with flagging. Expect 5–15 min delays peak hours. Use Barber or Wabasso as alternates.',
+    desc: 'East-end rehabilitation (started Sept 2023) was about 98% complete as of Aug 2026; single-lane closures may occur as needed. Check FDOT District 4 for current closures. Barber and Wabasso are alternates.',
     source: 'construction',
     lastVerified: new Date().toISOString().split('T')[0],
     sourceUrl: 'https://www.d4fdot.com/tcfdot/TC-Indian_Closures.asp',
   },
   {
-    name: 'WABASSO (CR_510)',
+    name: 'WABASSO (SR_510)',
     status: 'OPEN_CLEAR',
     color: 'yellow',
-    desc: 'Fixed bridge — northern barrier island crossing via CR-510. 2 lanes, no restrictions. Best alternate while 17th St is under construction.',
+    desc: 'Fixed bridge — northern barrier island crossing via SR-510. 2 lanes, no restrictions. A good alternate while 17th St has lane restrictions.',
     source: 'fixed-span',
     lastVerified: new Date().toISOString().split('T')[0],
     sourceUrl: 'https://verotides.com',
@@ -209,13 +209,56 @@ const FALLBACK_BRIDGES: BridgeEntry[] = [
   },
 ]
 
+// --- Clock -----------------------------------------------------------------
+// The 1-second tick used to live in VeroDashboard's own state, so every second React
+// re-rendered the ENTIRE dashboard (all widgets, bridges, ad slots). By giving the clock
+// its own component, only this tiny subtree updates each second. React.memo additionally
+// guarantees it is never re-rendered because a parent changed (it takes no props).
+//
+// `now` starts as null so the server HTML and the first client render are identical
+// (server time differs from browser time, which would otherwise cause a hydration
+// mismatch). The real time appears right after mount; a fixed placeholder keeps the
+// layout from jumping.
+const DashboardClock = memo(function DashboardClock() {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    // Fire once immediately (via a 0ms timeout, so setState happens in a callback rather
+    // than synchronously in the effect body), then every second.
+    const first = setTimeout(() => setNow(new Date()), 0);
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => {
+      clearTimeout(first);
+      clearInterval(timer); // stop ticking when unmounted
+    };
+  }, []);
+
+  return (
+    <div className="text-center xl:text-right font-mono flex-shrink-0">
+      <div className="text-4xl md:text-7xl text-yellow-400 font-black glow-text leading-none mb-1 tracking-tighter tabular-nums">
+        {now ? now.toLocaleTimeString([], { hour12: true }) : '--:--:-- --'}
+      </div>
+      <div className="text-xs md:text-sm opacity-70 font-black uppercase tracking-wide md:tracking-[0.3em] text-primary min-h-[1em]">
+        {now ? now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : ''}
+      </div>
+    </div>
+  );
+});
+
 const VeroDashboard = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  // The dashboard itself only needs the day NAME (for garbage/recycling badges), which
+  // changes once a day. Storing just that string means setState bails out (same value)
+  // on every check, so the big tree re-renders at most once per day, not once per second.
+  const [today, setToday] = useState(() => new Date().toLocaleDateString('en-US', { weekday: 'long' }));
   const [activeNode, setActiveNode] = useState<'VERO_BEACH_SOUTH' | 'SEBASTIAN_INLET'>('VERO_BEACH_SOUTH');
   const [bridges, setBridges] = useState<BridgeEntry[]>(FALLBACK_BRIDGES);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    // Re-check the weekday once a minute; a no-op re-render-wise unless midnight passed.
+    const timer = setInterval(
+      () => setToday(new Date().toLocaleDateString('en-US', { weekday: 'long' })),
+      60_000
+    );
     return () => clearInterval(timer);
   }, []);
 
@@ -227,7 +270,6 @@ const VeroDashboard = () => {
   }, []);
 
 
-  const today = currentTime.toLocaleDateString('en-US', { weekday: 'long' });
   const isGarbageDay = ['Monday', 'Thursday'].includes(today);
   const isRecyclingDay = today === 'Wednesday';
   const isYardWasteDay = today === 'Thursday';
@@ -243,14 +285,7 @@ const VeroDashboard = () => {
           <h2 className="text-2xl md:text-4xl font-black glow-text italic tracking-tighter uppercase mb-1 truncate">VERO_BEACH_COASTAL_COMMAND</h2>
           <div className="text-[10px] md:text-xs opacity-60 uppercase font-mono tracking-tight md:tracking-[0.25em] font-bold">IRC Coastal Grid · Sector 32963 · Indian River County</div>
         </div>
-        <div className="text-center xl:text-right font-mono flex-shrink-0">
-          <div className="text-4xl md:text-7xl text-yellow-400 font-black glow-text leading-none mb-1 tracking-tighter tabular-nums">
-            {currentTime.toLocaleTimeString([], { hour12: true })}
-          </div>
-          <div className="text-xs md:text-sm opacity-70 font-black uppercase tracking-wide md:tracking-[0.3em] text-primary">
-            {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-          </div>
-        </div>
+        <DashboardClock />
       </div>
 
       {/* Node Switcher Toggle */}

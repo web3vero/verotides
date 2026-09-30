@@ -1,9 +1,16 @@
-// NOAA Tides & Currents stations relevant to Vero Beach
+// NOAA Tides & Currents stations relevant to Vero Beach.
+// Every ID below was verified on 2026-09-30 against the NOAA CO-OPS metadata API
+// (https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations/<id>.json)
+// AND a live predictions datagetter call. Do not change an ID without re-checking both.
 export const STATIONS = {
-  veroOcean: '8722125',        // Sebastian Inlet (closest ocean tide gauge)
-  veroLagoon: '8722206',       // Vero Beach (Indian River Lagoon)
-  sebastianInlet: '8722125',   // Same as ocean for now
-  fortPierce: '8722212',       // Backup / Fort Pierce Inlet
+  // 8722004 = "SEBASTIAN INLET, FL" (27.86N, -80.4483W) - the ocean-side gauge.
+  veroOcean: '8722004',
+  // 8722125 = "Vero Beach, FL" (27.6317N, -80.3717W) - Indian River Lagoon (Intracoastal) side.
+  // (Previously mislabeled as Sebastian Inlet, and lagoon pointed at 8722206, which returns 404.)
+  veroLagoon: '8722125',
+  sebastianInlet: '8722004',   // Same gauge as veroOcean
+  // 8722212 = "FORT PIERCE, SOUTH JETTY, FL" - valid; usable as a southern backup.
+  fortPierce: '8722212',
 };
 
 export const WEATHER_GRIDS = {
