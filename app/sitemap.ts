@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllGuides } from '@/lib/verotide/guides';
 import { upcomingMonths } from '@/lib/verotide/months';
 import { indexableCams } from '@/lib/verotide/cams';
+import { indexableRamps, rampSlug, rampsLastModified } from '@/lib/verotide/ramps';
 
 const BASE = 'https://verotides.com';
 
@@ -73,6 +74,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE}/manatee-zones`,
+      lastModified: CONTENT_UPDATED,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE}/boat-ramps`,
+      lastModified: CONTENT_UPDATED,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${BASE}/cams`,
       lastModified: CONTENT_UPDATED,
       changeFrequency: 'weekly',
@@ -113,5 +126,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
-  return [...staticUrls, ...monthlyTideUrls, ...guideUrls, ...camUrls];
+  // Standalone ramp pages exist only for ramps that pass the content gate in ramps.ts (see
+  // indexableRamps); the rest live on /boat-ramps and are intentionally NOT in the sitemap.
+  const rampLastMod = rampsLastModified();
+  const rampUrls = indexableRamps().map((r) => ({
+    url: `${BASE}/boat-ramps/${rampSlug(r)}`,
+    ...(rampLastMod ? { lastModified: new Date(rampLastMod) } : {}),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticUrls, ...monthlyTideUrls, ...guideUrls, ...camUrls, ...rampUrls];
 }

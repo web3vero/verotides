@@ -8,6 +8,8 @@ const FOOTER_LINKS = [
   { href: '/tides', label: 'Tides' },
   { href: '/lagoon', label: 'Lagoon' },
   { href: '/inlets', label: 'Inlets' },
+  { href: '/manatee-zones', label: 'Manatee Zones' },
+  { href: '/boat-ramps', label: 'Boat Ramps' },
   { href: '/cams', label: 'Cams' },
   { href: '/bridges', label: 'Bridges' },
   { href: '/guides', label: 'Guides' },

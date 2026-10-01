@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { breadcrumbList } from '@/components/verotide/JsonLd';
 
 export const metadata: Metadata = {
@@ -193,6 +194,16 @@ export default function SpoilIslandsPage() {
       <p className="text-[10px] text-white/30 font-mono uppercase">
         Source: Florida Spoil Island Project · IR Lagoon Aquatic Preserves · Last reviewed May 2026.
       </p>
+    
+      {/* Internal links: connect related utilities so crawlers and boaters can move between them */}
+      <nav aria-label="Related pages" className="mt-8 max-w-4xl font-mono text-xs text-white/70">
+        <h2 className="text-sm font-black text-primary uppercase tracking-widest mb-2">Related</h2>
+        <ul className="flex flex-col gap-1">
+          <li><Link href="/manatee-zones" className="text-primary underline hover:text-white">Manatee protection zones (check before you boat)</Link></li>
+          <li><Link href="/boat-ramps" className="text-primary underline hover:text-white">Public boat ramps for launching</Link></li>
+          <li><Link href="/lagoon" className="text-primary underline hover:text-white">Lagoon water level at Wabasso</Link></li>
+        </ul>
+      </nav>
     </main>
   );
 }

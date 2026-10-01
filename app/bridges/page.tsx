@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   // absolute: skip the layout's "%s | Verotides" template because the brand is already in the title.
@@ -133,6 +134,16 @@ export default function BridgesPage() {
         {' · '}FL511. Conditions change; verify live closures at{' '}
         <a href="https://fl511.com" className="text-primary" target="_blank" rel="noopener noreferrer">fl511.com</a>.
       </p>
+    
+      {/* Internal links: connect related utilities so crawlers and boaters can move between them */}
+      <nav aria-label="Related pages" className="mt-8 max-w-4xl font-mono text-xs text-white/70">
+        <h2 className="text-sm font-black text-primary uppercase tracking-widest mb-2">Related</h2>
+        <ul className="flex flex-col gap-1">
+          <li><Link href="/manatee-zones" className="text-primary underline hover:text-white">Manatee protection zones near the bridges</Link></li>
+          <li><Link href="/boat-ramps" className="text-primary underline hover:text-white">Public boat ramps</Link></li>
+          <li><Link href="/lagoon" className="text-primary underline hover:text-white">Indian River Lagoon water level</Link></li>
+        </ul>
+      </nav>
     </main>
   );
 }

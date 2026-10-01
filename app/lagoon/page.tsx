@@ -129,6 +129,16 @@ export default async function LagoonPage() {
         <SourcesCard />
         <DisclaimerBlock />
       </div>
+    
+      {/* Internal links: connect related utilities so crawlers and boaters can move between them */}
+      <nav aria-label="Related pages" className="mt-8 max-w-4xl font-mono text-xs text-white/70">
+        <h2 className="text-sm font-black text-primary uppercase tracking-widest mb-2">Related</h2>
+        <ul className="flex flex-col gap-1">
+          <li><Link href="/boat-ramps" className="text-primary underline hover:text-white">Boat ramps in Indian River, St. Lucie and Brevard counties</Link></li>
+          <li><Link href="/manatee-zones" className="text-primary underline hover:text-white">Manatee protection zones</Link></li>
+          <li><Link href="/inlets" className="text-primary underline hover:text-white">Fort Pierce Inlet conditions</Link></li>
+        </ul>
+      </nav>
     </main>
   );
 }

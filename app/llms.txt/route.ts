@@ -42,6 +42,8 @@ ${months}
 
 - [Indian River Lagoon water level](${SITE}/lagoon) - Live Wabasso lagoon level from USGS (NAVD88, provisional), lagoon high/low timing (NOAA ocean tide shifted about 3.5 hours), a 72-hour forecast with an error band, and a coastal sea-level comparison against NOAA's prediction. Accuracy limits are stated on the page; it is not valid for storms, rain events or other locations.
 - [Fort Pierce Inlet conditions](${SITE}/inlets) - NOAA predicted current plus observed buoy waves and wind, with one wave-current physics flag. No go/no-go rating is published; defer to the National Weather Service and US Coast Guard.
+- [Manatee protection zones](${SITE}/manatee-zones) - Map and per-waterbody list of FWC manatee protection zones in Indian River County and nearby, with legal definitions. Informational only: FWC amended these rules in 2026, the source data was last edited 2025-05-13, and posted signs and the rule text (68C-22 F.A.C.) control.
+- [Boat ramps](${SITE}/boat-ramps) - Directory of 50 public boat ramps from Indian River to St. Lucie and Brevard counties (FWC inventory) with nearby manatee zones and current lagoon water-level context. No depth or launch-suitability claims.
 - [Fishing and solunar](${SITE}/fishing) - Solunar major/minor periods and moon phase computed locally from astronomical formulas. A planning aid, not a guarantee of fish activity.
 - [Weather and beach conditions](${SITE}/weather) - Wind, waves, water temperature and UV from NOAA and National Weather Service sources.
 - [Vessel tracking](${SITE}/vessels) - AIS vessel positions around the Indian River Lagoon and nearby Atlantic waters, via AISStream. Not for navigation.
@@ -64,6 +66,7 @@ ${guides}
 ## Data sources and attribution
 
 - Tides: NOAA CO-OPS (tidesandcurrents.noaa.gov), stations 8722125 and 8722004. NOAA data is not relicensed by Verotides.
+- Manatee zones and boat ramps: Florida Fish and Wildlife Conservation Commission (FWC) GIS layers; general reference only, not for navigation. Rule text: Florida Administrative Code 68C-22.
 - Lagoon level: USGS 02251800 Indian River at Wabasso (provisional data). Coastal reference: NOAA Trident Pier 8721604. Inlet current: NOAA FPI0901 (prediction). Buoys: NOAA NDBC 41114 and 41009.
 - Weather: NOAA and National Weather Service.
 - Cam images: NOAA NESDIS (GOES-19), National Weather Service (KMLB radar), NOAA NDBC (buoy 41009). Other cams belong to their operators and are linked, not hosted.
