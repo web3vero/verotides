@@ -40,11 +40,16 @@ export async function getWabassoObserved(now: Date = new Date()): Promise<Lagoon
     'https://waterservices.usgs.gov/nwis/iv/?format=json' +
     `&sites=${WABASSO_SITE}&parameterCd=${PARAM_NAVD88_FT}&period=PT48H`;
 
-  // Two retries (3 tries) because the 503s are usually transient and USGS is our only lagoon gauge.
+  // USGS Water Services is slow and uneven (measured 1.4-6.3 s for this same tiny request), and from
+  // Vercel's servers the old 8 s cap with 3 tries timed out in production. Give it a longer per-try
+  // allowance and fewer tries so the whole call stays inside the route's maxDuration (2 x 20 s = 40 s
+  // worst case is still under the 60 s limit set on the route/page). The 5-minute cache means this
+  // cost is paid rarely.
   const json = await fetchJsonWithRetry<UsgsIvResponse>(url, {
     revalidate: REVALIDATE_SECONDS,
     tags: ['usgs-wabasso'],
-    retries: 2,
+    retries: 1,
+    timeoutMs: 20_000,
     source: 'USGS',
   });
 

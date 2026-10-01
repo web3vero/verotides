@@ -6,6 +6,9 @@ import { getLagoonSnapshot } from '@/lib/verotide/lagoon';
 // route always answers 200 with whatever is trustworthy. The upstream fetches carry their own
 // Next revalidate windows; the CDN header below adds a 5 min edge cache plus 15 min of
 // stale-while-revalidate so a slow NOAA/USGS response never blocks a visitor.
+// USGS can take several seconds per try (see usgs.ts); allow up to 60 s instead of the short default.
+export const maxDuration = 60;
+
 export async function GET() {
   const snapshot = await getLagoonSnapshot();
   return NextResponse.json(snapshot, {

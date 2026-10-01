@@ -21,6 +21,8 @@ import {
 // ISR: Next re-renders this server component at most every 5 minutes. USGS posts 15-minute
 // values, so 5 minutes keeps the number fresh without hammering USGS/NOAA on every visit.
 export const revalidate = 300;
+// Allow up to 60 s: USGS can take several seconds per try (see usgs.ts), and the default 10-15 s would kill the render.
+export const maxDuration = 60;
 
 const TITLE = LAGOON_PAGE.metadata.title;
 const DESCRIPTION = LAGOON_PAGE.metadata.description;
