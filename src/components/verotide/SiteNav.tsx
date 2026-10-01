@@ -6,6 +6,8 @@ const NAV_LINKS = [
   { href: '/tides', label: 'Vero Beach Tides' },
   { href: '/fishing', label: 'Fishing & Bite Times' },
   { href: '/weather', label: 'Beach Conditions' },
+  { href: '/lagoon', label: 'Lagoon' },
+  { href: '/inlets', label: 'Inlets' },
   { href: '/cams', label: 'Cams' },
   { href: '/vessels', label: 'Vessel Tracker' },
   { href: '/bridges', label: 'Bridge Status' },

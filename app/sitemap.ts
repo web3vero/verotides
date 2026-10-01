@@ -61,6 +61,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.75,
     },
     {
+      url: `${BASE}/lagoon`,
+      lastModified: CONTENT_UPDATED,
+      changeFrequency: 'hourly',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE}/inlets`,
+      lastModified: CONTENT_UPDATED,
+      changeFrequency: 'hourly',
+      priority: 0.8,
+    },
+    {
       url: `${BASE}/cams`,
       lastModified: CONTENT_UPDATED,
       changeFrequency: 'weekly',

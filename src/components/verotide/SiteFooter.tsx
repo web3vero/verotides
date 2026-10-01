@@ -6,6 +6,8 @@ import Link from 'next/link';
 // main utility sections. That removes "orphan page" risk and spreads internal link equity.
 const FOOTER_LINKS = [
   { href: '/tides', label: 'Tides' },
+  { href: '/lagoon', label: 'Lagoon' },
+  { href: '/inlets', label: 'Inlets' },
   { href: '/cams', label: 'Cams' },
   { href: '/bridges', label: 'Bridges' },
   { href: '/guides', label: 'Guides' },
