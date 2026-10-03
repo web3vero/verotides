@@ -349,5 +349,13 @@ Then pull locally: `vercel env pull .env.local`
   - Styled open slots as discrete `OPEN SLOT` inventory with subdued borders and high-converting CTAs.
 - **Verification:** Verified clean lint (`bun run lint`), clean production compilation (`bun run build` across 54/54 routes), and verified live layout in Brave via Interceptor.
 
+### 2026-10-02 | Vero Beach Bridge Image Realism Remedy (Gemini)
+- **Problem Statement:** The previous featured image at `public/images/vero-beach-bridge-schedules.jpg` inaccurately depicted a mechanical double-leaf drawbridge opening at sunset. In reality, all Indian River County bridges crossing the lagoon (Barber Bridge SR-60, 17th St Alma Lee Loy Bridge SR-656, and Wabasso Bridge SR-510) are fixed, high-level 65-foot concrete causeway spans with no mechanical drawbridge operations.
+- **Image Generation & Replacement:** Utilized Google `gemini-2.5-flash-image` via the Generative Language API to generate an accurate, high-resolution 1024x1024 35mm film-style photograph of the real Merrill P. Barber Bridge:
+  - Depicts a continuous high-level fixed-span concrete beam causeway arching 65 ft over the Indian River Lagoon with concrete piers and lampposts (zero drawbridge leaves/towers).
+  - Accurate coastal landscape featuring low-lying mangrove shorelines, sabal palm trees, and an evening Florida twilight sunset.
+  - Features the signature Verotides aesthetic: a vintage 1980s green-phosphor CRT terminal monitor resting on a wooden dock piling in the foreground displaying bridge clearances and telemetry.
+- **Production Deployment & Verification:** Deployed to Vercel production (`dpl_JDoG37pBMCp6X8XVXgJLkuBFFcPR`), verified live over HTTP/2 200 OK at `https://verotides.com/images/vero-beach-bridge-schedules.jpg`.
+
 ---
 *Note: Always append new activity logs to this file.*
