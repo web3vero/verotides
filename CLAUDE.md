@@ -357,5 +357,14 @@ Then pull locally: `vercel env pull .env.local`
   - Features the signature Verotides aesthetic: a vintage 1980s green-phosphor CRT terminal monitor resting on a wooden dock piling in the foreground displaying bridge clearances and telemetry.
 - **Production Deployment & Verification:** Deployed to Vercel production (`dpl_JDoG37pBMCp6X8XVXgJLkuBFFcPR`), verified live over HTTP/2 200 OK at `https://verotides.com/images/vero-beach-bridge-schedules.jpg`.
 
+### 2026-10-02 | Red Tide & Fishing Guide Image Remedy (Gemini)
+- **Problem Statement:** The previous featured image at `public/images/red-tide-monitoring-guide.jpg` was an exact duplicate of the old drawbridge asset, completely mismatched with water quality and Karenia brevis environmental testing.
+- **Image Generation & Replacement:** Utilized Google `gemini-2.5-flash-image` via the Generative Language API to generate an authentic 1024x1024 35mm film-style photograph:
+  - Depicts an Atlantic coastal beach in Vero Beach at sunrise with rolling surf, sandy dunes, sea oats, and cabbage palms (zero bridges/drawbridges).
+  - Preserves the signature Verotides aesthetic: a vintage green-phosphor CRT computer terminal monitor on a wooden research post displaying FWC coastal monitoring water telemetry (`TARGET: KARENIA BREVIS`, `STATUS: NOT DETECTED`, `WATER TEMP: 79°F`, `SALINITY: 35 PSU`).
+  - Also generated a bespoke, unique cover image for `public/images/vero-beach-fishing-guide-2027.jpg` showing an offshore sportfishing boat at golden sunrise with an active CRT fishfinder/sonar HUD.
+  - Verified 100% uniqueness across all 8 guide images via MD5 checksum hashing.
+- **Production Deployment & Verification:** Deployed to Vercel production (`dpl_4ipq7c0x7`), verified live over HTTP/2 200 OK at `https://verotides.com/images/red-tide-monitoring-guide.jpg` (353 KB) and `https://verotides.com/images/vero-beach-fishing-guide-2027.jpg` (391 KB).
+
 ---
 *Note: Always append new activity logs to this file.*
