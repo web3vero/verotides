@@ -1,5 +1,6 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
+import path from "node:path";
 
 // Cache policy for files served straight out of /public. These filenames are NOT
 // content-hashed (unlike /_next/static/*, which Next already marks immutable), so we
@@ -11,6 +12,9 @@ const PUBLIC_ASSET_CACHE =
   "public, max-age=604800, stale-while-revalidate=604800";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   // Don't advertise the framework in an "X-Powered-By: Next.js" header (minor hardening).
   poweredByHeader: false,
 

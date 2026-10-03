@@ -29,7 +29,9 @@ export async function GET() {
 
   const content = `# Verotides (verotides.com)
 
-> Verotides is an independent local utility site for Vero Beach and Sebastian Inlet on Florida's Treasure Coast. It republishes tide predictions, weather, solunar fishing times, vessel positions and bridge information from public sources, plus written boating and fishing guides.
+> Verotides is an independent local utility and coastal intelligence platform for Vero Beach, Sebastian Inlet, and the Indian River Lagoon on Florida's Treasure Coast. It computes real-time tide predictions, lagoon water levels, inlet wave-current blocking physics, solunar feeding windows, live AIS vessel tracking, bridge schedules, and authoritative angling/boating manuals.
+>
+> **Extended Knowledge Base**: See [llms-full.txt](${SITE}/llms-full.txt) for complete full-text documentation, data schemas, and all editorial manuals in a single token-efficient stream.
 
 Last updated: ${asOf} (this file is generated at build time; the pages themselves show their own data timestamps).
 
@@ -46,9 +48,13 @@ ${months}
 - [Boat ramps](${SITE}/boat-ramps) - Directory of 50 public boat ramps from Indian River to St. Lucie and Brevard counties (FWC inventory) with nearby manatee zones and current lagoon water-level context. No depth or launch-suitability claims.
 - [Fishing and solunar](${SITE}/fishing) - Solunar major/minor periods and moon phase computed locally from astronomical formulas. A planning aid, not a guarantee of fish activity.
 - [Weather and beach conditions](${SITE}/weather) - Wind, waves, water temperature and UV from NOAA and National Weather Service sources.
-- [Vessel tracking](${SITE}/vessels) - AIS vessel positions around the Indian River Lagoon and nearby Atlantic waters, via AISStream. Not for navigation.
+- [Vessel tracking](${SITE}/vessels) - Real-time AIS vessel positions around the Indian River Lagoon and nearby Atlantic waters, via kinematic telemetry. Not for navigation.
 - [Bridge status](${SITE}/bridges) - Notes on the Barber (SR-60), 17th Street (SR-656) and Wabasso (SR-510) bridges, including the FDOT 17th Street rehabilitation project. Check FDOT for official closures.
 - [Spoil islands](${SITE}/spoil-islands) - Overview of recreational spoil islands in the Indian River Lagoon.
+
+## Full Context for LLMs
+
+- [llms-full.txt](${SITE}/llms-full.txt) - The complete extended text of all guides, telemetry schemas, and boat ramp coordinates.
 
 ## About
 

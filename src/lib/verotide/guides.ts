@@ -181,6 +181,9 @@ export function getAllGuides(): GuideMetadata[] {
       const fullPath = path.join(guidesDirectory, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { metadata } = parseFrontmatter(fileContents);
+      if (!metadata.slug) {
+        metadata.slug = fileName.replace(/\.md$/, '');
+      }
       return metadata;
     });
 

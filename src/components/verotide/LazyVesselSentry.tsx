@@ -31,12 +31,12 @@ export default function LazyVesselSentry({ center, title }: Props) {
   }, []);
 
   return (
-    <div ref={ref} className="h-[300px] w-full">
+    <div ref={ref} className="w-full min-h-[480px]">
       {triggered ? (
         <VesselSentry center={center} title={title} />
       ) : (
-        <div className="h-[300px] w-full border border-primary/20 bg-black flex items-center justify-center font-mono text-primary/40 text-[10px] tracking-widest uppercase animate-pulse">
-          VESSEL RADAR — STANDBY
+        <div className="min-h-[480px] w-full border border-primary/20 bg-black/60 rounded-2xl flex items-center justify-center font-mono text-primary/40 text-[10px] tracking-widest uppercase animate-pulse">
+          VESSEL RADAR // INITIALIZING_SENSORS...
         </div>
       )}
     </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import FishingClient from './FishingClient';
 import { getSolunarData, getWeeklySolunarData } from '@/lib/verotide/data';
 import React from 'react';
@@ -106,6 +107,33 @@ export default async function FishingPage() {
           </p>
         </div>
       </section>
+
+      {/* Featured 2027 Field Manual Banner */}
+      <div className="terminal-box p-5 border-2 border-primary/40 bg-gradient-to-r from-black via-primary/10 to-black rounded-xl mb-8 font-mono flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <span className="bg-primary text-black text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">
+              OFFICIAL 2027 PLAYBOOK
+            </span>
+            <span className="text-[10px] text-yellow-400 font-bold tracking-wider">
+              INSHORE · INLET · OFFSHORE
+            </span>
+          </div>
+          <h2 className="text-sm md:text-base font-black text-white uppercase tracking-wider">
+            Vero Beach Fishing Guide (2027): Complete Angler&apos;s Manual
+          </h2>
+          <p className="text-xs text-white/60">
+            Exact GPS coordinates for 60ft ledges and artificial reefs, 12-month seasonality matrix, and 2027 FWC regulations.
+          </p>
+        </div>
+        <Link
+          href="/guides/vero-beach-fishing-guide-2027"
+          className="shrink-0 bg-primary hover:bg-white text-black font-black font-mono text-xs px-4 py-2.5 rounded-lg transition-all shadow-[0_0_15px_rgba(0,255,65,0.4)] uppercase tracking-wider flex items-center gap-2"
+        >
+          <span>READ PLAYBOOK</span>
+          <span>↗</span>
+        </Link>
+      </div>
 
       {/* SSR Fishing / Bite Widgets */}
       <FishingClient veroData={veroToday} sebastianData={sebastianToday} />

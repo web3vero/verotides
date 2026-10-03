@@ -85,22 +85,22 @@ const AdSquare = ({ slot }: { slot: number }) => {
 
   if (ad.live) {
     return (
-      <div className="terminal-box p-6 flex flex-col gap-4 border-green-400/30 rounded-xl relative overflow-hidden bg-black min-h-[200px]">
-        <div className="absolute top-0 right-0 bg-green-400 text-black text-[8px] font-black uppercase px-3 py-1 tracking-widest">
-          LOCAL AD
+      <div className="terminal-box p-5 flex flex-col justify-between border-primary/40 rounded-xl relative overflow-hidden bg-black/85 shadow-[0_0_20px_rgba(0,255,65,0.08)] min-h-[220px]">
+        <div className="absolute top-0 right-0 bg-primary text-black text-[8px] font-black uppercase px-2.5 py-0.5 tracking-widest rounded-bl">
+          FEATURED PARTNER
         </div>
-        <div className="border-b border-green-400/20 pb-2 flex items-center gap-3">
-          <span className="h-1.5 w-1.5 rounded-full bg-green-400/80 animate-pulse"></span>
-          <span className="font-black text-green-400/80 uppercase tracking-widest text-[10px]">{ad.category}</span>
+        <div className="border-b border-primary/20 pb-2 flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+          <span className="font-black text-primary uppercase tracking-widest text-[10px] font-mono">{ad.category}</span>
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center py-2">
-          <div className="h-14 w-14 border-2 border-green-400/30 rounded-full flex items-center justify-center bg-green-400/5">
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center py-3">
+          <div className="h-12 w-12 border border-primary/40 rounded-xl flex items-center justify-center bg-primary/10 shadow-[0_0_15px_rgba(0,255,65,0.15)]">
             <span className="text-2xl">{ad.icon}</span>
           </div>
           <div>
-            <div className="text-sm font-black text-white uppercase tracking-widest mb-0.5">{ad.name}</div>
-            <div className="text-[10px] text-green-400/70 font-mono uppercase tracking-widest mb-2">{ad.tagline}</div>
-            <div className="text-[10px] text-white/30 font-mono uppercase leading-relaxed">
+            <div className="text-sm font-black text-white uppercase tracking-wider mb-0.5">{ad.name}</div>
+            <div className="text-[10px] text-primary/80 font-mono uppercase tracking-widest mb-1 font-bold">{ad.tagline}</div>
+            <div className="text-[10px] text-white/50 font-mono uppercase leading-relaxed">
               {ad.description.split('\n').map((l, i) => <React.Fragment key={i}>{l}{i === 0 && <br />}</React.Fragment>)}
             </div>
           </div>
@@ -109,7 +109,7 @@ const AdSquare = ({ slot }: { slot: number }) => {
           href={ad.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full text-center border-2 border-green-400/50 py-2.5 text-[10px] text-green-400 font-black uppercase tracking-widest hover:bg-green-400 hover:text-black transition-all rounded-lg"
+          className="w-full text-center border border-primary/50 py-2 text-[10px] text-primary font-black uppercase tracking-widest hover:bg-primary hover:text-black transition-all rounded-lg font-mono"
         >
           {ad.cta}
         </a>
@@ -118,28 +118,28 @@ const AdSquare = ({ slot }: { slot: number }) => {
   }
 
   return (
-    <div className="terminal-box p-6 flex flex-col gap-4 border-yellow-400/20 rounded-xl relative overflow-hidden bg-black min-h-[200px]">
-      <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[8px] font-black uppercase px-3 py-1 tracking-widest">
-        SPONSORED
+    <div className="terminal-box p-5 flex flex-col justify-between border-white/10 hover:border-primary/30 rounded-xl relative overflow-hidden bg-black/60 min-h-[220px] transition-colors">
+      <div className="absolute top-0 right-0 bg-white/10 text-white/60 text-[8px] font-mono uppercase px-2.5 py-0.5 tracking-widest rounded-bl border-l border-b border-white/10">
+        OPEN SLOT
       </div>
-      <div className="border-b border-yellow-400/20 pb-2 flex items-center gap-3">
-        <span className="h-1.5 w-1.5 rounded-full bg-yellow-400/60 animate-pulse"></span>
-        <span className="font-black text-yellow-400/80 uppercase tracking-widest text-[10px]">{ad.category}</span>
+      <div className="border-b border-white/10 pb-2 flex items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-yellow-400/70"></span>
+        <span className="font-black text-white/60 uppercase tracking-widest text-[10px] font-mono">{ad.category}</span>
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center py-4">
-        <div className="h-14 w-14 border-2 border-yellow-400/25 rounded-full flex items-center justify-center bg-yellow-400/5">
-          <span className="text-2xl">{ad.icon}</span>
+      <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center py-3">
+        <div className="h-12 w-12 border border-white/15 rounded-xl flex items-center justify-center bg-white/5">
+          <span className="text-2xl opacity-75">{ad.icon}</span>
         </div>
         <div>
-          <div className="text-sm font-black text-white/80 uppercase tracking-widest mb-1">{ad.headline}</div>
-          <div className="text-[10px] text-white/30 font-mono uppercase leading-relaxed">
+          <div className="text-sm font-black text-white/90 uppercase tracking-wider mb-1">{ad.headline}</div>
+          <div className="text-[10px] text-white/40 font-mono uppercase leading-relaxed">
             {ad.body.split('\n').map((l, i) => <React.Fragment key={i}>{l}{i === 0 && <br />}</React.Fragment>)}
           </div>
         </div>
       </div>
       <a
         href="mailto:ads@verotides.com"
-        className="w-full text-center border-2 border-yellow-400/40 py-2.5 text-[10px] text-yellow-400 font-black uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all rounded-lg"
+        className="w-full text-center border border-white/20 hover:border-primary/50 py-2 text-[10px] text-white/70 hover:text-primary font-black uppercase tracking-widest hover:bg-primary/10 transition-all rounded-lg font-mono"
       >
         {ad.cta}
       </a>
@@ -356,18 +356,17 @@ const VeroDashboard = () => {
       {/* Storm Sentry — live NHC feed */}
       <StormSentry />
 
-      {/* Row 4: Vessel (2 col) + Ad */}
-      <div className="md:col-span-2 xl:col-span-2">
+      {/* Coastal Radar — Full-Width Tactical Centerpiece */}
+      <div className="col-span-full">
         <LazyVesselSentry center={nodeConfig.center} title={nodeConfig.radarTitle} />
       </div>
-      <AdSquare slot={1} />
 
-      {/* Row 5: Ad squares */}
-      <AdSquare slot={2} />
-      <AdSquare slot={3} />
-
-      {/* placeholder to keep grid balanced on xl */}
-      <div className="hidden xl:block" />
+      {/* Commercial & Strategic Partners Strip */}
+      <div className="col-span-full grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <AdSquare slot={1} />
+        <AdSquare slot={2} />
+        <AdSquare slot={3} />
+      </div>
 
       {/* ─────── TRASH & WASTE — Full-Width Bottom Section ─────── */}
       <div className="col-span-full terminal-box rounded-2xl overflow-hidden border-primary/30">
