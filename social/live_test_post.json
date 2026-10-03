@@ -1,0 +1,10 @@
+{
+  "account": "@Vero_Tides",
+  "campaign": "live_test",
+  "content": "[VERO COMMAND // TELEMETRY ACTIVE] 🟢\n> SYSTEM_STATUS: ONLINE\n\nTIDE_CHK: Incoming. Peak high at 14:00.\nSOLUNAR_BITE: Major window opening [11:30 - 13:30].\nBRIDGE_STAT: 17th St clear. Wabasso green.\n\nCalibrating local sensors... verotides.com\n\n#VeroBeach #TreasureCoast #Fishing",
+  "media_paths": [
+    "/mnt/c/Users/foley/Projects/Local/Verotides/public/twitter_launch_post.jpg"
+  ],
+  "style": "retro-CRT coastal command",
+  "status": "ready"
+}

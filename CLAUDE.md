@@ -366,5 +366,15 @@ Then pull locally: `vercel env pull .env.local`
   - Verified 100% uniqueness across all 8 guide images via MD5 checksum hashing.
 - **Production Deployment & Verification:** Deployed to Vercel production (`dpl_4ipq7c0x7`), verified live over HTTP/2 200 OK at `https://verotides.com/images/red-tide-monitoring-guide.jpg` (353 KB) and `https://verotides.com/images/vero-beach-fishing-guide-2027.jpg` (391 KB).
 
+### 2026-10-02 | Social Operations & Campaign Queue Integration (Gemini)
+- **Hermes/Talon Inspection:** Inspected `/mnt/c/Users/foley/Projects/Hermes/campaigns/vero_tides/` and verified that VeroTides social media scheduling had been maintained externally in Hermes. In alignment with project unification mandates, migrated all social media assets, campaign queues, and publishing tooling into the local Verotides repository under `social/`.
+- **Integrated Artifacts (`social/`):**
+  - `social/campaign_queue.json`: 15 queued posts across 5 content pillars (Tide Dynamics, Vessel Radar, Solunar Dispatch, 32963 Utility/Bridge Grid, Beach Sentry/Ecological Alerts) with target account `@Vero_Tides`.
+  - Added `post-015` to launch and amplify the new **2027 Vero Beach Fishing Manual**.
+  - Verified all 15 local media references point to existing 1024x1024 assets in `public/images/`.
+  - `social/native_publisher.py` & `social/publisher.py`: Complete fail-closed publisher utility supporting `--list`, `--show`, `--validate`, and `--publish` via Interceptor browser automation (`verotides` context).
+  - `social/SCHEDULE.md`: Comprehensive operational manual documenting brand standards, posting times, and publishing commands.
+- **Verification:** Ran `python3 social/publisher.py --validate` (15/15 posts PASS) and dry-run tested `post-001`.
+
 ---
 *Note: Always append new activity logs to this file.*

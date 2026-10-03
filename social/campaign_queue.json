@@ -1,0 +1,159 @@
+{
+  "campaign": "@Vero_Tides Coastal Telemetry & Beachside Utility Command",
+  "target_account": "@Vero_Tides",
+  "website": "https://verotides.com",
+  "brand_style": "Retro-CRT / Cybernetic Telemetry / High-Contrast Terminal / Vero Beach Local Command",
+  "scheduler": "Hermes Interceptor / Native X Scheduler",
+  "pillars": [
+    "Tide Dynamics & Intracoastal Telemetry",
+    "Solunar Bite Windows & Fishing Dispatch",
+    "Barrier Island 32963 Utility & Bridge Grid Alerts",
+    "Beach Sentry & Ecological Alerts (Turtle Nesting / Red Tide)",
+    "Vessel Radar & Maritime Command"
+  ],
+  "exif_spec": {
+    "lat": "27.6386 N",
+    "lon": "80.3973 W",
+    "author": "Vero Tides Coastal Command | @Vero_Tides",
+    "copyright": "© 2026 Vero Tides (verotides.com) | Coastal Command",
+    "keywords": [
+      "Vero Beach Tides",
+      "Sebastian Inlet",
+      "Solunar Bite Window",
+      "Indian River Lagoon",
+      "32963",
+      "32964",
+      "Vero Beach Fishing",
+      "Snook",
+      "Redfish",
+      "Tarpon",
+      "Bridge Grid",
+      "Barber Bridge",
+      "Ocean Drive Cam",
+      "Coastal Telemetry",
+      "Vero Tides"
+    ]
+  },
+  "queued_posts": [
+    {
+      "id": "post-001",
+      "type": "pinned_launch",
+      "pillar": "Vessel Radar & Maritime Command",
+      "text": "📡 SYSTEM BOOT: Operational\n📍 Node: Vero Beach South (27.6386° N, 80.3973° W)\n⚓ Status: Command center active.\n\nReal-time coastal intelligence for Vero Beach:\n🌊 Live NOAA Tide forecasts\n🚢 Live AIS Vessel Radar\n🎣 Solunar bite windows\n🌉 Bridge grid status\n\n🌐 https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/twitter_launch_post.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-002",
+      "type": "solunar_dispatch",
+      "pillar": "Solunar Bite Windows & Fishing Dispatch",
+      "text": "🎣 SOLUNAR BITE DISPATCH | Sebastian Inlet & Indian River Lagoon\n\nMajor Window: 4:05 AM - 6:05 AM\nMinor Window: 9:15 PM - 10:15 PM\nMoon Phase: Waning Gibbous (77%)\n\nTarget Species: Snook · Redfish · Tarpon · Pompano · Sheepshead\n\n🌊 Real-time solunar matrices & tide height streams: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/sebastian-inlet-snook-fishing.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-003",
+      "type": "utility_sentry",
+      "pillar": "Barrier Island 32963 Utility & Bridge Grid Alerts",
+      "text": "🌉 BARRIER ISLAND BRIDGE & UTILITY GRID | 32963 / 32964\n\n• Barber (SR-60): Open & Clear\n• 17th St (SR-656): Single lane rehabilitation\n• Wabasso (SR-510): Open & Clear\n• Sebastian Inlet Bridge: Workday lane closures\n\n🗑️ 32963 Trash: Single-stream blue bin recycling ACTIVE today.\n\nLive bridge status & trash schedules: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/vero-beach-bridge-schedules.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-004",
+      "type": "beach_sentry",
+      "pillar": "Beach Sentry & Ecological Alerts",
+      "text": "🏖️ OCEAN DRIVE BEACH SENTRY | 3450 Ocean Drive [32963]\n\n• Surface Temp: 76°F\n• Wind: 5-10 mph\n• Turtle Nesting Season: ACTIVE (Mar-Oct). Turn off beachside lights 9 PM–7 AM 🐢\n• FWC Red Tide: Clear in Indian River County node\n\nLive beach cams & water temp updates: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/red-tide-monitoring-guide.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-005",
+      "type": "maritime_telemetry",
+      "pillar": "Tide Dynamics & Intracoastal Telemetry",
+      "text": "🌊 INTRACOASTAL TIDE DYNAMICS | NOAA Station 8722125\n\nHigh Tide: 02:26 AM (+0.714 FT) — Prime time for navigating shallow Intracoastal channels & mangrove structures.\nLow Tide: 08:50 AM (-0.016 FT) — Exposed flats & sandbars.\n\nFull tide charts & live telemetry: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/og_image.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-006",
+      "type": "maritime_telemetry",
+      "pillar": "Vessel Radar & Maritime Command",
+      "text": "🚢 AIS VESSEL RADAR | Sebastian Inlet Command Node\n\nTracking heavy commercial traffic near the inlet.\nCurrent Activity: 3 inbound charter vessels, 1 cargo transport [Standby for wakes].\nVisibility: 8NM\nWind: 12kts ESE\n\nMonitor real-time vessel traffic and radar telemetry: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/indian-river-lagoon-boating-safety.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-007",
+      "type": "solunar_dispatch",
+      "pillar": "Solunar Bite Windows & Fishing Dispatch",
+      "text": "🎣 SOLUNAR BITE DISPATCH | Indian River Lagoon Flats\n\nMajor Window: 5:10 AM - 7:10 AM\nMinor Window: 10:20 PM - 11:20 PM\nBarometric Pressure: 29.92 inHg (Falling)\n\nTarget Species: Seatrout · Snook\nTelemetry suggests optimal conditions on the incoming tide.\n\nForecast matrices & bite windows: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/spoil-island-camping-guide.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-008",
+      "type": "utility_sentry",
+      "pillar": "Barrier Island 32963 Utility & Bridge Grid Alerts",
+      "text": "🌉 BARRIER ISLAND BRIDGE GRID | 32963\n\n• Barber (SR-60): Open & Clear\n• 17th St (SR-656): Clearance verified\n• A1A Southbound: Minor delays near South Beach Park\n\nReminder: Yard waste pickup scheduled for 32963 zones tomorrow. Keep drains clear.\n\nLive traffic & municipal utility updates: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/vero-beach-bridge-schedules.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-009",
+      "type": "beach_sentry",
+      "pillar": "Beach Sentry & Ecological Alerts",
+      "text": "🏖️ BEACH SENTRY | South Beach Park [32963]\n\n• Surf Height: 2-3 ft (Choppy)\n• Rip Current Risk: MODERATE\n• UV Index: 8 (Very High)\n• Jellyfish/Man-o-War: Negative\n\nLifeguard towers manned. Swim near a tower.\nLive surf cams & safety telemetry: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/spoil-islands-ecology-preservation.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-010",
+      "type": "tide_telemetry",
+      "pillar": "Tide Dynamics & Intracoastal Telemetry",
+      "text": "🌊 INTRACOASTAL TIDE DYNAMICS | Bethel Creek Node\n\nHigh Tide: 03:45 PM (+0.812 FT)\nLow Tide: 09:20 AM (-0.115 FT)\n\nWarning: Negative low tide levels. Boaters exercise caution around unmarked shoals north of the Barber Bridge.\n\nLive hydrographic matrices: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/artificial-reefs-coordinates.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-011",
+      "type": "maritime_telemetry",
+      "pillar": "Vessel Radar & Maritime Command",
+      "text": "📡 MARITIME COMMAND | Ft. Pierce Inlet to Sebastian\n\nMarine Weather Statement: Small craft advisory in effect until 0400 HRS.\nSeas: 4-6 ft, occasional 8 ft.\nWind: NNE 15-20kts.\n\nAll vessels proceed with caution.\nLive marine alerts & AIS tracking: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/indian-river-lagoon-boating-safety.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-012",
+      "type": "solunar_dispatch",
+      "pillar": "Solunar Bite Windows & Fishing Dispatch",
+      "text": "🎣 SOLUNAR BITE DISPATCH | Barber Bridge Shadow\n\nMajor Window: 6:15 AM - 8:15 AM\nMoon Phase: New Moon (0%) — Maximum tidal pull.\n\nTarget Species: Tarpon · Snook\nExpect heavy currents during the ebb tide. Pitch baits into the shadow line.\n\nSync your tackle with live solunar data: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/sebastian-inlet-snook-fishing.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-013",
+      "type": "utility_sentry",
+      "pillar": "Barrier Island 32963 Utility & Bridge Grid Alerts",
+      "text": "🌉 32963 UTILITY & BRIDGE GRID | Weekend Ops\n\n• Barber (SR-60): Heavy weekend traffic expected 10AM-2PM.\n• 17th St (SR-656): Open & Clear.\n• Ocean Drive: Pedestrian congestion high.\n\nPlan routes accordingly.\nLive 32963 grid status & bridge cams: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/vero-beach-bridge-schedules.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-014",
+      "type": "beach_sentry",
+      "pillar": "Beach Sentry & Ecological Alerts",
+      "text": "🏖️ BEACH SENTRY | Tracking Turtle Nesting 32963\n\n• Nests to Date: 1,452\n• False Crawls: 890\n• Water Temp: 77°F\n\nReminder: Fill your holes and knock down sandcastles before dusk. Protect the hatchlings.\nTurtle nesting telemetry & beach updates: https://verotides.com",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/red-tide-monitoring-guide.jpg",
+      "state": "staged_ready"
+    },
+    {
+      "id": "post-015",
+      "type": "field_manual_launch",
+      "pillar": "Solunar Bite Windows & Fishing Dispatch",
+      "text": "🎣 ANGLER PLAYBOOK // 2027 VERO BEACH FISHING MANUAL 🌊\n\nThe definitive guide to fishing Vero Beach, Sebastian Inlet & Indian River Lagoon is live:\n📍 Exact GPS coordinates: 60ft ledges & artificial reefs\n🗓️ 12-Month species seasonality matrix\n⚖️ 2027 FWC regulations, slot limits & permits\n🚤 Launch logistics: MacWilliam, Riverside & Oslo ramps\n\nRead the full manual: https://verotides.com/guides/vero-beach-fishing-guide-2027",
+      "media": "/mnt/c/Users/foley/Projects/Local/Verotides/public/images/vero-beach-fishing-guide-2027.jpg",
+      "state": "staged_ready"
+    }
+  ]
+}
